@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/admin/tutor-requests</b><span class="tag">role: admin</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page narrow">
+  <div class="page-head">
+    <p class="eyebrow">Admin</p>
+    <h1>Tutor applications</h1>
+    <p class="desc">Prototype console — one request (yours). Approving it flips your account to
+      <b>tutor</b> so you can use the tutor dashboard, earnings and listing.</p>
+  </div>
+
+  <!-- pending request -->
+  <div class="card" id="req-card" hidden>
+    <div class="rowitem" style="align-items:flex-start">
+      <span class="avatar lg">MK</span>
+      <div class="grow">
+        <div class="title">Mina K.</div>
+        <div class="sub">Applied just now · student since today</div>
+      </div>
+      <span class="badge warn">Pending</span>
+    </div>
+    <div class="hr"></div>
+    <div class="summary" style="margin-bottom:16px">
+      <div class="line"><span>Government ID</span><b>passport-scan.jpg</b></div>
+      <div class="line"><span>Teaching certification</span><b>celta-certificate.pdf</b></div>
+      <div class="line"><span>Bio</span><span>Submitted</span></div>
+      <div class="line"><span>Subjects</span><span>Submitted</span></div>
+    </div>
+    <div class="cluster" style="justify-content:flex-end">
+      <button class="btn danger" type="button" id="reject-btn">Reject</button>
+      <button class="btn lg" type="button" id="approve-btn">Approve</button>
+    </div>
+  </div>
+
+  <!-- approved -->
+  <div class="card" id="done-card" hidden>
+    <div class="rowitem">
+      <span class="avatar lg">MK</span>
+      <div class="grow"><div class="title">Mina K.</div><div class="sub">Approved &middot; full tutor access</div></div>
+      <span class="badge ok">Tutor</span>
+    </div>
+    <div class="hr"></div>
+    <div class="cluster" style="justify-content:flex-end">
+      <button class="btn danger" type="button" id="revoke-btn">Revoke tutor access</button>
+      <a class="btn" href="dashboard-tutor.html">Open tutor dashboard</a>
+    </div>
+  </div>
+
+  <!-- nothing pending -->
+  <div class="card empty" id="none-card" hidden>
+    <div class="ico">📭</div>
+    <p>No pending applications.</p>
+    <a class="btn ghost sm" href="enroll-tutor.html">Go to the tutor application</a>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  function render() {
+    var s = tmTutor.status();
+    document.getElementById('req-card').hidden = s !== 'pending';
+    document.getElementById('done-card').hidden = s !== 'approved';
+    document.getElementById('none-card').hidden = s === 'pending' || s === 'approved';
+  }
+  render();
+
+  document.getElementById('approve-btn').addEventListener('click', function () {
+    tmTutor.approve();
+    tmToast('Approved — Mina now has tutor access.');
+    render();
+  });
+  document.getElementById('reject-btn').addEventListener('click', function () {
+    tmTutor.cancel();
+    tmToast('Application rejected.');
+    render();
+  });
+  document.getElementById('revoke-btn').addEventListener('click', function () {
+    tmTutor.cancel();
+    tmToast('Tutor access revoked.');
+    render();
+  });
+})();
+</script>
+</body>
+</html>

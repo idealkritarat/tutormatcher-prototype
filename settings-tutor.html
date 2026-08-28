@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutor Settings &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth data-requires-tutor>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/settings/tutor</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <p class="eyebrow">Settings</p>
+    <h1>Tutor profile</h1>
+    <p class="desc">This is your public tutor listing. Your teaching availability is set on the
+      <a href="dashboard-tutor.html">tutor dashboard</a>, not here.</p>
+  </div>
+
+  <nav class="subnav">
+    <a href="settings-account.html">Account</a>
+    <a href="settings-notifications.html">Notifications</a>
+    <a href="settings-tutor.html" class="active">Tutor</a>
+    <a href="settings-wallet.html">Wallet</a>
+  </nav>
+
+  <form data-toast="Tutor profile saved.">
+    <div class="card">
+      <div class="card-head"><h2>Listing</h2><label class="check" style="align-items:center"><span class="switch"><input type="checkbox" checked><span class="track"></span></span> Published</label></div>
+      <div class="cluster" style="gap:16px;margin-bottom:16px"><span class="avatar xl">MK</span><button class="btn ghost sm" type="button" data-toast-btn="File picker is disabled in the prototype.">Upload photo</button></div>
+      <div class="field"><label for="t-name">Display name</label><input type="text" id="t-name" value="Mina Kittikul"></div>
+      <div class="field"><label for="t-head">Headline</label><input type="text" id="t-head" value="IELTS & Business English coach · 8 years experience"></div>
+      <div class="field"><label for="t-bio">Bio</label><textarea id="t-bio">I help students reach Band 7+ in IELTS with weekly speaking practice and detailed feedback. I've prepared over 300 students for IELTS, TOEFL and job interviews.</textarea></div>
+      <div class="field"><label for="t-video">Intro video URL</label><input type="url" id="t-video" placeholder="https://youtu.be/…" value="https://youtu.be/intro-anong"></div>
+    </div>
+
+    <div class="card">
+      <h2>Rate &amp; subjects</h2>
+      <div class="row">
+        <div class="field"><label for="t-rate">Hourly rate (฿)</label><input type="number" id="t-rate" value="480" min="100" step="10"></div>
+        <div class="field"><label for="t-trial">Trial rate (฿ / 30 min)</label><input type="number" id="t-trial" value="260" min="0" step="10"></div>
+      </div>
+      <div class="field"><label>Subjects &amp; levels</label>
+        <div class="grid cols-3" style="gap:10px">
+          <label class="check"><input type="checkbox" checked> IELTS Academic</label>
+          <label class="check"><input type="checkbox" checked> IELTS General</label>
+          <label class="check"><input type="checkbox" checked> Business English</label>
+          <label class="check"><input type="checkbox" checked> Interview prep</label>
+          <label class="check"><input type="checkbox"> TOEFL</label>
+          <label class="check"><input type="checkbox"> Kids (7–12)</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Verification</h2>
+      <div class="between">
+        <div><div class="fr-label">ID &amp; teaching certification</div><div class="fr-sub">Verified 4 Mar 2025</div></div>
+        <span class="badge verified">Verified</span>
+      </div>
+      <div class="hr"></div>
+      <button class="btn ghost sm" type="button" data-toast-btn="Upload is disabled in the prototype.">Replace documents</button>
+    </div>
+
+    <div class="card between" style="position:sticky;bottom:16px">
+      <span class="small muted">Changes apply to your public profile immediately.</span>
+      <button class="btn" type="submit">Save changes</button>
+    </div>
+  </form>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anong P. &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/tutors/:id</b><span class="tag">public</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html" class="active">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page wide">
+  <a class="small muted" href="search.html" style="text-decoration:none">&larr; Back to search</a>
+
+  <div class="split" style="margin-top:14px">
+    <div>
+      <div class="card">
+        <div class="cluster" style="gap:18px;align-items:flex-start">
+          <span class="avatar xl">AN</span>
+          <div class="grow">
+            <div class="cluster" style="gap:10px">
+              <h1 style="margin:0">Anong P.</h1>
+              <span class="badge verified">Verified</span>
+            </div>
+            <p class="desc" style="margin:6px 0 10px">IELTS &amp; Business English coach · 8 years experience</p>
+            <div class="cluster small muted">
+              <span class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span> <b>4.9</b> · 128 reviews</span>
+              <span>·</span><span>📍 Bangkok / Online</span>
+              <span>·</span><span>🗣️ English, Thai</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>About me</h2>
+        <p class="small" style="line-height:1.65">
+          I help students reach Band 7+ in IELTS and speak with confidence in professional settings.
+          My lessons are structured around your target score and weekly speaking practice with detailed
+          feedback. I've prepared over 300 students for IELTS, TOEFL and job interviews.
+        </p>
+        <div class="hr"></div>
+        <h3>Subjects &amp; levels</h3>
+        <div class="cluster" style="margin-bottom:16px">
+          <span class="tag">IELTS Academic</span><span class="tag">IELTS General</span>
+          <span class="tag">Business English</span><span class="tag">Interview prep</span>
+          <span class="tag">Pronunciation</span>
+        </div>
+        <h3>Experience</h3>
+        <ul class="small muted" style="line-height:1.7;margin:0;padding-left:18px">
+          <li>Senior English Instructor — British Council Bangkok (2018–2023)</li>
+          <li>CELTA certified · MA Applied Linguistics, Chulalongkorn University</li>
+          <li>IELTS examiner training (Cambridge, 2020)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Reviews</h2>
+          <a class="btn ghost sm" href="reviews.html">See all 128</a>
+        </div>
+        <div class="cluster" style="gap:20px;margin-bottom:6px">
+          <span style="font-family:'Fraunces',serif;font-size:34px;color:var(--teal-deep);font-weight:600">4.9</span>
+          <div class="small muted"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span><br>Based on 128 verified lessons</div>
+        </div>
+        <div class="note" style="margin:12px 0 4px">
+          You've had lessons with Anong &mdash;
+          <a href="booking-detail.html?s=done">leave a review</a> from your completed booking.
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">RT</span><span class="rv-name">Rin T.</span>
+            <span class="stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="rv-date">2 weeks ago</span>
+          </div>
+          <p class="rv-body">Went from 6.0 to 7.5 in speaking in six weeks. Anong's feedback is specific and the mock tests felt exactly like the real thing.</p>
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">JW</span><span class="rv-name">Jared W.</span>
+            <span class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></span>
+            <span class="rv-date">1 month ago</span>
+          </div>
+          <p class="rv-body">Really well organised lessons with homework that actually helps.</p>
+          <div class="rv-reply">
+            <div class="who">Anong replied</div>
+            <p class="small" style="margin:0">Thanks Jared — great work on the STAR-method answers. See you next term!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card sticky">
+        <div class="videobox" style="margin-bottom:16px"><div class="play"></div></div>
+        <div class="between" style="align-items:baseline">
+          <span style="font-family:'Fraunces',serif;font-size:26px;color:var(--teal-deep);font-weight:600">฿480</span>
+          <span class="small muted">/ hour</span>
+        </div>
+        <p class="tiny muted" style="margin:4px 0 16px">Book one or more back-to-back hours in a single lesson.</p>
+        <a class="btn block lg" href="booking-detail.html?s=draft&amp;tutor=Anong%20P.">Book a lesson</a>
+        <a class="btn ghost block" href="messages.html" style="margin-top:10px">Message Anong</a>
+        <div class="hr"></div>
+        <div class="stack small muted">
+          <div class="between"><span>Responds in</span><b style="color:var(--ink)">~2 hours</b></div>
+          <div class="between"><span>Lessons taught</span><b style="color:var(--ink)">1,240+</b></div>
+          <div class="between"><span>Repeat students</span><b style="color:var(--ink)">86%</b></div>
+        </div>
+        <div class="note" style="margin-top:16px">Free cancellation up to 12 hours before a lesson.</div>
+      </div>
+    </aside>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+</body>
+</html>

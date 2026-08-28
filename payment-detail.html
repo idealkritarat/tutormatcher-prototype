@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/payments/:id</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html" class="active">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page narrow">
+  <a class="small muted" href="bookings.html" style="text-decoration:none">&larr; Back to bookings</a>
+
+  <div class="page-head" style="margin-top:10px">
+    <p class="eyebrow" id="pm-id">Payment #PM-7731</p>
+    <h1>Pay for your lesson</h1>
+    <p class="desc">Lesson payments come straight out of your TutorMatcher wallet — no card, no QR.</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="card" id="pay-form">
+    <h2>Summary</h2>
+    <div class="summary">
+      <div class="line"><span>For</span><b id="pm-for">IELTS Speaking with Anong P.</b></div>
+      <div class="line"><span>When</span><b id="pm-when">Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line"><span>Wallet balance</span><span>฿<b data-wallet>0</b></span></div>
+      <div class="line total"><span>Amount due</span><span id="pm-amt">฿960</span></div>
+    </div>
+
+    <div id="short" class="note warn" style="margin-top:14px" hidden>
+      Your wallet is short by <b id="short-amt">฿0</b>. Top up first, then come back to pay.
+    </div>
+
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn ghost" id="topup-link" href="topup.html">Top up wallet</a>
+      <button class="btn lg" id="pay-btn" type="button">Pay now</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="card center" id="pay-done" hidden>
+    <div class="check-big">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2 style="margin-bottom:4px">Payment complete</h2>
+    <p class="small muted" id="done-line">Paid ฿960 · new balance ฿0</p>
+    <div class="summary" style="text-align:left;margin:18px 0">
+      <div class="line"><span>Lesson</span><b id="done-for">IELTS Speaking with Anong P.</b></div>
+      <div class="line"><span>When</span><b id="done-when">Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line"><span>Status</span><span class="badge ok">Confirmed</span></div>
+    </div>
+    <a class="btn block lg" href="booking-detail.html?s=upcoming">View booking</a>
+    <a class="btn ghost block" href="messages.html" style="margin-top:10px">Message tutor</a>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  var amt = parseInt(tmParam('amt', '960'), 10) || 960;
+  var forTxt = tmParam('for', 'IELTS Speaking with Anong P.');
+  var whenTxt = tmParam('when', 'Fri 13 Sep · 2:00–4:00 PM');
+  var id = tmParam('id', 'PM-7731');
+
+  document.getElementById('pm-id').textContent = 'Payment #' + id;
+  document.getElementById('pm-for').textContent = forTxt;
+  document.getElementById('pm-when').textContent = whenTxt;
+  document.getElementById('pm-amt').textContent = '฿' + amt.toLocaleString('en-US');
+  document.getElementById('done-for').textContent = forTxt;
+  document.getElementById('done-when').textContent = whenTxt;
+
+  function refresh() {
+    var bal = tmWallet.get();
+    var short = amt - bal;
+    var payBtn = document.getElementById('pay-btn');
+    var shortBox = document.getElementById('short');
+    var topupLink = document.getElementById('topup-link');
+    payBtn.textContent = 'Pay ฿' + amt.toLocaleString('en-US');
+    if (short > 0) {
+      payBtn.disabled = true;
+      shortBox.hidden = false;
+      document.getElementById('short-amt').textContent = '฿' + short.toLocaleString('en-US');
+      topupLink.textContent = 'Top up ฿' + short.toLocaleString('en-US');
+      topupLink.href = 'topup.html?need=' + short;
+    } else {
+      payBtn.disabled = false;
+      shortBox.hidden = true;
+      topupLink.textContent = 'Top up wallet';
+      topupLink.href = 'topup.html';
+    }
+  }
+  refresh();
+
+  document.getElementById('pay-btn').addEventListener('click', function () {
+    if (tmWallet.get() < amt) { tmToast('Not enough balance — top up first.'); return; }
+    tmWallet.sub(amt);
+    document.getElementById('done-line').textContent =
+      'Paid ฿' + amt.toLocaleString('en-US') + ' · new balance ฿' + tmWallet.get().toLocaleString('en-US');
+    document.getElementById('pay-form').hidden = true;
+    document.getElementById('pay-done').hidden = false;
+    tmToast('Payment complete — lesson confirmed!');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top up wallet &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/topup</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page narrow">
+  <div class="page-head">
+    <p class="eyebrow">Wallet</p>
+    <h1>Top up your wallet</h1>
+    <p class="desc">This is the one place real money comes in. Scan the PromptPay QR to add funds, then spend the balance on lessons.</p>
+  </div>
+
+  <div class="card">
+    <div class="summary" style="margin-bottom:18px">
+      <div class="line"><span>Current balance</span><b>฿<span data-wallet>0</span></b></div>
+    </div>
+
+    <!-- STEP 1: amount -->
+    <div id="tu-amount">
+      <h3>Choose an amount</h3>
+      <div class="cluster" id="presets" data-pick style="margin:10px 0 14px">
+        <button class="btn ghost sm" type="button" data-value="300">฿300</button>
+        <button class="btn ghost sm" type="button" data-value="500">฿500</button>
+        <button class="btn ghost sm" type="button" data-value="1000">฿1,000</button>
+        <button class="btn ghost sm" type="button" data-value="2000">฿2,000</button>
+      </div>
+      <div class="field">
+        <label for="tu-input">Or enter an amount (฿)</label>
+        <input type="number" id="tu-input" min="50" step="50" value="500">
+      </div>
+      <button class="btn block lg" type="button" id="tu-next">Show PromptPay QR</button>
+    </div>
+
+    <!-- STEP 2: QR -->
+    <div id="tu-qr" hidden class="center">
+      <div class="qr" id="qr"></div>
+      <p class="small" style="margin:14px 0 2px"><b id="qr-amt">Add ฿500</b></p>
+      <p class="tiny muted">Open any Thai banking app &rarr; Scan &rarr; PromptPay</p>
+      <p class="tiny muted">Merchant: TutorMatcher Wallet · Ref TU-4471</p>
+      <button class="btn block lg" type="button" id="tu-paid" style="margin-top:16px">I've completed the transfer</button>
+      <button class="btn ghost block" type="button" id="tu-back" style="margin-top:10px">Change amount</button>
+    </div>
+
+    <!-- STEP 3: done -->
+    <div id="tu-done" hidden class="center">
+      <div class="check-big">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 style="margin-bottom:4px">Wallet topped up</h2>
+      <p class="small muted" id="done-line">Added ฿500 · new balance ฿0</p>
+      <a class="btn block lg" id="done-cta" href="bookings.html" style="margin-top:12px">Back to bookings</a>
+      <button class="btn ghost block" type="button" id="tu-more" style="margin-top:10px">Top up again</button>
+    </div>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  function drawQR(el) {
+    if (!el) return;
+    var N = 25, cell = 8, s = N * cell, seed = 424242421;
+    function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+    var r = '<svg xmlns="http://www.w3.org/2000/svg" width="' + s + '" height="' + s + '" viewBox="0 0 ' + s + ' ' + s + '">';
+    r += '<rect width="' + s + '" height="' + s + '" fill="#fff"/>';
+    function finder(fx, fy) {
+      r += '<rect x="' + (fx * cell) + '" y="' + (fy * cell) + '" width="' + (7 * cell) + '" height="' + (7 * cell) + '" fill="#0B2B22"/>';
+      r += '<rect x="' + ((fx + 1) * cell) + '" y="' + ((fy + 1) * cell) + '" width="' + (5 * cell) + '" height="' + (5 * cell) + '" fill="#fff"/>';
+      r += '<rect x="' + ((fx + 2) * cell) + '" y="' + ((fy + 2) * cell) + '" width="' + (3 * cell) + '" height="' + (3 * cell) + '" fill="#0B2B22"/>';
+    }
+    finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
+    for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) {
+      if ((x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9)) continue;
+      if (rnd() > 0.55) r += '<rect x="' + (x * cell) + '" y="' + (y * cell) + '" width="' + cell + '" height="' + cell + '" fill="#0B2B22"/>';
+    }
+    r += '</svg>';
+    el.innerHTML = r;
+  }
+
+  var need = parseInt(tmParam('need', ''), 10);
+  var input = document.getElementById('tu-input');
+  if (need && need > 0) input.value = Math.ceil(need / 50) * 50;
+
+  document.getElementById('presets').addEventListener('pick', function (e) {
+    input.value = e.detail.value;
+  });
+
+  var amount = 0;
+  function money(n) { return '฿' + n.toLocaleString('en-US'); }
+
+  document.getElementById('tu-next').addEventListener('click', function () {
+    amount = parseInt(input.value, 10) || 0;
+    if (amount < 50) { tmToast('Minimum top-up is ฿50.'); return; }
+    drawQR(document.getElementById('qr'));
+    document.getElementById('qr-amt').textContent = 'Add ' + money(amount);
+    document.getElementById('tu-amount').hidden = true;
+    document.getElementById('tu-qr').hidden = false;
+  });
+
+  document.getElementById('tu-back').addEventListener('click', function () {
+    document.getElementById('tu-qr').hidden = true;
+    document.getElementById('tu-amount').hidden = false;
+  });
+
+  document.getElementById('tu-paid').addEventListener('click', function () {
+    tmWallet.add(amount);
+    document.getElementById('done-line').textContent =
+      'Added ' + money(amount) + ' · new balance ' + money(tmWallet.get());
+    document.getElementById('tu-qr').hidden = true;
+    document.getElementById('tu-done').hidden = false;
+    if (need && need > 0) {
+      var cta = document.getElementById('done-cta');
+      cta.textContent = 'Back to payment';
+      cta.href = 'payment-detail.html';
+    }
+    tmToast('Wallet topped up by ' + money(amount) + '.');
+  });
+
+  document.getElementById('tu-more').addEventListener('click', function () {
+    document.getElementById('tu-done').hidden = true;
+    document.getElementById('tu-amount').hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

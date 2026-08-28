@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in or sign up &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/(auth)/login</b><span class="tag">public</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page narrow">
+  <div class="card pad-lg" id="login-card">
+    <div class="tabs">
+      <button class="active" data-tab="tab-login">Log in</button>
+      <button data-tab="tab-signup">Sign up</button>
+    </div>
+
+    <!-- LOG IN -->
+    <form class="tabpanel" id="tab-login">
+      <div class="field">
+        <label for="li-email">Email</label>
+        <input type="email" id="li-email" placeholder="you@example.com" value="mina@example.com" required>
+      </div>
+      <div class="field">
+        <label for="li-pass">Password</label>
+        <input type="password" id="li-pass" placeholder="••••••••" value="password" required>
+        <div class="hint"><a href="#" onclick="tmToast('Password reset link sent (pretend).');return false;">Forgot password?</a></div>
+      </div>
+      <button class="btn block lg" type="submit">Log in</button>
+      <p class="tiny muted center" style="margin-top:14px">or</p>
+      <button class="btn ghost block" type="button" data-toast-btn="Google sign-in isn't wired up in the prototype.">Continue with Google</button>
+    </form>
+
+    <!-- SIGN UP -->
+    <form class="tabpanel" id="tab-signup" hidden>
+      <div class="field">
+        <label for="su-name">Full name</label>
+        <input type="text" id="su-name" placeholder="Mina Kittikul" required>
+      </div>
+      <div class="field">
+        <label for="su-email">Email</label>
+        <input type="email" id="su-email" placeholder="you@example.com" required>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="su-pass">Password</label>
+          <input type="password" id="su-pass" placeholder="At least 8 characters" required>
+        </div>
+        <div class="field">
+          <label for="su-pass2">Confirm</label>
+          <input type="password" id="su-pass2" placeholder="Repeat password" required>
+        </div>
+      </div>
+      <label class="check" style="margin:4px 0 16px">
+        <input type="checkbox" required>
+        <span>I agree to the Terms and Privacy Policy.</span>
+      </label>
+      <button class="btn block lg" type="submit">Create account</button>
+    </form>
+
+    <p class="tiny muted center" style="margin-top:18px">
+      Prototype: no password is checked. Logging in just flips a flag in your browser so the
+      app pages open. Everyone starts as a student — <a href="enroll-tutor.html">apply to become a tutor</a> to unlock the tutor side.
+    </p>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+  (function () {
+    var next = tmParam('next', 'dashboard-student.html') || 'dashboard-student.html';
+    document.querySelectorAll('#login-card form').forEach(function (f) {
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        tmAuth.login();
+        tmToast(f.id === 'tab-signup' ? 'Account created — welcome!' : 'Welcome back!');
+        setTimeout(function () { location.href = next; }, 650);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

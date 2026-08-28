@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find a tutor &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/search</b><span class="tag">public</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html" class="active">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page wide">
+  <div class="page-head">
+    <p class="eyebrow">Discovery</p>
+    <h1>Find a tutor</h1>
+    <p class="desc">Public page, no login required. Filters run live on the results below.</p>
+  </div>
+
+  <div class="split left">
+    <!-- FILTERS -->
+    <aside class="card sticky" id="filters">
+      <h3 style="margin-bottom:14px">Filters</h3>
+      <div class="field">
+        <label for="f-q">Keyword</label>
+        <input type="search" id="f-q" placeholder="Name or subject">
+      </div>
+      <div class="field">
+        <label for="f-subject">Subject</label>
+        <select id="f-subject">
+          <option value="">All subjects</option>
+          <option value="maths">Maths</option>
+          <option value="english">English</option>
+          <option value="science">Science</option>
+          <option value="coding">Coding</option>
+          <option value="music">Music</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-price">Max price: <span id="f-price-val">฿1000</span> / hr</label>
+        <input type="range" id="f-price" min="300" max="1000" step="10" value="1000" style="width:100%">
+      </div>
+      <div class="field">
+        <label for="f-rating">Minimum rating</label>
+        <select id="f-rating">
+          <option value="0">Any rating</option>
+          <option value="4">4.0 and up</option>
+          <option value="4.5">4.5 and up</option>
+          <option value="4.8">4.8 and up</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Format</label>
+        <div class="segmented fill" id="f-format">
+          <button class="active" data-value="">Any</button>
+          <button data-value="online">Online</button>
+          <button data-value="inperson">In&#8209;person</button>
+        </div>
+      </div>
+      <button class="btn ghost block sm" type="button" id="f-clear">Clear filters</button>
+    </aside>
+
+    <!-- RESULTS -->
+    <section>
+      <div class="between" style="margin-bottom:16px">
+        <p class="small muted"><b id="count">9</b> tutors available</p>
+        <label class="small muted" style="display:flex;align-items:center;gap:8px">Sort
+          <select id="sort" style="width:auto">
+            <option value="rec">Recommended</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="rating">Top rated</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid tutors" id="results">
+        <a class="tutor-card" href="tutor-detail.html" data-name="Anong P." data-subjects="english" data-price="520" data-rating="4.9" data-format="online">
+          <div class="tc-top"><span class="avatar lg">AN</span><div><div class="tc-name">Anong P.</div><div class="tc-head">IELTS &amp; Business English</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span> <b>4.9</b> <span class="muted">(128)</span></div>
+          <div class="tc-tags"><span class="tag">IELTS</span><span class="tag">Speaking</span><span class="tag outline">Online</span></div>
+          <div class="tc-foot"><span class="price">฿520<span> / hr</span></span><span class="badge verified">Verified</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Daniel K." data-subjects="maths" data-price="680" data-rating="4.7" data-format="online">
+          <div class="tc-top"><span class="avatar lg">DK</span><div><div class="tc-name">Daniel K.</div><div class="tc-head">A-Level &amp; IB Mathematics</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></span> <b>4.7</b> <span class="muted">(64)</span></div>
+          <div class="tc-tags"><span class="tag">Calculus</span><span class="tag">Statistics</span><span class="tag outline">Online</span></div>
+          <div class="tc-foot"><span class="price">฿680<span> / hr</span></span><span class="badge verified">Verified</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Sirinya R." data-subjects="coding" data-price="750" data-rating="5.0" data-format="online">
+          <div class="tc-top"><span class="avatar lg">SR</span><div><div class="tc-name">Sirinya R.</div><div class="tc-head">Python &amp; Data Science</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span> <b>5.0</b> <span class="muted">(41)</span></div>
+          <div class="tc-tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag outline">Online</span></div>
+          <div class="tc-foot"><span class="price">฿750<span> / hr</span></span><span class="badge verified">Verified</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Kanya S." data-subjects="science" data-price="480" data-rating="4.6" data-format="inperson">
+          <div class="tc-top"><span class="avatar lg">KS</span><div><div class="tc-name">Kanya S.</div><div class="tc-head">GCSE Chemistry &amp; Biology</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></span> <b>4.6</b> <span class="muted">(52)</span></div>
+          <div class="tc-tags"><span class="tag">Chemistry</span><span class="tag">Biology</span><span class="tag outline">In-person</span></div>
+          <div class="tc-foot"><span class="price">฿480<span> / hr</span></span><span class="badge muted">Bangkok</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Marcus T." data-subjects="maths science" data-price="900" data-rating="4.8" data-format="online">
+          <div class="tc-top"><span class="avatar lg">MT</span><div><div class="tc-name">Marcus T.</div><div class="tc-head">University Maths &amp; Physics</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span> <b>4.8</b> <span class="muted">(97)</span></div>
+          <div class="tc-tags"><span class="tag">Linear Algebra</span><span class="tag">Mechanics</span><span class="tag outline">Online</span></div>
+          <div class="tc-foot"><span class="price">฿900<span> / hr</span></span><span class="badge verified">Verified</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Ploy W." data-subjects="music" data-price="550" data-rating="4.9" data-format="inperson">
+          <div class="tc-top"><span class="avatar lg">PW</span><div><div class="tc-name">Ploy W.</div><div class="tc-head">Classical &amp; Pop Piano</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span> <b>4.9</b> <span class="muted">(73)</span></div>
+          <div class="tc-tags"><span class="tag">Piano</span><span class="tag">Theory</span><span class="tag outline">In-person</span></div>
+          <div class="tc-foot"><span class="price">฿550<span> / hr</span></span><span class="badge muted">Chiang Mai</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Nattaya J." data-subjects="english" data-price="400" data-rating="4.4" data-format="online">
+          <div class="tc-top"><span class="avatar lg">NJ</span><div><div class="tc-name">Nattaya J.</div><div class="tc-head">Conversational English</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></span> <b>4.4</b> <span class="muted">(38)</span></div>
+          <div class="tc-tags"><span class="tag">Speaking</span><span class="tag">Kids</span><span class="tag outline">Online</span></div>
+          <div class="tc-foot"><span class="price">฿400<span> / hr</span></span><span class="badge muted">New</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Ben L." data-subjects="coding" data-price="820" data-rating="4.8" data-format="online">
+          <div class="tc-top"><span class="avatar lg">BL</span><div><div class="tc-name">Ben L.</div><div class="tc-head">Web Development &amp; JavaScript</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span> <b>4.8</b> <span class="muted">(60)</span></div>
+          <div class="tc-tags"><span class="tag">React</span><span class="tag">Node</span><span class="tag outline">Online</span></div>
+          <div class="tc-foot"><span class="price">฿820<span> / hr</span></span><span class="badge verified">Verified</span></div>
+        </a>
+        <a class="tutor-card" href="tutor-detail.html" data-name="Preecha M." data-subjects="maths" data-price="350" data-rating="4.5" data-format="inperson">
+          <div class="tc-top"><span class="avatar lg">PM</span><div><div class="tc-name">Preecha M.</div><div class="tc-head">Primary &amp; Lower-Secondary Maths</div></div></div>
+          <div class="rating-line"><span class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></span> <b>4.5</b> <span class="muted">(44)</span></div>
+          <div class="tc-tags"><span class="tag">Primary</span><span class="tag">Exam prep</span><span class="tag outline">In-person</span></div>
+          <div class="tc-foot"><span class="price">฿350<span> / hr</span></span><span class="badge muted">Nonthaburi</span></div>
+        </a>
+      </div>
+
+      <div class="empty" id="no-results" hidden>
+        <div class="ico">🔍</div>
+        <p>No tutors match those filters.</p>
+        <button class="btn ghost sm" type="button" onclick="document.getElementById('f-clear').click()">Reset filters</button>
+      </div>
+    </section>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  var results = document.getElementById('results');
+  var cards = Array.prototype.slice.call(results.querySelectorAll('.tutor-card'));
+  var q = document.getElementById('f-q');
+  var subject = document.getElementById('f-subject');
+  var price = document.getElementById('f-price');
+  var priceVal = document.getElementById('f-price-val');
+  var rating = document.getElementById('f-rating');
+  var sort = document.getElementById('sort');
+  var count = document.getElementById('count');
+  var noResults = document.getElementById('no-results');
+  var format = '';
+
+  function apply() {
+    var text = q.value.trim().toLowerCase();
+    var subj = subject.value;
+    var maxP = +price.value;
+    var minR = +rating.value;
+    priceVal.textContent = '฿' + maxP;
+
+    var shown = 0;
+    cards.forEach(function (c) {
+      var ok = true;
+      if (text) {
+        var hay = (c.dataset.name + ' ' + c.dataset.subjects + ' ' + c.textContent).toLowerCase();
+        if (hay.indexOf(text) === -1) ok = false;
+      }
+      if (subj && c.dataset.subjects.split(' ').indexOf(subj) === -1) ok = false;
+      if (+c.dataset.price > maxP) ok = false;
+      if (+c.dataset.rating < minR) ok = false;
+      if (format && c.dataset.format !== format) ok = false;
+      c.hidden = !ok;
+      if (ok) shown++;
+    });
+
+    // sort visible cards
+    var mode = sort.value;
+    var visible = cards.filter(function (c) { return !c.hidden; });
+    visible.sort(function (a, b) {
+      if (mode === 'price-asc') return a.dataset.price - b.dataset.price;
+      if (mode === 'price-desc') return b.dataset.price - a.dataset.price;
+      if (mode === 'rating') return b.dataset.rating - a.dataset.rating;
+      return 0;
+    });
+    visible.forEach(function (c) { results.appendChild(c); });
+
+    count.textContent = shown;
+    noResults.hidden = shown !== 0;
+  }
+
+  [q, subject, price, rating, sort].forEach(function (el) {
+    el.addEventListener('input', apply);
+    el.addEventListener('change', apply);
+  });
+  document.getElementById('f-format').addEventListener('segchange', function (e) {
+    format = e.detail.value;
+    apply();
+  });
+  document.getElementById('f-clear').addEventListener('click', function () {
+    q.value = ''; subject.value = ''; price.value = 1000; rating.value = '0'; sort.value = 'rec';
+    format = '';
+    var seg = document.getElementById('f-format');
+    seg.querySelectorAll('button').forEach(function (b, i) { b.classList.toggle('active', i === 0); });
+    apply();
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>

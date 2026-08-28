@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/bookings/:id</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html" class="active">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <a class="small muted" href="bookings.html" style="text-decoration:none">&larr; All bookings</a>
+
+  <div class="page-head" style="margin-top:10px">
+    <p class="eyebrow">Booking #BK-2481</p>
+    <h1 id="page-title">New booking</h1>
+    <p class="desc" id="page-sub">Pick a time, add a note, and send the request to your tutor.</p>
+  </div>
+
+  <div class="devbar">
+    <span>Prototype — jump to state:</span>
+    <select id="devstate">
+      <option value="draft">Draft (pick a time)</option>
+      <option value="invites">Pending friend invites</option>
+      <option value="pending">Pending tutor confirmation</option>
+      <option value="accepted">Accepted — awaiting payment</option>
+      <option value="upcoming">Confirmed / upcoming</option>
+      <option value="done">Completed</option>
+      <option value="declined">Declined by tutor</option>
+    </select>
+  </div>
+
+  <div class="tracker" id="tracker">
+    <div class="st" data-step="draft">Draft</div>
+    <div class="st" data-step="invites">Friends</div>
+    <div class="st" data-step="pending">Tutor</div>
+    <div class="st" data-step="accepted">Payment</div>
+    <div class="st" data-step="upcoming">Confirmed</div>
+  </div>
+
+  <div class="rowitem card" style="border-radius:14px;margin-bottom:18px">
+    <span class="avatar">AN</span>
+    <div class="grow"><div class="title" id="tutor-name">Anong P.</div><div class="sub">IELTS &amp; Business English · ฿480 / hour</div></div>
+    <a class="btn ghost sm" href="tutor-detail.html">Profile</a>
+  </div>
+
+  <!-- ============ DRAFT ============ -->
+  <section class="card" data-state="draft">
+    <h2>Pick a date</h2>
+    <p class="small muted" style="margin-bottom:12px">Days with a dot are ones Anong has free. Use ‹ › to change month.</p>
+    <div class="cal-wrap">
+      <div class="cal-head">
+        <b id="cal-title">Month</b>
+        <div class="cal-nav">
+          <button type="button" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+          <button type="button" id="cal-next" aria-label="Next month">&rsaquo;</button>
+        </div>
+      </div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-legend"><span class="dot"></span> Anong has free slots</div>
+    </div>
+
+    <div id="time-wrap" hidden>
+      <div class="hr"></div>
+      <h2>Pick your hours</h2>
+      <p class="small muted" style="margin-bottom:12px">Tap back-to-back slots for a longer lesson. One booking = one continuous block — no weekly plans.</p>
+      <div class="timeslots" id="timeslots"></div>
+    </div>
+
+    <div class="summary" id="sel-summary" style="margin-top:16px" hidden>
+      <div class="line"><span>Selected</span><b id="sel-when">—</b></div>
+      <div class="line total"><span id="sel-hours">0 hours</span><span id="sel-price">฿0</span></div>
+    </div>
+
+    <div class="hr"></div>
+    <h2>What do you want to learn?</h2>
+    <div class="field">
+      <textarea id="note" placeholder="e.g. Focus on IELTS Part 2 long turn, and review my last essay."></textarea>
+    </div>
+
+    <h2>Add friends <span class="small muted" style="font-weight:400">(optional)</span></h2>
+    <p class="small muted" style="margin-bottom:10px">Everyone you add must accept before the request goes to Anong. Price is per lesson, not per person.</p>
+    <div class="cluster" style="margin-bottom:10px">
+      <input type="text" id="friend-input" placeholder="Friend's name or email" style="max-width:280px">
+      <button class="btn secondary sm" type="button" id="friend-add">Add</button>
+    </div>
+    <div class="cluster" id="friend-list"></div>
+
+    <div class="hr"></div>
+    <div class="cluster" style="justify-content:flex-end">
+      <button class="btn ghost" type="button" data-toast-btn="Draft saved. Find it under Bookings → Pending.">Save draft</button>
+      <button class="btn" type="button" id="send-request" disabled>Send request</button>
+    </div>
+  </section>
+
+  <!-- ============ INVITES ============ -->
+  <section class="card" data-state="invites" hidden>
+    <span class="badge warn">Waiting on friends</span>
+    <h2 style="margin-top:12px">Waiting for your friends to accept</h2>
+    <p class="small muted">Once everyone accepts, the request goes to Anong automatically.</p>
+    <div class="hr"></div>
+    <div class="rowitem"><span class="avatar sm">TS</span><div class="grow"><div class="title">Tom S.</div><div class="sub">Invited · 2h ago</div></div><span class="badge muted">Pending</span></div>
+    <div class="rowitem"><span class="avatar sm">NW</span><div class="grow"><div class="title">Nina W.</div><div class="sub">Invited · 2h ago</div></div><span class="badge ok">Accepted</span></div>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Proposed time</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line total"><span>2 hours</span><span>฿960</span></div>
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn danger" href="bookings.html">Cancel booking</a>
+      <button class="btn" type="button" data-jump="pending">Simulate: everyone accepts &rarr;</button>
+    </div>
+  </section>
+
+  <!-- ============ PENDING TUTOR ============ -->
+  <section class="card" data-state="pending" hidden>
+    <span class="badge warn">Pending confirmation</span>
+    <h2 style="margin-top:12px">Request sent to Anong P.</h2>
+    <p class="small muted">She usually responds within 2 hours. You'll be able to pay once she accepts.</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Requested time</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line"><span>Note</span><span>IELTS Part 2 practice</span></div>
+      <div class="line total"><span>2 hours</span><span>฿960</span></div>
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn danger" href="bookings.html">Cancel request</a>
+      <button class="btn ghost" type="button" data-jump="declined">Simulate: declined</button>
+      <button class="btn" type="button" data-jump="accepted">Simulate: Anong accepts &rarr;</button>
+    </div>
+  </section>
+
+  <!-- ============ ACCEPTED / PAY ============ -->
+  <section class="card" data-state="accepted" hidden>
+    <span class="badge ok">Accepted</span>
+    <h2 style="margin-top:12px">Anong accepted your booking 🎉</h2>
+    <p class="small muted">Complete payment to lock in the lesson. Paid from your wallet — no card, no QR.</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Lesson</span><b>IELTS Speaking with Anong P.</b></div>
+      <div class="line"><span>When</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line total"><span>2 hours</span><span>฿960</span></div>
+    </div>
+    <div class="note" style="margin-top:14px">Your wallet balance is ฿<b data-wallet>0</b>. <a href="topup.html">Top up</a> if it's not enough.</div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn lg" href="payment-detail.html?id=PM-7731&amp;amt=960&amp;for=IELTS%20Speaking%20with%20Anong%20P.&amp;when=Fri%2013%20Sep%20%C2%B7%202%3A00%E2%80%934%3A00%20PM">Pay ฿960</a>
+    </div>
+  </section>
+
+  <!-- ============ UPCOMING ============ -->
+  <section class="card" data-state="upcoming" hidden>
+    <span class="badge ok">Confirmed</span>
+    <h2 style="margin-top:12px">You're booked in</h2>
+    <p class="small muted">Paid ฿960 from wallet · Ref PM-7731</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Lesson</span><b>IELTS Speaking with Anong P.</b></div>
+      <div class="line"><span>When</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line"><span>Where</span><span>Online — link appears 10 min before</span></div>
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn danger" href="bookings.html" onclick="tmToast('Cancelled — ฿960 refunded to your wallet.')">Cancel</a>
+      <a class="btn ghost" href="messages.html">Message Anong</a>
+      <button class="btn" type="button" data-toast-btn="Lesson room opens 10 minutes before start.">Join lesson</button>
+    </div>
+  </section>
+
+  <!-- ============ DONE ============ -->
+  <section class="card" data-state="done" hidden>
+    <span class="badge muted">Completed</span>
+    <h2 style="margin-top:12px">Lesson completed</h2>
+    <p class="small muted">IELTS Speaking with Anong P. · Fri 13 Sep · 2 hours</p>
+    <div class="hr"></div>
+    <form id="review-form">
+      <h3>Leave a review</h3>
+      <p class="small muted" style="margin-bottom:12px">Reviews can only be left from a completed lesson like this one. It'll show on Anong's profile.</p>
+      <div class="field">
+        <label>Your rating</label>
+        <div class="rate" id="myrate">
+          <button aria-label="1 star"><i></i></button>
+          <button aria-label="2 stars"><i></i></button>
+          <button aria-label="3 stars"><i></i></button>
+          <button aria-label="4 stars"><i></i></button>
+          <button aria-label="5 stars"><i></i></button>
+        </div>
+      </div>
+      <div class="field"><label for="rv-title">Headline</label><input type="text" id="rv-title" placeholder="Sum it up in a few words"></div>
+      <div class="field"><label for="rv-text">Your review</label><textarea id="rv-text" placeholder="What went well? What could be better?"></textarea></div>
+      <div class="cluster" style="justify-content:flex-end">
+        <a class="btn ghost" href="tutor-detail.html">Book again</a>
+        <button class="btn" type="submit">Post review</button>
+      </div>
+    </form>
+    <div id="review-posted" hidden class="note">✓ Review posted — thanks! It now appears on Anong's profile.</div>
+  </section>
+
+  <!-- ============ DECLINED ============ -->
+  <section class="card" data-state="declined" hidden>
+    <span class="badge muted">Declined</span>
+    <h2 style="margin-top:12px">Anong couldn't take this booking</h2>
+    <p class="small muted">Nothing was charged. Try another time, or find a different tutor.</p>
+    <div class="hr"></div>
+    <div class="cluster" style="justify-content:flex-end">
+      <a class="btn ghost" href="booking-detail.html?s=draft">Pick another time</a>
+      <a class="btn" href="search.html">Find another tutor</a>
+    </div>
+  </section>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  var STATE = tmParam('s', 'draft');
+  var ORDER = ['draft', 'invites', 'pending', 'accepted', 'upcoming', 'done', 'declined'];
+  if (ORDER.indexOf(STATE) === -1) STATE = 'draft';
+
+  var TITLES = {
+    draft:    ['New booking', 'Pick a time, add a note, and send the request to your tutor.'],
+    invites:  ['Waiting on friends', 'Your friends need to accept before this goes to the tutor.'],
+    pending:  ['Pending confirmation', 'The request is with your tutor.'],
+    accepted: ['Payment due', 'Your tutor accepted — pay to confirm.'],
+    upcoming: ['Confirmed lesson', 'All set. See you in class.'],
+    done:     ['Completed lesson', 'This lesson is done.'],
+    declined: ['Booking declined', 'The tutor could not take this one.']
+  };
+  document.getElementById('page-title').textContent = TITLES[STATE][0];
+  document.getElementById('page-sub').textContent = TITLES[STATE][1];
+  document.getElementById('devstate').value = STATE;
+  document.getElementById('devstate').addEventListener('change', function () {
+    location.href = 'booking-detail.html?s=' + this.value;
+  });
+
+  // show the right section
+  document.querySelectorAll('[data-state]').forEach(function (el) {
+    el.hidden = el.getAttribute('data-state') !== STATE;
+  });
+
+  // tracker (5 steps: Draft, Friends, Tutor, Payment, Confirmed)
+  var reached = { draft: 0, invites: 1, pending: 2, accepted: 3, upcoming: 4, done: 5, declined: 2 };
+  var idx = reached[STATE];
+  document.querySelectorAll('#tracker .st').forEach(function (st, i) {
+    st.classList.toggle('done', i < idx);
+    st.classList.toggle('now', i === idx);
+  });
+
+  // simulate buttons
+  document.querySelectorAll('[data-jump]').forEach(function (b) {
+    b.addEventListener('click', function () { location.href = 'booking-detail.html?s=' + b.getAttribute('data-jump'); });
+  });
+
+  var tutor = tmParam('tutor', '');
+  if (tutor) {
+    document.getElementById('tutor-name').textContent = tutor;
+    var ini = tutor.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+    document.querySelector('.rowitem.card .avatar').textContent = ini;
+  }
+
+  /* ---------------- done: review form (the ONLY place to write a review) ---------------- */
+  if (STATE === 'done') {
+    var rform = document.getElementById('review-form');
+    if (rform) rform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var stars = parseInt((document.getElementById('myrate').dataset.value) || '0', 10);
+      if (!stars) { tmToast('Pick a star rating first.'); return; }
+      rform.hidden = true;
+      document.getElementById('review-posted').hidden = false;
+      tmToast('Thanks! Your review has been posted.');
+    });
+    return;
+  }
+
+  if (STATE !== 'draft') return;
+
+  /* ---------------- draft: month calendar + time slots ---------------- */
+  var RATE = 480;
+  var HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+  var AVAIL = { // by getDay(): 0 Sun .. 6 Sat
+    0: [], 1: [9, 10, 11, 14, 15, 16, 17], 2: [8, 9, 10, 13, 14, 15, 16, 18, 19],
+    3: [10, 11, 12, 13, 14, 15, 16], 4: [9, 10, 11, 15, 16, 17, 18],
+    5: [8, 9, 10, 14, 15, 16], 6: [10, 11, 12, 13]
+  };
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var TODAY = new Date(2026, 8, 10); TODAY.setHours(0, 0, 0, 0); // "today" for the prototype
+  var viewY = TODAY.getFullYear(), viewM = TODAY.getMonth();
+  var MINVIEW = viewY * 12 + viewM;
+  var MAXVIEW = MINVIEW + 3; // book up to 3 months out
+  var selDate = null, selHours = [];
+
+  var cal = document.getElementById('cal');
+  var calTitle = document.getElementById('cal-title');
+  var prevBtn = document.getElementById('cal-prev');
+  var nextBtn = document.getElementById('cal-next');
+
+  function sameDay(a, b) {
+    return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+
+  function renderMonth() {
+    cal.innerHTML = '';
+    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(function (d) {
+      var h = document.createElement('div'); h.className = 'dow'; h.textContent = d; cal.appendChild(h);
+    });
+    calTitle.textContent = MONTHS[viewM] + ' ' + viewY;
+    var lead = (new Date(viewY, viewM, 1).getDay() + 6) % 7; // Mon-first
+    var days = new Date(viewY, viewM + 1, 0).getDate();
+    for (var i = 0; i < lead; i++) { var p = document.createElement('div'); p.className = 'pad'; cal.appendChild(p); }
+    for (var dnum = 1; dnum <= days; dnum++) {
+      var date = new Date(viewY, viewM, dnum); date.setHours(0, 0, 0, 0);
+      var free = (AVAIL[date.getDay()] || []).length > 0;
+      var past = date < TODAY;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'day' + (free && !past ? ' free' : '');
+      b.textContent = dnum;
+      b.disabled = past || !free;
+      if (sameDay(date, selDate)) b.classList.add('active');
+      (function (d, btn) { btn.addEventListener('click', function () { pickDay(d, btn); }); })(date, b);
+      cal.appendChild(b);
+    }
+    var cur = viewY * 12 + viewM;
+    prevBtn.disabled = cur <= MINVIEW;
+    nextBtn.disabled = cur >= MAXVIEW;
+  }
+
+  function pickDay(date, btn) {
+    selDate = date; selHours = [];
+    cal.querySelectorAll('button.day').forEach(function (x) { x.classList.toggle('active', x === btn); });
+    renderSlots();
+    document.getElementById('time-wrap').hidden = false;
+    updateSummary();
+  }
+
+  prevBtn.addEventListener('click', function () {
+    if (viewM === 0) { viewM = 11; viewY--; } else { viewM--; }
+    renderMonth();
+  });
+  nextBtn.addEventListener('click', function () {
+    if (viewM === 11) { viewM = 0; viewY++; } else { viewM++; }
+    renderMonth();
+  });
+  renderMonth();
+
+  function renderSlots() {
+    var box = document.getElementById('timeslots');
+    box.innerHTML = '';
+    var freeHours = AVAIL[selDate.getDay()] || [];
+    HOURS.forEach(function (h) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      var ok = freeHours.indexOf(h) !== -1;
+      b.disabled = !ok;
+      b.textContent = pad(h) + ':00';
+      b.classList.toggle('sel', selHours.indexOf(h) !== -1);
+      b.addEventListener('click', function () { toggleHour(h); });
+      box.appendChild(b);
+    });
+  }
+
+  function toggleHour(h) {
+    if (selHours.length === 0) { selHours = [h]; }
+    else {
+      var min = Math.min.apply(null, selHours), max = Math.max.apply(null, selHours);
+      if (h === min - 1 || h === max + 1) selHours.push(h);
+      else if (h === min || h === max) selHours = selHours.filter(function (x) { return x !== h; });
+      else { if (selHours.indexOf(h) === -1) tmToast('Pick hours that are back-to-back.'); selHours = [h]; }
+    }
+    selHours.sort(function (a, b) { return a - b; });
+    renderSlots();
+    updateSummary();
+  }
+
+  function updateSummary() {
+    var box = document.getElementById('sel-summary');
+    var send = document.getElementById('send-request');
+    if (!selDate || !selHours.length) { box.hidden = true; send.disabled = true; return; }
+    var n = selHours.length, start = Math.min.apply(null, selHours), end = Math.max.apply(null, selHours) + 1;
+    document.getElementById('sel-when').textContent =
+      DOW[selDate.getDay()] + ' ' + selDate.getDate() + ' ' + MON[selDate.getMonth()] +
+      ' · ' + pad(start) + ':00–' + pad(end) + ':00';
+    document.getElementById('sel-hours').textContent = n + (n === 1 ? ' hour' : ' hours');
+    document.getElementById('sel-price').textContent = '฿' + (n * RATE).toLocaleString('en-US');
+    box.hidden = false;
+    send.disabled = false;
+  }
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  /* friends */
+  var friends = [];
+  var fInput = document.getElementById('friend-input');
+  var fList = document.getElementById('friend-list');
+  function renderFriends() {
+    fList.innerHTML = '';
+    friends.forEach(function (name, i) {
+      var c = document.createElement('span');
+      c.className = 'chip';
+      c.innerHTML = tmEsc(name) + ' <button type="button" aria-label="remove">&times;</button>';
+      c.querySelector('button').addEventListener('click', function () { friends.splice(i, 1); renderFriends(); });
+      fList.appendChild(c);
+    });
+    document.getElementById('send-request').textContent = friends.length ? 'Send invites' : 'Send request';
+  }
+  document.getElementById('friend-add').addEventListener('click', function () {
+    var v = fInput.value.trim();
+    if (!v) return;
+    friends.push(v); fInput.value = ''; renderFriends();
+  });
+  fInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('friend-add').click(); } });
+
+  document.getElementById('send-request').addEventListener('click', function () {
+    if (!selHours.length) { tmToast('Pick a time first.'); return; }
+    location.href = 'booking-detail.html?s=' + (friends.length ? 'invites' : 'pending');
+  });
+})();
+</script>
+</body>
+</html>

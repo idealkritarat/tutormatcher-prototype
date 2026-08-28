@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notification Settings &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/settings/notifications</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <p class="eyebrow">Settings</p>
+    <h1>Notifications</h1>
+  </div>
+
+  <nav class="subnav">
+    <a href="settings-account.html">Account</a>
+    <a href="settings-notifications.html" class="active">Notifications</a>
+    <a href="settings-tutor.html">Tutor</a>
+    <a href="settings-wallet.html">Wallet</a>
+  </nav>
+
+  <form class="card" data-toast="Notification preferences saved.">
+    <div class="between" style="margin-bottom:6px">
+      <h2 style="margin:0">Email &amp; push</h2>
+      <div class="cluster small muted" style="gap:26px;padding-right:6px"><span>Email</span><span>Push</span></div>
+    </div>
+    <div class="field-row"><div><div class="fr-label">Booking updates</div><div class="fr-sub">Requests, accepts, declines, cancellations</div></div><div class="cluster" style="gap:22px"><span class="switch"><input type="checkbox" checked><span class="track"></span></span><span class="switch"><input type="checkbox" checked><span class="track"></span></span></div></div>
+    <div class="field-row"><div><div class="fr-label">Lesson reminders</div><div class="fr-sub">1 hour and 10 minutes before start</div></div><div class="cluster" style="gap:22px"><span class="switch"><input type="checkbox" checked><span class="track"></span></span><span class="switch"><input type="checkbox" checked><span class="track"></span></span></div></div>
+    <div class="field-row"><div><div class="fr-label">New messages</div><div class="fr-sub">Student or tutor messages you</div></div><div class="cluster" style="gap:22px"><span class="switch"><input type="checkbox"><span class="track"></span></span><span class="switch"><input type="checkbox" checked><span class="track"></span></span></div></div>
+    <div class="field-row"><div><div class="fr-label">Wallet &amp; payments</div><div class="fr-sub">Top-ups, lesson charges, refunds, payouts</div></div><div class="cluster" style="gap:22px"><span class="switch"><input type="checkbox" checked><span class="track"></span></span><span class="switch"><input type="checkbox"><span class="track"></span></span></div></div>
+    <div class="field-row"><div><div class="fr-label">Product news</div><div class="fr-sub">Occasional updates and tips</div></div><div class="cluster" style="gap:22px"><span class="switch"><input type="checkbox"><span class="track"></span></span><span class="switch"><input type="checkbox"><span class="track"></span></span></div></div>
+    <div class="hr"></div>
+    <button class="btn" type="submit">Save preferences</button>
+  </form>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutor Dashboard &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth data-requires-tutor>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/dashboard/tutor</b><span class="tag">role: tutor</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-tutor.html" class="active">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page wide">
+  <div class="role-switch" id="role-switch">
+    <button type="button" data-nav="dashboard-student.html">Student</button>
+    <button class="active" type="button" data-nav="dashboard-tutor.html">Tutor</button>
+  </div>
+
+  <div class="page-head">
+    <h1>Welcome back, Mina</h1>
+    <p class="desc"><span class="badge ok">Profile published</span> &nbsp;You're accepting bookings.</p>
+  </div>
+
+  <div class="grid cols-4" style="margin-bottom:24px">
+    <div class="stat"><div class="k">Lessons this week</div><div class="v">9</div><div class="d">3 today</div></div>
+    <div class="stat"><div class="k">Earnings this month</div><div class="v">฿18,400</div><div class="d up">+12%</div></div>
+    <div class="stat"><div class="k">Pending requests</div><div class="v" id="pending-count">3</div><div class="d">Respond within 24h</div></div>
+    <div class="stat"><div class="k">Rating</div><div class="v">4.8</div><div class="d">97 reviews</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Booking requests</h2>
+      <span class="small muted">Accept to confirm the lesson</span>
+    </div>
+    <div id="requests">
+      <div class="rowitem" data-req>
+        <span class="avatar">RT</span>
+        <div class="grow">
+          <div class="title">Rin T. · IELTS Speaking</div>
+          <div class="sub">Thu 12 Sep · 9:00–11:00 AM · 2 hours · ฿960</div>
+        </div>
+        <button class="btn sm" data-accept>Accept</button>
+        <button class="btn ghost sm" data-decline>Decline</button>
+      </div>
+      <div class="rowitem" data-req>
+        <span class="avatar">HL</span>
+        <div class="grow">
+          <div class="title">Hannah L. + 1 friend · Business English</div>
+          <div class="sub">Fri 13 Sep · 6:00–7:00 PM · 1 hour · ฿520</div>
+        </div>
+        <button class="btn sm" data-accept>Accept</button>
+        <button class="btn ghost sm" data-decline>Decline</button>
+      </div>
+      <div class="rowitem" data-req>
+        <span class="avatar">TS</span>
+        <div class="grow">
+          <div class="title">Tom S. · Trial · Conversation</div>
+          <div class="sub">Sat 14 Sep · 5:00–6:00 PM · 1 hour · ฿480</div>
+        </div>
+        <button class="btn sm" data-accept>Accept</button>
+        <button class="btn ghost sm" data-decline>Decline</button>
+      </div>
+    </div>
+    <div class="empty" id="requests-empty" hidden><div class="ico">✅</div><p>All caught up.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Today's schedule</h2><a class="btn ghost sm" href="bookings.html">View calendar</a></div>
+    <div class="rowitem">
+      <span class="avatar">JW</span>
+      <div class="grow"><div class="title">Jared W. · Interview prep</div><div class="sub">2:00–3:00 PM · Online</div></div>
+      <button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button>
+    </div>
+    <div class="rowitem">
+      <span class="avatar">HL</span>
+      <div class="grow"><div class="title">Hannah L. · Business English</div><div class="sub">7:00–8:00 PM · Online</div></div>
+      <button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button>
+    </div>
+  </div>
+
+  <div class="card" id="availability">
+    <div class="card-head">
+      <h2>Availability</h2>
+      <button class="btn sm" type="button" data-toast-btn="Availability saved.">Save</button>
+    </div>
+    <p class="small muted" style="margin-bottom:14px">Tick the blocks you can usually teach. Students pick exact hours inside these.</p>
+    <div class="avail">
+      <div class="d">Mon</div><div class="d">Tue</div><div class="d">Wed</div><div class="d">Thu</div><div class="d">Fri</div><div class="d">Sat</div><div class="d">Sun</div>
+      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
+      <label class="cell"><input type="checkbox" hidden>AM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
+      <label class="cell"><input type="checkbox" hidden>AM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
+      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
+      <label class="cell"><input type="checkbox" hidden>PM</label>
+      <label class="cell"><input type="checkbox" hidden>PM</label>
+      <label class="cell"><input type="checkbox" hidden>Eve</label>
+      <label class="cell on"><input type="checkbox" checked hidden>Eve</label>
+      <label class="cell"><input type="checkbox" hidden>Eve</label>
+      <label class="cell on"><input type="checkbox" checked hidden>Eve</label>
+      <label class="cell"><input type="checkbox" hidden>Eve</label>
+      <label class="cell"><input type="checkbox" hidden>Eve</label>
+      <label class="cell"><input type="checkbox" hidden>Eve</label>
+    </div>
+  </div>
+
+  <h2 style="margin:28px 0 14px">Quick actions</h2>
+  <div class="grid cols-3">
+    <a class="btn lg block" href="#availability">Edit availability</a>
+    <a class="btn lg block secondary" href="bookings.html">View calendar</a>
+    <a class="btn lg block secondary" href="earnings.html">View earnings</a>
+    <a class="btn lg block secondary" href="earnings.html">Request payout</a>
+    <a class="btn lg block secondary" href="settings-tutor.html">Update subjects</a>
+    <button class="btn lg block ghost" type="button" data-toast-btn="Engagement analytics aren't built in the prototype.">View engagement</button>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  var list = document.getElementById('requests');
+  var countEl = document.getElementById('pending-count');
+  var emptyEl = document.getElementById('requests-empty');
+  function refresh() {
+    var n = list.querySelectorAll('[data-req]').length;
+    countEl.textContent = n;
+    emptyEl.hidden = n !== 0;
+  }
+  list.addEventListener('click', function (e) {
+    var row = e.target.closest('[data-req]');
+    if (!row) return;
+    if (e.target.matches('[data-accept]')) { tmToast('Accepted — the student can now pay to confirm.'); row.remove(); refresh(); }
+    else if (e.target.matches('[data-decline]')) { tmToast('Request declined.'); row.remove(); refresh(); }
+  });
+
+  document.querySelectorAll('.avail label.cell').forEach(function (cell) {
+    var cb = cell.querySelector('input');
+    if (!cb) return;
+    var sync = function () { cell.classList.toggle('on', cb.checked); };
+    sync();
+    cell.addEventListener('click', function () { setTimeout(sync, 0); });
+  });
+})();
+</script>
+</body>
+</html>

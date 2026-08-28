@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Messages &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth class="chat-page">
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/messages/:conversationId</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html" class="active">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page wide">
+  <div class="role-switch" id="as-switch">
+    <button class="active" type="button" data-as="student">Student</button>
+    <button type="button" data-as="tutor">Tutor</button>
+  </div>
+
+  <!-- AS STUDENT -->
+  <div class="chat" id="chat-student">
+    <div class="clist">
+      <div class="conv active" data-thread="s1"><span class="avatar">AN</span><div class="grow"><div class="between"><span class="cv-name">Anong P.</span><span class="cv-time">9:14 AM</span></div><div class="cv-last">See you tomorrow at 9!</div></div></div>
+      <div class="conv" data-thread="s2"><span class="avatar">DK</span><div class="grow"><div class="between"><span class="cv-name">Daniel K.</span><span class="cv-time">Yesterday</span></div><div class="cv-last">Take your time with Q4.</div></div></div>
+      <div class="conv" data-thread="s3"><span class="avatar">PW</span><div class="grow"><div class="between"><span class="cv-name">Ploy W.</span><span class="cv-time">Mon</span></div><div class="cv-last">Great progress today 🎹</div></div></div>
+      <div class="conv" data-thread="s4"><span class="avatar tutor">TM</span><div class="grow"><div class="between"><span class="cv-name">TutorMatcher</span><span class="cv-time">2 Sep</span></div><div class="cv-last">Wallet topped up: ฿500</div></div></div>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="avatar sm" id="s-ava">AN</span><span data-panehead>Anong P.</span><a class="btn ghost sm" href="tutor-detail.html" style="margin-left:auto">View profile</a></div>
+      <div data-threadpanel="s1" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">Today</div>
+          <div class="bubble them">Hi Mina! Ready for tomorrow's speaking practice?<span class="t">9:02 AM</span></div>
+          <div class="bubble me">Yes! Should I prepare anything?<span class="t">9:10 AM</span></div>
+          <div class="bubble them">Just review the Part 2 cue cards. See you tomorrow at 9!<span class="t">9:14 AM</span></div>
+        </div>
+      </div>
+      <div data-threadpanel="s2" hidden style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">Yesterday</div>
+          <div class="bubble them">How did the practice paper go?<span class="t">4:00 PM</span></div>
+          <div class="bubble me">Stuck on Q4 — integration by parts.<span class="t">4:20 PM</span></div>
+          <div class="bubble them">Take your time with Q4 — we'll do it live Saturday.<span class="t">4:22 PM</span></div>
+        </div>
+      </div>
+      <div data-threadpanel="s3" hidden style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">Monday</div>
+          <div class="bubble them">Great progress today 🎹 keep practising the scales.<span class="t">5:30 PM</span></div>
+          <div class="bubble me">Thank you! Same time next week?<span class="t">6:00 PM</span></div>
+        </div>
+      </div>
+      <div data-threadpanel="s4" hidden style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">2 September</div>
+          <div class="bubble them">Your wallet was topped up by ฿500. Balance updated.<span class="t">1:04 PM</span></div>
+        </div>
+      </div>
+      <div class="composer"><textarea placeholder="Write a message…" rows="1"></textarea><button class="btn" type="button" data-send>Send</button></div>
+    </div>
+  </div>
+
+  <!-- AS TUTOR -->
+  <div class="chat" id="chat-tutor" hidden>
+    <div class="clist">
+      <div class="conv active" data-thread="t1"><span class="avatar">RT</span><div class="grow"><div class="between"><span class="cv-name">Rin T.</span><span class="cv-time">10:20 AM</span></div><div class="cv-last">Can we move to 3pm?</div></div></div>
+      <div class="conv" data-thread="t2"><span class="avatar">JW</span><div class="grow"><div class="between"><span class="cv-name">Jared W.</span><span class="cv-time">Tue</span></div><div class="cv-last">Thanks for the feedback!</div></div></div>
+      <div class="conv" data-thread="t3"><span class="avatar">HL</span><div class="grow"><div class="between"><span class="cv-name">Hannah L.</span><span class="cv-time">Mon</span></div><div class="cv-last">See you Monday.</div></div></div>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span class="avatar sm">RT</span><span data-panehead>Rin T.</span><span class="badge muted" style="margin-left:auto">Student</span></div>
+      <div data-threadpanel="t1" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">Today</div>
+          <div class="bubble them">Hi! Can we move tomorrow's lesson to 3pm?<span class="t">10:12 AM</span></div>
+          <div class="bubble me">That works. I'll update the booking.<span class="t">10:20 AM</span></div>
+        </div>
+      </div>
+      <div data-threadpanel="t2" hidden style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">Tuesday</div>
+          <div class="bubble them">Thanks for the feedback on my answers!<span class="t">6:40 PM</span></div>
+          <div class="bubble me">You're welcome — practise the STAR method for next time.<span class="t">6:45 PM</span></div>
+        </div>
+      </div>
+      <div data-threadpanel="t3" hidden style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="thread">
+          <div class="bubble day">Monday</div>
+          <div class="bubble me">Confirmed our recurring Monday slot. See you Monday.<span class="t">3:00 PM</span></div>
+          <div class="bubble them">See you Monday.<span class="t">3:02 PM</span></div>
+        </div>
+      </div>
+      <div class="composer"><textarea placeholder="Write a message…" rows="1"></textarea><button class="btn" type="button" data-send>Send</button></div>
+    </div>
+  </div>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  var sw = document.getElementById('as-switch');
+  var studentChat = document.getElementById('chat-student');
+  var tutorChat = document.getElementById('chat-tutor');
+
+  function setAs(as) {
+    var isTutor = as === 'tutor';
+    studentChat.hidden = isTutor;
+    tutorChat.hidden = !isTutor;
+    sw.querySelectorAll('button').forEach(function (b) { b.classList.toggle('active', b.dataset.as === as); });
+    try { history.replaceState(null, '', 'messages.html?as=' + as); } catch (e) {}
+  }
+  sw.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (b) setAs(b.dataset.as);
+  });
+  setAs(tmParam('as', 'student'));
+
+  // keep header avatar in sync inside the student chat
+  studentChat.querySelectorAll('.conv').forEach(function (c) {
+    c.addEventListener('click', function () {
+      var ini = c.querySelector('.cv-name').textContent.trim().split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+      var av = document.getElementById('s-ava');
+      av.textContent = ini;
+      av.classList.toggle('tutor', c.querySelector('.avatar').classList.contains('tutor'));
+    });
+  });
+})();
+</script>
+</body>
+</html>

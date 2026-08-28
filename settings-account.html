@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account Settings &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/settings/account</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <p class="eyebrow">Settings</p>
+    <h1>Account</h1>
+  </div>
+
+  <nav class="subnav">
+    <a href="settings-account.html" class="active">Account</a>
+    <a href="settings-notifications.html">Notifications</a>
+    <a href="settings-tutor.html">Tutor</a>
+    <a href="settings-wallet.html">Wallet</a>
+  </nav>
+
+  <form class="card" data-toast="Email updated.">
+    <h2>Email address</h2>
+    <p class="small muted" style="margin-bottom:14px">Currently <b>mina@example.com</b></p>
+    <div class="field"><label for="new-email">New email</label><input type="email" id="new-email" placeholder="you@example.com"></div>
+    <div class="field"><label for="pw-c">Confirm with password</label><input type="password" id="pw-c" placeholder="••••••••"></div>
+    <button class="btn" type="submit">Update email</button>
+  </form>
+
+  <form class="card" data-toast="Password changed.">
+    <h2>Password</h2>
+    <div class="field"><label for="cur-pw">Current password</label><input type="password" id="cur-pw"></div>
+    <div class="row">
+      <div class="field"><label for="np1">New password</label><input type="password" id="np1"></div>
+      <div class="field"><label for="np2">Confirm</label><input type="password" id="np2"></div>
+    </div>
+    <button class="btn" type="submit">Change password</button>
+  </form>
+
+  <div class="card" style="border-color:#E7C9CD">
+    <h2 style="color:var(--rose)">Danger zone</h2>
+    <p class="small muted" style="margin-bottom:14px">Deactivating hides your profile and cancels upcoming lessons.</p>
+    <button class="btn danger" type="button" data-open-modal="deact">Deactivate account</button>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<div class="modal-backdrop" id="deact" hidden>
+  <div class="modal">
+    <h3>Deactivate your account?</h3>
+    <p class="small muted">Upcoming lessons will be cancelled and refunded to your wallet. This can be undone by logging back in.</p>
+    <div class="cluster" style="justify-content:flex-end;margin-top:18px">
+      <button class="btn ghost" type="button" data-close-modal>Keep account</button>
+      <button class="btn danger" type="button" data-close-modal onclick="tmToast('Account deactivated (pretend).')">Deactivate</button>
+    </div>
+  </div>
+</div>
+
+<script src="_app.js"></script>
+</body>
+</html>

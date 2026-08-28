@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reviews &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth>
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/reviews/:tutorId</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <a class="small muted" href="tutor-detail.html" style="text-decoration:none">&larr; Anong's profile</a>
+
+  <div class="page-head" style="margin-top:10px">
+    <p class="eyebrow">Reviews</p>
+    <h1>Reviews for Anong P.</h1>
+    <p class="desc">Read-only. Reviews are written from a completed lesson &mdash; open one under
+      <a href="bookings.html">Bookings &rarr; Past</a> to leave yours.</p>
+  </div>
+
+  <div class="split">
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <h2>All reviews</h2>
+          <span class="small muted">128 total</span>
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">RT</span><span class="rv-name">Rin T.</span>
+            <span class="stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="rv-date">2 weeks ago</span>
+          </div>
+          <p class="rv-body">Went from 6.0 to 7.5 in speaking in six weeks. Anong's feedback is specific and the mock tests felt exactly like the real thing.</p>
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">JW</span><span class="rv-name">Jared W.</span>
+            <span class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></span>
+            <span class="rv-date">1 month ago</span>
+          </div>
+          <p class="rv-body">Really well organised lessons with homework that actually helps. Recommended for interview prep too.</p>
+          <div class="rv-reply">
+            <div class="who">Anong replied</div>
+            <p class="small" style="margin:0">Thanks Jared — great work on the STAR-method answers. See you next term!</p>
+          </div>
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">PC</span><span class="rv-name">Ploychompoo C.</span>
+            <span class="stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="rv-date">1 month ago</span>
+          </div>
+          <p class="rv-body">Patient and encouraging. My son actually looks forward to English lessons now.</p>
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">AK</span><span class="rv-name">Aran K.</span>
+            <span class="stars"><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+            <span class="rv-date">2 months ago</span>
+          </div>
+          <p class="rv-body">Good teacher but the timezone made scheduling hard for me. Content itself was solid.</p>
+        </div>
+        <div class="review">
+          <div class="rv-head">
+            <span class="avatar sm">NL</span><span class="rv-name">Nok L.</span>
+            <span class="stars"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="rv-date">3 months ago</span>
+          </div>
+          <p class="rv-body">Booked a block of 3 hours before my test. Worth every baht — passed with Band 7.5.</p>
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card sticky">
+        <h3>Rating summary</h3>
+        <div class="cluster" style="gap:14px;margin:10px 0 14px">
+          <span style="font-family:'Fraunces',serif;font-size:40px;font-weight:600;color:var(--teal-deep)">4.9</span>
+          <div class="small muted"><span class="stars"><i></i><i></i><i></i><i></i><i></i></span><br>128 reviews</div>
+        </div>
+        <div class="dist">
+          <span>5★</span><div class="bar"><span style="width:90%"></span></div><span>90%</span>
+          <span>4★</span><div class="bar"><span style="width:7%"></span></div><span>7%</span>
+          <span>3★</span><div class="bar"><span style="width:2%"></span></div><span>2%</span>
+          <span>2★</span><div class="bar"><span style="width:1%"></span></div><span>1%</span>
+          <span>1★</span><div class="bar"><span style="width:0%"></span></div><span>0%</span>
+        </div>
+        <div class="hr"></div>
+        <p class="tiny muted">Had a lesson with Anong? <a href="booking-detail.html?s=done">Leave a review</a>.</p>
+      </div>
+    </aside>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+</body>
+</html>

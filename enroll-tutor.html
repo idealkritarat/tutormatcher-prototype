@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Become a tutor &mdash; TutorMatcher</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body data-requires-auth data-redirect-if-tutor="dashboard-tutor.html">
+<div class="chrome">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="bar">on the real site, this is <b>/(auth)/enroll-tutor</b><span class="tag">requires login</span></div>
+</div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html"><span class="mark">T</span>TutorMatcher</a>
+    <nav class="appnav">
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="search.html">Find tutors</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="messages.html">Messages</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="cluster" data-auth="out" hidden>
+      <a class="btn ghost sm" href="login.html">Log in</a>
+      <a class="btn sm" href="login.html">Sign up</a>
+    </div>
+    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <div class="menu-wrap" data-auth="in" hidden>
+      <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
+      <div class="menu" id="usermenu" hidden>
+        <div class="who">Signed in as <b>Mina K.</b></div>
+        <a href="settings-account.html">Settings</a>
+        <a href="topup.html">Top up wallet</a>
+        <a href="admin.html">Admin</a>
+        <div class="sep"></div>
+        <a href="index.html" data-logout>Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="page narrow">
+  <div class="page-head">
+    <p class="eyebrow">Become a tutor</p>
+    <h1>Apply to teach on TutorMatcher</h1>
+    <p class="desc">Every account starts as a student. To unlock the tutor dashboard, earnings and
+      your public listing, submit your ID and a teaching certification for review.</p>
+  </div>
+
+  <!-- ========== STATE: no application yet ========== -->
+  <form class="card" id="apply-form">
+    <h2>1 · Upload documents</h2>
+    <p class="small muted" style="margin-bottom:14px">Both are checked by our team before you're approved.</p>
+    <div class="field-row">
+      <div><div class="fr-label">Government ID</div><div class="fr-sub" id="id-sub">Passport or national ID card</div></div>
+      <button class="btn ghost sm" type="button" data-upload="id">Choose file</button>
+    </div>
+    <div class="field-row">
+      <div><div class="fr-label">Teaching certification</div><div class="fr-sub" id="cert-sub">CELTA / TEFL / degree certificate</div></div>
+      <button class="btn ghost sm" type="button" data-upload="cert">Choose file</button>
+    </div>
+
+    <div class="hr"></div>
+    <h2>2 · Profile information</h2>
+    <div class="field">
+      <label for="e-bio">Bio</label>
+      <textarea id="e-bio" placeholder="Tell students about your experience and teaching style."></textarea>
+    </div>
+    <div class="field">
+      <label>Subjects taught</label>
+      <div class="grid cols-3" style="gap:10px" id="e-subjects">
+        <label class="check"><input type="checkbox"> Maths</label>
+        <label class="check"><input type="checkbox"> English / IELTS</label>
+        <label class="check"><input type="checkbox"> Science</label>
+        <label class="check"><input type="checkbox"> Coding</label>
+        <label class="check"><input type="checkbox"> Music</label>
+        <label class="check"><input type="checkbox"> Business</label>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <div class="cluster" style="justify-content:flex-end">
+      <a class="btn ghost" href="dashboard-student.html">Not now</a>
+      <button class="btn lg" type="submit" id="apply-submit" disabled>Submit application</button>
+    </div>
+  </form>
+
+  <!-- ========== STATE: pending admin approval ========== -->
+  <div class="card" id="pending-card" hidden>
+    <span class="badge warn">Pending review</span>
+    <h2 style="margin-top:12px">Application submitted</h2>
+    <p class="small muted">Your documents are with our team. You'll get the tutor dashboard, earnings
+      and a public listing the moment an admin approves you.</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Government ID</span><b>Uploaded ✓</b></div>
+      <div class="line"><span>Teaching certification</span><b>Uploaded ✓</b></div>
+      <div class="line"><span>Profile</span><b>Bio &amp; subjects submitted</b></div>
+      <div class="line total"><span>Status</span><span class="badge warn">Awaiting approval</span></div>
+    </div>
+    <div class="note" style="margin-top:16px">
+      Prototype: there's no real admin. Approve your own request on the
+      <a href="admin.html">admin page</a>.
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <button class="btn danger" type="button" id="cancel-apply">Cancel &amp; re-submit</button>
+      <a class="btn" href="admin.html">Open admin page</a>
+    </div>
+  </div>
+
+  <a class="linkback" href="index.html">&larr; back to /</a>
+</main>
+
+<script src="_app.js"></script>
+<script>
+(function () {
+  var status = tmTutor.status(); // '' | 'pending' | 'approved' (approved already redirected away)
+  var form = document.getElementById('apply-form');
+  var pending = document.getElementById('pending-card');
+
+  if (status === 'pending') {
+    form.hidden = true;
+    pending.hidden = false;
+    document.getElementById('cancel-apply').addEventListener('click', function () {
+      tmTutor.cancel();
+      tmToast('Application cancelled — you can submit again.');
+      setTimeout(function () { location.href = 'enroll-tutor.html'; }, 500);
+    });
+    return;
+  }
+
+  // --- application form ---
+  var uploaded = { id: false, cert: false };
+  var fileNames = { id: 'passport-scan.jpg', cert: 'celta-certificate.pdf' };
+
+  document.querySelectorAll('[data-upload]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var which = btn.getAttribute('data-upload');
+      uploaded[which] = true;
+      btn.textContent = 'Replace';
+      btn.classList.remove('ghost');
+      btn.classList.add('secondary');
+      document.getElementById(which + '-sub').innerHTML = '<b style="color:var(--teal)">' + fileNames[which] + ' ✓</b>';
+      validate();
+    });
+  });
+
+  var bio = document.getElementById('e-bio');
+  bio.addEventListener('input', validate);
+  document.getElementById('e-subjects').addEventListener('change', validate);
+
+  function subjectCount() {
+    return document.querySelectorAll('#e-subjects input:checked').length;
+  }
+  function validate() {
+    var ok = uploaded.id && uploaded.cert && bio.value.trim().length > 0 && subjectCount() > 0;
+    document.getElementById('apply-submit').disabled = !ok;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!(uploaded.id && uploaded.cert)) { tmToast('Upload both documents first.'); return; }
+    if (!bio.value.trim()) { tmToast('Add a short bio.'); return; }
+    if (subjectCount() === 0) { tmToast('Pick at least one subject.'); return; }
+    tmTutor.apply();
+    tmToast('Application submitted for review.');
+    setTimeout(function () { location.href = 'enroll-tutor.html'; }, 600);
+  });
+})();
+</script>
+</body>
+</html>
