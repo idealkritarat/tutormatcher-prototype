@@ -26,12 +26,13 @@
       <a class="btn ghost sm" href="login.html">Log in</a>
       <a class="btn sm" href="login.html">Sign up</a>
     </div>
-    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <a class="wallet" data-auth="in" hidden href="payments.html" title="Wallet balance"><span class="w-ico">&#3647;</span><b data-wallet>0</b></a>
     <div class="menu-wrap" data-auth="in" hidden>
       <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
       <div class="menu" id="usermenu" hidden>
         <div class="who">Signed in as <b>Mina K.</b></div>
         <a href="settings-account.html">Settings</a>
+        <a href="payments.html">Payments</a>
         <a href="topup.html">Top up wallet</a>
         <a href="admin.html">Admin</a>
         <div class="sep"></div>
@@ -41,7 +42,7 @@
   </div>
 </header>
 
-<main class="page wide">
+<main class="page wide tutor-dashboard">
   <div class="role-switch" id="role-switch">
     <button type="button" data-nav="dashboard-student.html">Student</button>
     <button class="active" type="button" data-nav="dashboard-tutor.html">Tutor</button>
@@ -52,104 +53,83 @@
     <p class="desc"><span class="badge ok">Profile published</span> &nbsp;You're accepting bookings.</p>
   </div>
 
-  <div class="grid cols-4" style="margin-bottom:24px">
-    <div class="stat"><div class="k">Lessons this week</div><div class="v">9</div><div class="d">3 today</div></div>
-    <div class="stat"><div class="k">Earnings this month</div><div class="v">฿18,400</div><div class="d up">+12%</div></div>
-    <div class="stat"><div class="k">Pending requests</div><div class="v" id="pending-count">3</div><div class="d">Respond within 24h</div></div>
+  <div class="grid cols-4 dash-stats" style="margin-bottom:8px">
+    <div class="stat"><div class="k">Classes this week</div><div class="v">9</div><div class="d">3 today</div></div>
+    <div class="stat"><div class="k">Earnings this month</div><div class="v">&#3647;18,400</div><div class="d up">+12%</div></div>
+    <div class="stat"><div class="k">Pending requests</div><div class="v" id="pending-count">9</div><div class="d">Respond within 24h</div></div>
     <div class="stat"><div class="k">Rating</div><div class="v">4.8</div><div class="d">97 reviews</div></div>
   </div>
 
-  <div class="card">
-    <div class="card-head">
-      <h2>Booking requests</h2>
-      <span class="small muted">Accept to confirm the lesson</span>
-    </div>
-    <div id="requests">
-      <div class="rowitem" data-req>
-        <span class="avatar">RT</span>
-        <div class="grow">
-          <div class="title">Rin T. · IELTS Speaking</div>
-          <div class="sub">Thu 12 Sep · 9:00–11:00 AM · 2 hours · ฿960</div>
-        </div>
-        <button class="btn sm" data-accept>Accept</button>
-        <button class="btn ghost sm" data-decline>Decline</button>
+  <div class="dash-earnings">
+    <div class="card">
+      <div class="card-head">
+        <h2>Earnings &amp; payouts</h2>
+        <a class="btn ghost sm" href="earnings.html">View details</a>
       </div>
-      <div class="rowitem" data-req>
-        <span class="avatar">HL</span>
-        <div class="grow">
-          <div class="title">Hannah L. + 1 friend · Business English</div>
-          <div class="sub">Fri 13 Sep · 6:00–7:00 PM · 1 hour · ฿520</div>
-        </div>
-        <button class="btn sm" data-accept>Accept</button>
-        <button class="btn ghost sm" data-decline>Decline</button>
-      </div>
-      <div class="rowitem" data-req>
-        <span class="avatar">TS</span>
-        <div class="grow">
-          <div class="title">Tom S. · Trial · Conversation</div>
-          <div class="sub">Sat 14 Sep · 5:00–6:00 PM · 1 hour · ฿480</div>
-        </div>
-        <button class="btn sm" data-accept>Accept</button>
-        <button class="btn ghost sm" data-decline>Decline</button>
+      <div class="grid cols-3">
+        <div class="stat"><div class="k">Available</div><div class="v" id="stat-available">&#3647;6,240</div><div class="d">Ready to withdraw</div></div>
+        <div class="stat"><div class="k">Pending</div><div class="v">&#3647;2,080</div><div class="d">Clears after lessons</div></div>
+        <div class="stat"><div class="k">All-time paid</div><div class="v">&#3647;184,600</div><div class="d">Since Mar 2023</div></div>
       </div>
     </div>
-    <div class="empty" id="requests-empty" hidden><div class="ico">✅</div><p>All caught up.</p></div>
   </div>
 
-  <div class="card">
-    <div class="card-head"><h2>Today's schedule</h2><a class="btn ghost sm" href="bookings.html">View calendar</a></div>
-    <div class="rowitem">
-      <span class="avatar">JW</span>
-      <div class="grow"><div class="title">Jared W. · Interview prep</div><div class="sub">2:00–3:00 PM · Online</div></div>
-      <button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button>
+  <div class="card dash-upcoming">
+    <div class="card-head"><h2>Upcoming classes</h2><span class="small muted">What you need to teach next</span></div>
+    <div class="dash-scroll">
+      <div class="rowitem"><span class="avatar">JW</span><div class="grow"><div class="title">Jared W. &middot; Interview prep</div><div class="sub">Today &middot; 2:00-3:00 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9101">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">HL</span><div class="grow"><div class="title">Hannah L. + 1 friend &middot; Business English</div><div class="sub">Today &middot; 7:00-8:00 PM &middot; 2 students &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9102">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">MN</span><div class="grow"><div class="title">May N. &middot; IELTS Writing</div><div class="sub">Tomorrow &middot; 10:00-11:30 AM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9103">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">PC</span><div class="grow"><div class="title">Ploy C. &middot; TOEIC Grammar</div><div class="sub">Tomorrow &middot; 1:00-2:00 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9104">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">AK</span><div class="grow"><div class="title">Arun K. + 2 friends &middot; Conversation</div><div class="sub">Mon 16 Sep &middot; 6:00-7:00 PM &middot; 3 students &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9105">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">NS</span><div class="grow"><div class="title">Nara S. &middot; Presentation coaching</div><div class="sub">Tue 17 Sep &middot; 9:30-10:30 AM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9106">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">KK</span><div class="grow"><div class="title">Krit K. &middot; Academic English</div><div class="sub">Wed 18 Sep &middot; 4:00-5:00 PM &middot; 1 student &middot; In-person</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9107">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">FV</span><div class="grow"><div class="title">Fern V. + 1 friend &middot; Business English</div><div class="sub">Thu 19 Sep &middot; 7:30-8:30 PM &middot; 2 students &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9108">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
     </div>
-    <div class="rowitem">
-      <span class="avatar">HL</span>
-      <div class="grow"><div class="title">Hannah L. · Business English</div><div class="sub">7:00–8:00 PM · Online</div></div>
-      <button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button>
+  </div>
+
+  <div class="card dash-requests">
+    <div class="card-head"><h2>Booking requests</h2><span class="small muted">Accept to confirm the lesson</span></div>
+    <div id="requests">
+      <div class="rowitem" data-req><span class="avatar">RT</span><div class="grow"><div class="title">Rin T. &middot; IELTS Speaking</div><div class="sub">Thu 12 Sep &middot; 9:00-11:00 AM &middot; 2 hours &middot; &#3647;960</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2481">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">HL</span><div class="grow"><div class="title">Hannah L. + 1 friend &middot; Business English</div><div class="sub">Fri 13 Sep &middot; 6:00-7:00 PM &middot; 1 hour &middot; &#3647;520</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2482">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">TS</span><div class="grow"><div class="title">Tom S. &middot; Trial &middot; Conversation</div><div class="sub">Sat 14 Sep &middot; 5:00-6:00 PM &middot; 1 hour &middot; &#3647;480</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2483">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">MN</span><div class="grow"><div class="title">May N. &middot; IELTS Writing</div><div class="sub">Sun 15 Sep &middot; 10:00-11:30 AM &middot; 1.5 hours &middot; &#3647;720</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2484">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">PC</span><div class="grow"><div class="title">Ploy C. &middot; TOEIC Grammar</div><div class="sub">Mon 16 Sep &middot; 1:00-2:00 PM &middot; 1 hour &middot; &#3647;450</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2485">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">AK</span><div class="grow"><div class="title">Arun K. + 2 friends &middot; Conversation</div><div class="sub">Tue 17 Sep &middot; 6:00-7:00 PM &middot; 1 hour &middot; &#3647;600</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2486">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">NS</span><div class="grow"><div class="title">Nara S. &middot; Presentation coaching</div><div class="sub">Wed 18 Sep &middot; 9:30-10:30 AM &middot; 1 hour &middot; &#3647;560</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2487">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">KK</span><div class="grow"><div class="title">Krit K. &middot; Academic English</div><div class="sub">Thu 19 Sep &middot; 4:00-5:00 PM &middot; 1 hour &middot; &#3647;500</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2488">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+      <div class="rowitem" data-req><span class="avatar">FV</span><div class="grow"><div class="title">Fern V. + 1 friend &middot; Business English</div><div class="sub">Fri 20 Sep &middot; 7:30-8:30 PM &middot; 1 hour &middot; &#3647;520</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2489">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
     </div>
+    <div class="empty" id="requests-empty" hidden><div class="ico">OK</div><p>All caught up.</p></div>
+  </div>
+
+  <div class="dash-subjects card">
+    <div class="card-head"><h2>Subjects</h2><a class="btn ghost sm" href="settings-tutor.html">Update</a></div>
+    <div id="dash-subjects"></div>
   </div>
 
   <div class="card" id="availability">
-    <div class="card-head">
-      <h2>Availability</h2>
-      <button class="btn sm" type="button" data-toast-btn="Availability saved.">Save</button>
+    <div class="card-head"><h2>Availability</h2><button class="btn sm" type="button" id="avail-save">Save</button></div>
+    <p class="small muted" style="margin-bottom:14px">Pick a day, open the 30-min slots you can teach, then set which subject(s) you cover in each.</p>
+    <div class="note warn" id="no-subjects" hidden style="margin-bottom:14px">You haven't added any subjects yet. <a href="settings-tutor.html">Add subjects &amp; rates</a> first.</div>
+    <div class="cal-wrap">
+      <div class="cal-head"><b id="cal-title">Month</b><div class="cal-nav"><button type="button" id="cal-prev" aria-label="Previous month">&lsaquo;</button><button type="button" id="cal-next" aria-label="Next month">&rsaquo;</button></div></div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-legend"><span><span class="dot"></span> You're available</span><span><span class="dot gold"></span> Booked lesson (locked)</span></div>
     </div>
-    <p class="small muted" style="margin-bottom:14px">Tick the blocks you can usually teach. Students pick exact hours inside these.</p>
-    <div class="avail">
-      <div class="d">Mon</div><div class="d">Tue</div><div class="d">Wed</div><div class="d">Thu</div><div class="d">Fri</div><div class="d">Sat</div><div class="d">Sun</div>
-      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
-      <label class="cell"><input type="checkbox" hidden>AM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>AM</label>
-      <label class="cell"><input type="checkbox" hidden>AM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
-      <label class="cell on"><input type="checkbox" checked hidden>PM</label>
-      <label class="cell"><input type="checkbox" hidden>PM</label>
-      <label class="cell"><input type="checkbox" hidden>PM</label>
-      <label class="cell"><input type="checkbox" hidden>Eve</label>
-      <label class="cell on"><input type="checkbox" checked hidden>Eve</label>
-      <label class="cell"><input type="checkbox" hidden>Eve</label>
-      <label class="cell on"><input type="checkbox" checked hidden>Eve</label>
-      <label class="cell"><input type="checkbox" hidden>Eve</label>
-      <label class="cell"><input type="checkbox" hidden>Eve</label>
-      <label class="cell"><input type="checkbox" hidden>Eve</label>
+    <div id="day-editor" hidden>
+      <div class="hr"></div>
+      <div class="between" style="flex-wrap:wrap;gap:10px"><h3 id="day-label" style="margin:0">-</h3><div class="quickfill" id="quickfill"><button type="button" data-fill="morning">+ Morning</button><button type="button" data-fill="afternoon">+ Afternoon</button><button type="button" data-fill="evening">+ Evening</button><button type="button" data-fill="all">+ All day</button><button type="button" data-fill="clear" class="danger">Clear day</button></div></div>
+      <p class="small muted" style="margin:10px 0 12px">Tap a 30-min slot to open or close it. Locked slots already have a booking.</p>
+      <div class="slotgrid" id="slotgrid"></div>
+      <div id="slot-subjects" hidden>
+        <div class="hr"></div>
+        <div class="between" style="flex-wrap:wrap;gap:8px"><h3 style="margin:0">Subjects per slot</h3><button class="btn ghost sm" type="button" id="subs-all">Copy first slot's subjects to all</button></div>
+        <p class="small muted" style="margin:10px 0 4px">Each open slot can teach different subjects.</p>
+        <div id="slot-subj-list"></div>
+      </div>
     </div>
-  </div>
-
-  <h2 style="margin:28px 0 14px">Quick actions</h2>
-  <div class="grid cols-3">
-    <a class="btn lg block" href="#availability">Edit availability</a>
-    <a class="btn lg block secondary" href="bookings.html">View calendar</a>
-    <a class="btn lg block secondary" href="earnings.html">View earnings</a>
-    <a class="btn lg block secondary" href="earnings.html">Request payout</a>
-    <a class="btn lg block secondary" href="settings-tutor.html">Update subjects</a>
-    <button class="btn lg block ghost" type="button" data-toast-btn="Engagement analytics aren't built in the prototype.">View engagement</button>
   </div>
 
   <a class="linkback" href="index.html">&larr; back to /</a>
@@ -169,17 +149,158 @@
   list.addEventListener('click', function (e) {
     var row = e.target.closest('[data-req]');
     if (!row) return;
-    if (e.target.matches('[data-accept]')) { tmToast('Accepted — the student can now pay to confirm.'); row.remove(); refresh(); }
+    if (e.target.matches('[data-accept]')) { tmToast('Accepted - the student can now pay to confirm.'); row.remove(); refresh(); }
     else if (e.target.matches('[data-decline]')) { tmToast('Request declined.'); row.remove(); refresh(); }
   });
+})();
 
-  document.querySelectorAll('.avail label.cell').forEach(function (cell) {
-    var cb = cell.querySelector('input');
-    if (!cb) return;
-    var sync = function () { cell.classList.toggle('on', cb.checked); };
-    sync();
-    cell.addEventListener('click', function () { setTimeout(sync, 0); });
+(function () {
+  var box = document.getElementById('dash-subjects');
+  var subs = window.tmSubjects.list();
+  var demoSubs = [
+    { id: 'demo-ielts-writing', name: 'IELTS Writing', rate: 480, desc: 'Task 1 and Task 2 structure, scoring criteria, and timed essay feedback.' },
+    { id: 'demo-toeic', name: 'TOEIC Grammar', rate: 450, desc: 'High-frequency grammar, vocabulary, and speed practice for score improvement.' },
+    { id: 'demo-conversation', name: 'Conversation Confidence', rate: 500, desc: 'Everyday speaking drills with correction on natural phrasing and pronunciation.' },
+    { id: 'demo-presentation', name: 'Presentation Coaching', rate: 560, desc: 'Slide delivery, Q&A practice, transitions, and clearer business storytelling.' },
+    { id: 'demo-academic', name: 'Academic English', rate: 500, desc: 'Reading, writing, citation language, and seminar discussion support.' },
+    { id: 'demo-interview', name: 'Interview Prep', rate: 520, desc: 'Mock interviews with feedback on structure, examples, and confident answers.' },
+    { id: 'demo-email', name: 'Professional Email', rate: 460, desc: 'Concise workplace email, tone control, and follow-up message writing.' }
+  ];
+  demoSubs.forEach(function (demo) {
+    if (subs.length < 9 && !subs.some(function (s) { return s.name === demo.name; })) subs.push(demo);
   });
+  if (!subs.length) { box.innerHTML = '<div class="subj-empty">No subjects yet.</div>'; return; }
+  subs.forEach(function (s) {
+    var row = document.createElement('div');
+    row.className = 'subj-item compact';
+    row.innerHTML = '<div class="s-top"><span class="s-name"></span><span class="s-rate"></span></div><div class="s-desc"></div>';
+    row.querySelector('.s-name').textContent = s.name;
+    row.querySelector('.s-rate').textContent = '฿' + (+s.rate).toLocaleString('en-US') + ' / hr';
+    row.querySelector('.s-desc').textContent = s.desc || '';
+    box.appendChild(row);
+  });
+})();
+
+(function () {
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOWLONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var TODAY = new Date(2026, 8, 10); TODAY.setHours(0,0,0,0);
+  var viewY = TODAY.getFullYear(), viewM = TODAY.getMonth();
+  var pickedDate = null, pickedKey = '';
+  var cal = document.getElementById('cal');
+  var title = document.getElementById('cal-title');
+  var prev = document.getElementById('cal-prev');
+  var next = document.getElementById('cal-next');
+  var slotgrid = document.getElementById('slotgrid');
+  var subjectsWrap = document.getElementById('slot-subjects');
+  var subjList = document.getElementById('slot-subj-list');
+  var noSubjects = document.getElementById('no-subjects');
+  var subs = window.tmSubjects.list();
+  var locked = { '2026-8-10': ['14:00','19:00'] };
+  var hours = [];
+  for (var q = 16; q <= 43; q++) hours.push(q);
+  noSubjects.hidden = subs.length > 0;
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function label(q) { return pad(Math.floor(q / 2)) + ':' + (q % 2 ? '30' : '00'); }
+  function key(d) { return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); }
+  function renderMonth() {
+    cal.innerHTML = '';
+    ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(function (d) { var h = document.createElement('div'); h.className = 'dow'; h.textContent = d; cal.appendChild(h); });
+    title.textContent = MONTHS[viewM] + ' ' + viewY;
+    var lead = (new Date(viewY, viewM, 1).getDay() + 6) % 7;
+    var days = new Date(viewY, viewM + 1, 0).getDate();
+    for (var i = 0; i < lead; i++) { var p = document.createElement('div'); p.className = 'pad'; cal.appendChild(p); }
+    var all = window.tmAvail.all();
+    for (var dnum = 1; dnum <= days; dnum++) {
+      var date = new Date(viewY, viewM, dnum); date.setHours(0,0,0,0);
+      var k = key(date);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'day' + (all[k] && Object.keys(all[k]).length ? ' free' : '') + (locked[k] ? ' booked' : '');
+      b.textContent = dnum;
+      b.disabled = date < TODAY;
+      if (pickedKey === k) b.classList.add('active');
+      (function (d, btn) { btn.addEventListener('click', function () { pickDay(d, btn); }); })(date, b);
+      cal.appendChild(b);
+    }
+  }
+  function pickDay(d, btn) {
+    pickedDate = d; pickedKey = key(d);
+    cal.querySelectorAll('button.day').forEach(function (x) { x.classList.toggle('active', x === btn); });
+    document.getElementById('day-editor').hidden = false;
+    document.getElementById('day-label').textContent = DOWLONG[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+    renderSlots();
+  }
+  function renderSlots() {
+    slotgrid.innerHTML = '';
+    var day = window.tmAvail.day(pickedKey);
+    var lockedSlots = locked[pickedKey] || [];
+    hours.forEach(function (q) {
+      var t = label(q);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = t;
+      b.disabled = lockedSlots.indexOf(t) !== -1;
+      b.className = b.disabled ? 'locked' : (day[t] ? 'open' : '');
+      b.addEventListener('click', function () {
+        if (day[t]) window.tmAvail.close(pickedKey, t);
+        else window.tmAvail.open(pickedKey, t, subs[0] ? [subs[0].id] : []);
+        renderSlots(); renderMonth();
+      });
+      slotgrid.appendChild(b);
+    });
+    renderSlotSubjects();
+  }
+  function renderSlotSubjects() {
+    var day = window.tmAvail.day(pickedKey);
+    var open = Object.keys(day);
+    subjectsWrap.hidden = !open.length;
+    subjList.innerHTML = '';
+    open.forEach(function (t) {
+      var row = document.createElement('div');
+      row.className = 'slot-subj-row';
+      row.innerHTML = '<div class="t"></div><div class="subj-check"></div>';
+      row.querySelector('.t').textContent = t;
+      var grid = row.querySelector('.subj-check');
+      subs.forEach(function (s) {
+        var lab = document.createElement('label');
+        lab.className = 'subject-toggle';
+        var cb = document.createElement('input');
+        cb.type = 'checkbox'; cb.value = s.id; cb.checked = (day[t].subs || []).indexOf(s.id) !== -1;
+        lab.classList.toggle('on', cb.checked);
+        lab.appendChild(cb);
+        lab.insertAdjacentHTML('beforeend', '<span class="subject-toggle-name"></span><span class="subject-toggle-rate"></span>');
+        lab.querySelector('.subject-toggle-name').textContent = s.name;
+        lab.querySelector('.subject-toggle-rate').textContent = '฿' + (+s.rate).toLocaleString('en-US') + ' / hr';
+        cb.addEventListener('change', function () {
+          var picked = Array.prototype.slice.call(grid.querySelectorAll('input:checked')).map(function (x) { return x.value; });
+          lab.classList.toggle('on', cb.checked);
+          window.tmAvail.setSubs(pickedKey, t, picked);
+        });
+        grid.appendChild(lab);
+      });
+      subjList.appendChild(row);
+    });
+  }
+  prev.addEventListener('click', function () { if (viewM === 0) { viewM = 11; viewY--; } else viewM--; renderMonth(); });
+  next.addEventListener('click', function () { if (viewM === 11) { viewM = 0; viewY++; } else viewM++; renderMonth(); });
+  document.getElementById('quickfill').addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-fill]');
+    if (!btn || !pickedKey) return;
+    var fill = btn.getAttribute('data-fill');
+    var sets = { morning: [18,19,20,21,22,23], afternoon: [26,27,28,29,30,31,32,33], evening: [36,37,38,39,40,41], all: hours };
+    if (fill === 'clear') Object.keys(window.tmAvail.day(pickedKey)).forEach(function (t) { window.tmAvail.close(pickedKey, t); });
+    else (sets[fill] || []).forEach(function (q) { window.tmAvail.open(pickedKey, label(q), subs[0] ? [subs[0].id] : []); });
+    renderSlots(); renderMonth();
+  });
+  document.getElementById('subs-all').addEventListener('click', function () {
+    var first = Object.keys(window.tmAvail.day(pickedKey))[0];
+    if (!first) return;
+    window.tmAvail.setAllSubs(pickedKey, window.tmAvail.day(pickedKey)[first].subs || []);
+    renderSlots();
+  });
+  document.getElementById('avail-save').addEventListener('click', function () { tmToast('Availability saved.'); });
+  renderMonth();
 })();
 </script>
 </body>
