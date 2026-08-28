@@ -213,12 +213,11 @@
         { file: 'enroll-tutor.html', path: '/(auth)/enroll-tutor', title: 'Tutor application', access: 'requires login' },
         { file: 'dashboard-student.html', path: '/dashboard', title: 'Student dashboard', access: 'requires login' },
         { file: 'dashboard-tutor.html', path: '/dashboard/tutor', title: 'Tutor dashboard', access: 'role: tutor' },
-        { file: 'earnings.html', path: '/wallet/earnings', title: 'Tutor earnings', access: 'role: tutor' },
         { file: 'booking-detail.html', path: '/bookings/:id', title: 'Booking detail', access: 'requires login' },
         { file: 'bookings.html', path: '/bookings', title: 'Bookings', access: 'requires login' },
         { file: 'messages.html', path: '/messages/:id', title: 'Messages', access: 'requires login' },
-        { file: 'payments.html', path: '/payments', title: 'Payments', access: 'requires login' },
-        { file: 'payment-detail.html', path: '/payments/:id', title: 'Payment', access: 'requires login' },
+        { file: 'payments.html', path: '/wallet', title: 'Wallet', access: 'requires login' },
+        { file: 'payment-detail.html', path: '/wallet/transactions/:id', title: 'Transaction', access: 'requires login' },
         { file: 'topup.html', path: '/wallet/topup', title: 'Top up wallet', access: 'requires login' },
         { file: 'settings-account.html', path: '/settings/account', title: 'Account settings', access: 'requires login' },
         { file: 'settings-notifications.html', path: '/settings/notifications', title: 'Notifications', access: 'requires login' },
@@ -252,12 +251,15 @@
       el.setAttribute('href', 'payments.html');
     });
     document.querySelectorAll('#usermenu').forEach(function (menu) {
-      if (menu.querySelector('a[href="payments.html"]')) return;
+      if (menu.querySelector('a[href="payments.html"]')) {
+        menu.querySelector('a[href="payments.html"]').textContent = 'Wallet';
+        return;
+      }
       var topup = menu.querySelector('a[href="topup.html"]');
       if (!topup) return;
       var payments = document.createElement('a');
       payments.href = 'payments.html';
-      payments.textContent = 'Payments';
+      payments.textContent = 'Wallet';
       menu.insertBefore(payments, topup);
     });
 

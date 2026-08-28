@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Payment &mdash; TutorMatcher</title>
+<title>Transaction &mdash; TutorMatcher</title>
 <link rel="stylesheet" href="_shared.css">
 </head>
 <body data-requires-auth>
 <div class="chrome">
   <div class="dots"><span></span><span></span><span></span></div>
-  <div class="bar">on the real site, this is <b>/payments/:id</b><span class="tag">requires login</span></div>
+  <div class="bar">on the real site, this is <b>/wallet/transactions/:id</b><span class="tag">requires login</span></div>
 </div>
 
 <header class="appbar">
@@ -42,10 +42,10 @@
 </header>
 
 <main class="page narrow">
-  <a class="small muted" href="bookings.html" style="text-decoration:none">&larr; Back to bookings</a>
+  <a class="small muted" href="payments.html" style="text-decoration:none">&larr; Back to wallet</a>
 
   <div class="page-head" style="margin-top:10px">
-    <p class="eyebrow" id="pm-id">Payment #PM-7731</p>
+    <p class="eyebrow" id="pm-id">Transaction #PM-7731</p>
     <h1>Pay for your lesson</h1>
     <p class="desc">Lesson payments come straight out of your TutorMatcher wallet — no card, no QR.</p>
   </div>
@@ -96,13 +96,26 @@
   var forTxt = tmParam('for', 'IELTS Speaking with Anong P.');
   var whenTxt = tmParam('when', 'Fri 13 Sep · 2:00–4:00 PM');
   var id = tmParam('id', 'PM-7731');
+  var type = tmParam('type', 'pay');
+  var dir = tmParam('dir', 'out');
 
-  document.getElementById('pm-id').textContent = 'Payment #' + id;
+  document.getElementById('pm-id').textContent = 'Transaction #' + id;
   document.getElementById('pm-for').textContent = forTxt;
   document.getElementById('pm-when').textContent = whenTxt;
   document.getElementById('pm-amt').textContent = '฿' + amt.toLocaleString('en-US');
   document.getElementById('done-for').textContent = forTxt;
   document.getElementById('done-when').textContent = whenTxt;
+
+  if (type !== 'pay') {
+    var sign = dir === 'out' ? '-' : '+';
+    document.querySelector('.page-head h1').textContent = 'Transaction details';
+    document.querySelector('.page-head .desc').textContent = 'A wallet ledger entry for this account.';
+    document.querySelector('#pay-form .summary .line.total span:first-child').textContent = 'Amount';
+    document.getElementById('pm-amt').textContent = sign + '\u0E3F' + amt.toLocaleString('en-US');
+    document.querySelector('#pay-form .summary .line:nth-child(3)').hidden = true;
+    document.querySelector('#pay-form .cluster').hidden = true;
+    return;
+  }
 
   function refresh() {
     var bal = tmWallet.get();

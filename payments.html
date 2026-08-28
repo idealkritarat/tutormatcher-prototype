@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Payments &mdash; TutorMatcher</title>
+<title>Wallet &mdash; TutorMatcher</title>
 <link rel="stylesheet" href="_shared.css">
 </head>
 <body data-requires-auth>
 <div class="chrome">
   <div class="dots"><span></span><span></span><span></span></div>
-  <div class="bar">on the real site, this is <b>/payments</b><span class="tag">requires login</span></div>
+  <div class="bar">on the real site, this is <b>/wallet</b><span class="tag">requires login</span></div>
 </div>
 
 <header class="appbar">
@@ -32,7 +32,7 @@
       <div class="menu" id="usermenu" hidden>
         <div class="who">Signed in as <b>Mina K.</b></div>
         <a href="settings-account.html">Settings</a>
-        <a href="payments.html">Payments</a>
+        <a href="payments.html">Wallet</a>
         <a href="topup.html">Top up wallet</a>
         <a href="admin.html">Admin</a>
         <div class="sep"></div>
@@ -44,26 +44,29 @@
 
 <main class="page wide">
   <div class="page-head">
-    <h1>Payments</h1>
+    <h1>Wallet</h1>
+    <p class="desc">One wallet for top-ups, lesson payments, tutor earnings, refunds, and payouts.</p>
   </div>
 
   <div class="grid cols-4" style="margin-bottom:20px">
-    <div class="stat"><div class="k">Wallet balance</div><div class="v">&#3647;<span data-wallet>0</span></div><div class="d"><a href="topup.html">Top up</a></div></div>
-    <div class="stat"><div class="k">Paid lessons</div><div class="v">&#3647;5,400</div><div class="d">12 payments</div></div>
-    <div class="stat"><div class="k">Top-ups</div><div class="v">&#3647;7,000</div><div class="d">4 transfers</div></div>
-    <div class="stat"><div class="k">Refunds</div><div class="v">&#3647;960</div><div class="d">1 returned booking</div></div>
+    <div class="stat"><div class="k">Available balance</div><div class="v">&#3647;<span data-wallet>0</span></div><div class="d"><a href="topup.html">Top up</a></div></div>
+    <div class="stat"><div class="k">Pending earnings</div><div class="v">&#3647;2,080</div><div class="d">Clears after classes</div></div>
+    <div class="stat"><div class="k">This month</div><div class="v">&#3647;18,400</div><div class="d up">Tutor earnings</div></div>
+    <div class="stat"><div class="k">Paid out</div><div class="v">&#3647;184,600</div><div class="d">All-time withdrawals</div></div>
   </div>
 
   <div class="card">
     <div class="card-head">
-      <h2>Payment history</h2>
+      <h2>Transactions</h2>
       <a class="btn sm" href="topup.html">Top up wallet</a>
     </div>
 
     <div class="tabs" data-tabs>
       <button class="active" type="button" data-tab="all">All</button>
-      <button type="button" data-tab="lesson">Lessons</button>
       <button type="button" data-tab="topup">Top-ups</button>
+      <button type="button" data-tab="payment">Lesson payments</button>
+      <button type="button" data-tab="earning">Class earnings</button>
+      <button type="button" data-tab="payout">Payouts</button>
       <button type="button" data-tab="refund">Refunds</button>
     </div>
 
@@ -80,17 +83,18 @@
           </tr>
         </thead>
         <tbody id="payment-rows">
-          <tr data-kind="lesson"><td>12 Sep 2026</td><td>IELTS Speaking with Anong P.</td><td>Wallet</td><td class="num down">-&#3647;960</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7731&amp;amt=960&amp;for=IELTS%20Speaking%20with%20Anong%20P.&amp;when=Fri%2013%20Sep%20%C2%B7%202%3A00-4%3A00%20PM">View receipt</a></td></tr>
-          <tr data-kind="topup"><td>11 Sep 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;2,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4471&amp;amt=2000&amp;for=Wallet%20top-up&amp;when=11%20Sep%202026">View receipt</a></td></tr>
-          <tr data-kind="lesson"><td>8 Sep 2026</td><td>Calculus revision with Daniel K.</td><td>Wallet</td><td class="num down">-&#3647;1,200</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7728&amp;amt=1200&amp;for=Calculus%20revision%20with%20Daniel%20K.&amp;when=Sat%2014%20Sep%20%C2%B7%204%3A00-6%3A00%20PM">View receipt</a></td></tr>
-          <tr data-kind="refund"><td>6 Sep 2026</td><td>Refund: cancelled IELTS Writing</td><td>Wallet</td><td class="num up">+&#3647;960</td><td><span class="badge ok">Refunded</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=RF-1182&amp;amt=960&amp;for=Refund%3A%20cancelled%20IELTS%20Writing&amp;when=6%20Sep%202026">View receipt</a></td></tr>
-          <tr data-kind="lesson"><td>5 Sep 2026</td><td>Business English with Mina K.</td><td>Wallet</td><td class="num down">-&#3647;520</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7719&amp;amt=520&amp;for=Business%20English%20with%20Mina%20K.&amp;when=5%20Sep%202026">View receipt</a></td></tr>
-          <tr data-kind="topup"><td>3 Sep 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;1,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4468&amp;amt=1000&amp;for=Wallet%20top-up&amp;when=3%20Sep%202026">View receipt</a></td></tr>
-          <tr data-kind="lesson"><td>30 Aug 2026</td><td>Interview prep with Jared W.</td><td>Wallet</td><td class="num down">-&#3647;720</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7704&amp;amt=720&amp;for=Interview%20prep%20with%20Jared%20W.&amp;when=30%20Aug%202026">View receipt</a></td></tr>
-          <tr data-kind="lesson"><td>24 Aug 2026</td><td>TOEIC Grammar with Ploy C.</td><td>Wallet</td><td class="num down">-&#3647;450</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7692&amp;amt=450&amp;for=TOEIC%20Grammar%20with%20Ploy%20C.&amp;when=24%20Aug%202026">View receipt</a></td></tr>
-          <tr data-kind="topup"><td>20 Aug 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;2,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4452&amp;amt=2000&amp;for=Wallet%20top-up&amp;when=20%20Aug%202026">View receipt</a></td></tr>
-          <tr data-kind="lesson"><td>18 Aug 2026</td><td>Conversation Confidence with Arun K.</td><td>Wallet</td><td class="num down">-&#3647;600</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7680&amp;amt=600&amp;for=Conversation%20Confidence%20with%20Arun%20K.&amp;when=18%20Aug%202026">View receipt</a></td></tr>
-          <tr data-kind="topup"><td>12 Aug 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;2,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4439&amp;amt=2000&amp;for=Wallet%20top-up&amp;when=12%20Aug%202026">View receipt</a></td></tr>
+          <tr data-kind="earning"><td>13 Sep 2026</td><td>Class earning: Business English with Hannah L.</td><td>Class</td><td class="num up">+&#3647;442</td><td><span class="badge ok">Available</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=ER-9102&amp;type=earning&amp;dir=in&amp;amt=442&amp;for=Class%20earning%3A%20Business%20English%20with%20Hannah%20L.&amp;when=13%20Sep%202026">View</a></td></tr>
+          <tr data-kind="payout"><td>12 Sep 2026</td><td>Payout to SCB ****1234</td><td>Bank transfer</td><td class="num down">-&#3647;5,000</td><td><span class="badge ok">Paid out</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PO-2204&amp;type=payout&amp;dir=out&amp;amt=5000&amp;for=Payout%20to%20SCB%20****1234&amp;when=12%20Sep%202026">View</a></td></tr>
+          <tr data-kind="payment"><td>12 Sep 2026</td><td>Paid for IELTS Speaking with Anong P.</td><td>Wallet</td><td class="num down">-&#3647;960</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7731&amp;type=payment&amp;dir=out&amp;amt=960&amp;for=IELTS%20Speaking%20with%20Anong%20P.&amp;when=Fri%2013%20Sep%20%C2%B7%202%3A00-4%3A00%20PM">View</a></td></tr>
+          <tr data-kind="topup"><td>11 Sep 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;2,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4471&amp;type=topup&amp;dir=in&amp;amt=2000&amp;for=Wallet%20top-up&amp;when=11%20Sep%202026">View</a></td></tr>
+          <tr data-kind="earning"><td>9 Sep 2026</td><td>Pending earning: IELTS Writing with Rin T.</td><td>Class</td><td class="num up">+&#3647;442</td><td><span class="badge warn">Pending</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=ER-9099&amp;type=earning&amp;dir=in&amp;amt=442&amp;for=Pending%20earning%3A%20IELTS%20Writing%20with%20Rin%20T.&amp;when=9%20Sep%202026">View</a></td></tr>
+          <tr data-kind="payment"><td>8 Sep 2026</td><td>Paid for Calculus revision with Daniel K.</td><td>Wallet</td><td class="num down">-&#3647;1,200</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7728&amp;type=payment&amp;dir=out&amp;amt=1200&amp;for=Calculus%20revision%20with%20Daniel%20K.&amp;when=Sat%2014%20Sep%20%C2%B7%204%3A00-6%3A00%20PM">View</a></td></tr>
+          <tr data-kind="refund"><td>6 Sep 2026</td><td>Refund: cancelled IELTS Writing</td><td>Wallet</td><td class="num up">+&#3647;960</td><td><span class="badge ok">Refunded</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=RF-1182&amp;type=refund&amp;dir=in&amp;amt=960&amp;for=Refund%3A%20cancelled%20IELTS%20Writing&amp;when=6%20Sep%202026">View</a></td></tr>
+          <tr data-kind="earning"><td>5 Sep 2026</td><td>Class earning: Business English with Mina K.</td><td>Class</td><td class="num up">+&#3647;442</td><td><span class="badge ok">Available</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=ER-9086&amp;type=earning&amp;dir=in&amp;amt=442&amp;for=Class%20earning%3A%20Business%20English%20with%20Mina%20K.&amp;when=5%20Sep%202026">View</a></td></tr>
+          <tr data-kind="payment"><td>5 Sep 2026</td><td>Paid for Business English with Mina K.</td><td>Wallet</td><td class="num down">-&#3647;520</td><td><span class="badge ok">Paid</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PM-7719&amp;type=payment&amp;dir=out&amp;amt=520&amp;for=Business%20English%20with%20Mina%20K.&amp;when=5%20Sep%202026">View</a></td></tr>
+          <tr data-kind="topup"><td>3 Sep 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;1,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4468&amp;type=topup&amp;dir=in&amp;amt=1000&amp;for=Wallet%20top-up&amp;when=3%20Sep%202026">View</a></td></tr>
+          <tr data-kind="payout"><td>1 Sep 2026</td><td>Payout to SCB ****1234</td><td>Bank transfer</td><td class="num down">-&#3647;15,900</td><td><span class="badge ok">Paid out</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=PO-2190&amp;type=payout&amp;dir=out&amp;amt=15900&amp;for=Payout%20to%20SCB%20****1234&amp;when=1%20Sep%202026">View</a></td></tr>
+          <tr data-kind="topup"><td>20 Aug 2026</td><td>Wallet top-up</td><td>PromptPay</td><td class="num up">+&#3647;2,000</td><td><span class="badge ok">Completed</span></td><td class="right"><a class="btn ghost sm" href="payment-detail.html?id=TU-4452&amp;type=topup&amp;dir=in&amp;amt=2000&amp;for=Wallet%20top-up&amp;when=20%20Aug%202026">View</a></td></tr>
         </tbody>
       </table>
     </div>

@@ -24,15 +24,15 @@ prototype/
 ├─ dashboard-tutor.html          → /dashboard/tutor    TUTORS ONLY · requests, schedule, availability editor
 ├─ booking-detail.html           → /bookings/:id        one booking: draft, then its status
 ├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Pending / Invites / Past
-├─ payments.html                 → /payments            wallet and student payment history
-├─ payment-detail.html           → /payments/:id        pay a lesson from your wallet (no QR)
+├─ payments.html                 → /wallet              combined wallet ledger: top-ups, lesson payments, earnings, payouts
+├─ payment-detail.html           → /wallet/transactions/:id pay a lesson or view one wallet transaction
 ├─ topup.html                    → /wallet/topup        add real money to the wallet (QR)
 ├─ messages.html                 → /messages/:id        fills the viewport, no page scroll; Student ⇄ Tutor switch
 ├─ settings-account.html         → /settings/account
 ├─ settings-notifications.html   → /settings/notifications
 ├─ settings-tutor.html           → /settings/tutor      public tutor listing (bio, rate, subjects, verification)
 ├─ settings-wallet.html          → /settings/wallet     balance + "reset to ฿250"
-├─ earnings.html                 → /wallet/earnings     tutor earnings and payout history
+├─ earnings.html                 → legacy tutor earnings detail; /wallet is the primary money page
 ├─ reviews.html                  → /reviews/:tutorId    read-only list (writing lives on a completed booking)
 ├─ _shared.css                   → design tokens + every component style
 └─ _app.js                       → shared behaviour (auth, wallet, toasts, tabs, chat, pickers…)
@@ -78,7 +78,7 @@ No build step, no dependencies. Open `index.html` directly, or serve the folder
 2. **Friend invites** — if you added friends, the request waits until every friend
    accepts, then it automatically moves to the tutor.
 3. **Pending tutor** — the tutor accepts or declines.
-4. **Payment due** — once accepted, you pay. `/payments/:id` deducts straight from your
+4. **Payment due** — once accepted, you pay. `/wallet/transactions/:id` deducts straight from your
    **wallet balance** — no card, no QR here.
 5. **Confirmed** — paid; the lesson is locked in.
 6. **Completed** — after the lesson, this is the **only place to write a review** (star
@@ -101,10 +101,12 @@ each row to the right state.
 
 ## The wallet
 
-Real money only enters at **`/wallet/topup`**: choose an amount, scan the PromptPay QR,
-confirm — the balance goes up (and is saved to `localStorage`). Lesson payments at
-`/payments/:id` spend that balance; if it's short, the page sends you to `/wallet/topup` for the
-difference and back. `/settings/wallet` has a "reset to ฿250" button.
+Real money enters at **`/wallet/topup`** and cleared tutor earnings enter the same
+wallet balance. `/wallet` is the combined ledger for top-ups, lesson payments,
+class earnings, refunds, and payout withdrawals. Lesson payments at
+`/wallet/transactions/:id` spend that balance; if it's short, the page sends you to
+`/wallet/topup` for the difference and back. `/settings/wallet` has a "reset to ฿250"
+button.
 
 ## What's real vs. fake
 
