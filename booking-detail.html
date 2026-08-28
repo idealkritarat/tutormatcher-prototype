@@ -95,7 +95,7 @@
 
     <div id="time-wrap" hidden>
       <div class="hr"></div>
-      <h2>Pick your hours</h2>
+      <h2>Pick your time</h2>
       <p class="small muted" style="margin-bottom:12px">Tap back-to-back slots for a longer lesson. One booking = one continuous block — no weekly plans.</p>
       <div class="timeslots" id="timeslots"></div>
     </div>
@@ -307,8 +307,10 @@
   if (STATE !== 'draft') return;
 
   /* ---------------- draft: month calendar + time slots ---------------- */
-  var RATE = 480;
-  var HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+  var RATE = 480; // per hour
+  var Q_START = 16, Q_END = 41; // 08:00 .. 20:30 (last block 20:30-21:00)
+  var SLOT_LABELS = [];
+  for (var q = Q_START; q <= Q_END; q++) SLOT_LABELS.push(labelFor(q));
   var AVAIL = { // by getDay(): 0 Sun .. 6 Sat
     0: [], 1: [9, 10, 11, 14, 15, 16, 17], 2: [8, 9, 10, 13, 14, 15, 16, 18, 19],
     3: [10, 11, 12, 13, 14, 15, 16], 4: [9, 10, 11, 15, 16, 17, 18],
@@ -321,7 +323,7 @@
   var viewY = TODAY.getFullYear(), viewM = TODAY.getMonth();
   var MINVIEW = viewY * 12 + viewM;
   var MAXVIEW = MINVIEW + 3; // book up to 3 months out
-  var selDate = null, selHours = [];
+  var selDate = null, selSlots = [];
 
   var cal = document.getElementById('cal');
   var calTitle = document.getElementById('cal-title');
@@ -330,6 +332,18 @@
 
   function sameDay(a, b) {
     return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function labelFor(q) { return pad(Math.floor(q / 2)) + ':' + (q % 2 ? '30' : '00'); }
+  function endOf(q) { return labelFor(q + 1); }
+  function slotAvailable(q, freeHours) { return freeHours.indexOf(Math.floor(q / 2)) !== -1; }
+  function formatDuration(n) {
+    var mins = n * 30;
+    var h = Math.floor(mins / 60), m = mins % 60;
+    if (h && m) return h + 'h ' + m + 'm';
+    if (h) return h + 'h';
+    return m + 'm';
   }
 
   function renderMonth() {
@@ -360,7 +374,7 @@
   }
 
   function pickDay(date, btn) {
-    selDate = date; selHours = [];
+    selDate = date; selSlots = [];
     cal.querySelectorAll('button.day').forEach(function (x) { x.classList.toggle('active', x === btn); });
     renderSlots();
     document.getElementById('time-wrap').hidden = false;
@@ -381,27 +395,30 @@
     var box = document.getElementById('timeslots');
     box.innerHTML = '';
     var freeHours = AVAIL[selDate.getDay()] || [];
-    HOURS.forEach(function (h) {
+    for (var i = 0; i < SLOT_LABELS.length; i++) {
+      var q = Q_START + i;
       var b = document.createElement('button');
       b.type = 'button';
-      var ok = freeHours.indexOf(h) !== -1;
+      var ok = slotAvailable(q, freeHours);
       b.disabled = !ok;
-      b.textContent = pad(h) + ':00';
-      b.classList.toggle('sel', selHours.indexOf(h) !== -1);
-      b.addEventListener('click', function () { toggleHour(h); });
+      b.textContent = SLOT_LABELS[i];
+      b.classList.toggle('sel', selSlots.indexOf(q) !== -1);
+      (function (slot) {
+        b.addEventListener('click', function () { toggleSlot(slot); });
+      })(q);
       box.appendChild(b);
-    });
+    }
   }
 
-  function toggleHour(h) {
-    if (selHours.length === 0) { selHours = [h]; }
+  function toggleSlot(q) {
+    if (selSlots.length === 0) { selSlots = [q]; }
     else {
-      var min = Math.min.apply(null, selHours), max = Math.max.apply(null, selHours);
-      if (h === min - 1 || h === max + 1) selHours.push(h);
-      else if (h === min || h === max) selHours = selHours.filter(function (x) { return x !== h; });
-      else { if (selHours.indexOf(h) === -1) tmToast('Pick hours that are back-to-back.'); selHours = [h]; }
+      var min = Math.min.apply(null, selSlots), max = Math.max.apply(null, selSlots);
+      if (q === min - 1 || q === max + 1) selSlots.push(q);
+      else if (q === min || q === max) selSlots = selSlots.filter(function (x) { return x !== q; });
+      else { tmToast('Pick slots that are back-to-back.'); selSlots = [q]; }
     }
-    selHours.sort(function (a, b) { return a - b; });
+    selSlots.sort(function (a, b) { return a - b; });
     renderSlots();
     updateSummary();
   }
@@ -409,8 +426,8 @@
   function updateSummary() {
     var box = document.getElementById('sel-summary');
     var send = document.getElementById('send-request');
-    if (!selDate || !selHours.length) { box.hidden = true; send.disabled = true; return; }
-    var n = selHours.length, start = Math.min.apply(null, selHours), end = Math.max.apply(null, selHours) + 1;
+    if (!selDate || !selSlots.length) { box.hidden = true; send.disabled = true; return; }
+    var n = selSlots.length, start = Math.min.apply(null, selSlots), last = Math.max.apply(null, selSlots);
     document.getElementById('sel-when').textContent =
       DOW[selDate.getDay()] + ' ' + selDate.getDate() + ' ' + MON[selDate.getMonth()] +
       ' · ' + pad(start) + ':00–' + pad(end) + ':00';
@@ -445,7 +462,7 @@
   fInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('friend-add').click(); } });
 
   document.getElementById('send-request').addEventListener('click', function () {
-    if (!selHours.length) { tmToast('Pick a time first.'); return; }
+    if (!selSlots.length) { tmToast('Pick a time first.'); return; }
     location.href = 'booking-detail.html?s=' + (friends.length ? 'invites' : 'pending');
   });
 })();
