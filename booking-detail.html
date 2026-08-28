@@ -430,14 +430,13 @@
     var n = selSlots.length, start = Math.min.apply(null, selSlots), last = Math.max.apply(null, selSlots);
     document.getElementById('sel-when').textContent =
       DOW[selDate.getDay()] + ' ' + selDate.getDate() + ' ' + MON[selDate.getMonth()] +
-      ' · ' + pad(start) + ':00–' + pad(end) + ':00';
-    document.getElementById('sel-hours').textContent = n + (n === 1 ? ' hour' : ' hours');
-    document.getElementById('sel-price').textContent = '฿' + (n * RATE).toLocaleString('en-US');
+      ' · ' + labelFor(start) + '-' + endOf(last);
+    document.getElementById('sel-hours').textContent = formatDuration(n);
+    document.getElementById('sel-price').textContent = '฿' + (n * RATE / 2).toLocaleString('en-US');
     box.hidden = false;
     send.disabled = false;
   }
 
-  function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   /* friends */
   var friends = [];
