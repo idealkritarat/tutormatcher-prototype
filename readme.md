@@ -1,6 +1,6 @@
 # TutorMatcher — HTML Prototype
 
-A clickable, no-backend prototype of the product. 17 HTML pages, one shared stylesheet,
+A clickable, no-backend prototype of the product. 18 HTML pages, one shared stylesheet,
 one shared script. Open it and use it: log in, browse tutors, build a booking slot by
 slot, add friends to a lesson, watch it move through friend-invites → tutor confirmation →
 payment, pay from a wallet, and top that wallet up with a (fake) PromptPay QR. Every
@@ -24,14 +24,15 @@ prototype/
 ├─ dashboard-tutor.html          → /dashboard/tutor    TUTORS ONLY · requests, schedule, availability editor
 ├─ booking-detail.html           → /bookings/:id        one booking: draft, then its status
 ├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Pending / Invites / Past
+├─ payments.html                 → /payments            wallet and student payment history
 ├─ payment-detail.html           → /payments/:id        pay a lesson from your wallet (no QR)
-├─ topup.html                    → /topup               add real money to the wallet (QR)
+├─ topup.html                    → /wallet/topup        add real money to the wallet (QR)
 ├─ messages.html                 → /messages/:id        fills the viewport, no page scroll; Student ⇄ Tutor switch
 ├─ settings-account.html         → /settings/account
 ├─ settings-notifications.html   → /settings/notifications
 ├─ settings-tutor.html           → /settings/tutor      public tutor listing (bio, rate, subjects, verification)
 ├─ settings-wallet.html          → /settings/wallet     balance + "reset to ฿250"
-├─ earnings.html                 → /earnings
+├─ earnings.html                 → /wallet/earnings     tutor earnings and payout history
 ├─ reviews.html                  → /reviews/:tutorId    read-only list (writing lives on a completed booking)
 ├─ _shared.css                   → design tokens + every component style
 └─ _app.js                       → shared behaviour (auth, wallet, toasts, tabs, chat, pickers…)
@@ -100,9 +101,9 @@ each row to the right state.
 
 ## The wallet
 
-Real money only enters at **`/topup`**: choose an amount, scan the PromptPay QR,
+Real money only enters at **`/wallet/topup`**: choose an amount, scan the PromptPay QR,
 confirm — the balance goes up (and is saved to `localStorage`). Lesson payments at
-`/payments/:id` spend that balance; if it's short, the page sends you to `/topup` for the
+`/payments/:id` spend that balance; if it's short, the page sends you to `/wallet/topup` for the
 difference and back. `/settings/wallet` has a "reset to ฿250" button.
 
 ## What's real vs. fake

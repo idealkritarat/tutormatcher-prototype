@@ -42,17 +42,17 @@
 </header>
 
 <main class="page">
-  <div class="page-head">
-    <p class="eyebrow">Settings</p>
-    <h1>Notifications</h1>
-  </div>
-
-  <nav class="subnav">
-    <a href="settings-account.html">Account</a>
-    <a href="settings-notifications.html" class="active">Notifications</a>
-    <a href="settings-tutor.html">Tutor</a>
-    <a href="settings-wallet.html">Wallet</a>
-  </nav>
+  <div class="settings-wrap">
+    <aside class="side-rail sticky">
+      <div class="page-head"><p class="eyebrow">Settings</p><h1>Notifications</h1></div>
+      <nav class="subnav">
+        <a href="settings-account.html">Account</a>
+        <a href="settings-notifications.html" class="active">Notifications</a>
+        <a href="settings-tutor.html">Tutor</a>
+        <a href="settings-wallet.html">Wallet</a>
+      </nav>
+    </aside>
+    <section>
 
   <form class="card" data-toast="Notification preferences saved.">
     <div class="between" style="margin-bottom:6px">
@@ -68,7 +68,9 @@
     <button class="btn" type="submit">Save preferences</button>
   </form>
 
-  <a class="linkback" href="index.html">&larr; back to /</a>
+      <a class="linkback" href="index.html">&larr; back to /</a>
+    </section>
+  </div>
 </main>
 
 <script src="_app.js"></script>

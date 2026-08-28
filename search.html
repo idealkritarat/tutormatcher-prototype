@@ -41,17 +41,15 @@
   </div>
 </header>
 
-<main class="page wide">
-  <div class="page-head">
-    <p class="eyebrow">Discovery</p>
-    <h1>Find a tutor</h1>
-    <p class="desc">Public page, no login required. Filters run live on the results below.</p>
-  </div>
-
+<main class="page wide search-layout">
   <div class="split left">
     <!-- FILTERS -->
-    <aside class="card sticky" id="filters">
-      <h3 style="margin-bottom:14px">Filters</h3>
+    <aside class="side-rail sticky">
+      <div class="page-head">
+        <h1>Find a tutor</h1>
+      </div>
+      <div class="card" id="filters">
+        <h3 style="margin-bottom:14px">Filters</h3>
       <div class="field">
         <label for="f-q">Keyword</label>
         <input type="search" id="f-q" placeholder="Name or subject">
@@ -89,6 +87,7 @@
         </div>
       </div>
       <button class="btn ghost block sm" type="button" id="f-clear">Clear filters</button>
+      </div>
     </aside>
 
     <!-- RESULTS -->

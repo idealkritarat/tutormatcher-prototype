@@ -248,6 +248,18 @@
     })();
 
     walletRender();
+    document.querySelectorAll('a.wallet[href="topup.html"]').forEach(function (el) {
+      el.setAttribute('href', 'payments.html');
+    });
+    document.querySelectorAll('#usermenu').forEach(function (menu) {
+      if (menu.querySelector('a[href="payments.html"]')) return;
+      var topup = menu.querySelector('a[href="topup.html"]');
+      if (!topup) return;
+      var payments = document.createElement('a');
+      payments.href = 'payments.html';
+      payments.textContent = 'Payments';
+      menu.insertBefore(payments, topup);
+    });
 
     /* ---- reflect auth state in the shared header ---- */
     var loggedIn = window.tmAuth.isIn();

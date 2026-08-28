@@ -239,6 +239,48 @@
     </div>
   </section>
 
+  <!-- ============ TUTOR: REQUEST ============ -->
+  <section class="card" data-tutor-state="pending" hidden>
+    <span class="badge warn">Booking request</span>
+    <h2 style="margin-top:12px" data-tv="title">New request</h2>
+    <p class="small muted">Review the students, lesson description, time, and payout before accepting.</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Students</span><b data-tv="students">-</b></div>
+      <div class="line"><span>Subject</span><b data-tv="subject">-</b></div>
+      <div class="line"><span>Requested time</span><b data-tv="when">-</b></div>
+      <div class="line"><span>Format</span><span data-tv="format">-</span></div>
+      <div class="line"><span>Description</span><span data-tv="description">-</span></div>
+      <div class="line total"><span data-tv="duration">-</span><span data-tv="payout">-</span></div>
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn ghost" href="dashboard-tutor.html">Back to dashboard</a>
+      <button class="btn ghost" type="button" data-toast-btn="Request declined.">Decline</button>
+      <button class="btn" type="button" data-toast-btn="Request accepted. Student can now pay.">Accept request</button>
+    </div>
+  </section>
+
+  <!-- ============ TUTOR: UPCOMING ============ -->
+  <section class="card" data-tutor-state="upcoming" hidden>
+    <span class="badge ok">Upcoming class</span>
+    <h2 style="margin-top:12px" data-tv="title">Upcoming class</h2>
+    <p class="small muted">Use this view to prepare for the class and check who is joining.</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Students</span><b data-tv="students">-</b></div>
+      <div class="line"><span>Subject</span><b data-tv="subject">-</b></div>
+      <div class="line"><span>When</span><b data-tv="when">-</b></div>
+      <div class="line"><span>Format</span><span data-tv="format">-</span></div>
+      <div class="line"><span>Description</span><span data-tv="description">-</span></div>
+      <div class="line total"><span data-tv="duration">-</span><span data-tv="payout">-</span></div>
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn ghost" href="dashboard-tutor.html">Back to dashboard</a>
+      <a class="btn ghost" href="messages.html">Message students</a>
+      <button class="btn" type="button" data-toast-btn="Classroom opens 10 minutes before start.">Start class</button>
+    </div>
+  </section>
+
   <a class="linkback" href="index.html">&larr; back to /</a>
 </main>
 
@@ -246,8 +288,11 @@
 <script>
 (function () {
   var STATE = tmParam('s', 'draft');
+  var AS_TUTOR = tmParam('as', '') === 'tutor';
+  var BOOKING_ID = tmParam('id', AS_TUTOR ? (STATE === 'upcoming' ? 'CL-9101' : 'BR-2481') : 'BK-2481');
   var ORDER = ['draft', 'invites', 'pending', 'accepted', 'upcoming', 'done', 'declined'];
   if (ORDER.indexOf(STATE) === -1) STATE = 'draft';
+  if (AS_TUTOR && ['pending', 'upcoming'].indexOf(STATE) === -1) STATE = 'pending';
 
   var TITLES = {
     draft:    ['New booking', 'Pick a time, add a note, and send the request to your tutor.'],
@@ -258,17 +303,24 @@
     done:     ['Completed lesson', 'This lesson is done.'],
     declined: ['Booking declined', 'The tutor could not take this one.']
   };
-  document.getElementById('page-title').textContent = TITLES[STATE][0];
-  document.getElementById('page-sub').textContent = TITLES[STATE][1];
+  document.querySelector('.eyebrow').textContent = 'Booking #' + BOOKING_ID;
+  document.getElementById('page-title').textContent = AS_TUTOR ? (STATE === 'upcoming' ? 'Upcoming class' : 'Booking request') : TITLES[STATE][0];
+  document.getElementById('page-sub').textContent = AS_TUTOR ? 'Tutor view for this booking.' : TITLES[STATE][1];
   document.getElementById('devstate').value = STATE;
   document.getElementById('devstate').addEventListener('change', function () {
-    location.href = 'booking-detail.html?s=' + this.value;
+    var next = 'booking-detail.html?s=' + this.value;
+    if (AS_TUTOR) next += '&as=tutor&id=' + encodeURIComponent(BOOKING_ID);
+    location.href = next;
   });
 
   // show the right section
   document.querySelectorAll('[data-state]').forEach(function (el) {
-    el.hidden = el.getAttribute('data-state') !== STATE;
+    el.hidden = AS_TUTOR || el.getAttribute('data-state') !== STATE;
   });
+  document.querySelectorAll('[data-tutor-state]').forEach(function (el) {
+    el.hidden = !AS_TUTOR || el.getAttribute('data-tutor-state') !== STATE;
+  });
+  document.getElementById('tracker').hidden = AS_TUTOR;
 
   // tracker (5 steps: Draft, Friends, Tutor, Payment, Confirmed)
   var reached = { draft: 0, invites: 1, pending: 2, accepted: 3, upcoming: 4, done: 5, declined: 2 };
@@ -282,6 +334,40 @@
   document.querySelectorAll('[data-jump]').forEach(function (b) {
     b.addEventListener('click', function () { location.href = 'booking-detail.html?s=' + b.getAttribute('data-jump'); });
   });
+
+  function renderTutorView() {
+    var details = {
+      'BR-2481': { title: 'Rin T. - IELTS Speaking', students: 'Rin T. and Nicha W. (2 students)', subject: 'IELTS Speaking', when: 'Thu 12 Sep - 9:00-11:00 AM', duration: '2 hours', payout: '&#3647;960', format: 'Online', description: 'Band 7 speaking practice. Focus on Part 2 long answers and pronunciation feedback.' },
+      'BR-2482': { title: 'Hannah L. + 1 friend - Business English', students: 'Hannah L. and Ben C. (2 students)', subject: 'Business English', when: 'Fri 13 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Meeting phrases, concise email language, and presentation Q&A practice.' },
+      'BR-2483': { title: 'Tom S. - Conversation trial', students: 'Tom S. (1 student)', subject: 'Conversation', when: 'Sat 14 Sep - 5:00-6:00 PM', duration: '1 hour', payout: '&#3647;480', format: 'Online', description: 'First lesson. Wants confidence speaking about work and travel topics.' },
+      'BR-2484': { title: 'May N. - IELTS Writing', students: 'May N. (1 student)', subject: 'IELTS Writing', when: 'Sun 15 Sep - 10:00-11:30 AM', duration: '1.5 hours', payout: '&#3647;720', format: 'Online', description: 'Task 2 essay structure, thesis clarity, and grammar correction.' },
+      'BR-2485': { title: 'Ploy C. - TOEIC Grammar', students: 'Ploy C. (1 student)', subject: 'TOEIC Grammar', when: 'Mon 16 Sep - 1:00-2:00 PM', duration: '1 hour', payout: '&#3647;450', format: 'Online', description: 'Review common TOEIC grammar traps and timed practice questions.' },
+      'BR-2486': { title: 'Arun K. + 2 friends - Conversation', students: 'Arun K., Bee S., and Ken T. (3 students)', subject: 'Conversation', when: 'Tue 17 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;600', format: 'Online', description: 'Small group conversation class around workplace problem solving.' },
+      'BR-2487': { title: 'Nara S. - Presentation coaching', students: 'Nara S. (1 student)', subject: 'Presentation coaching', when: 'Wed 18 Sep - 9:30-10:30 AM', duration: '1 hour', payout: '&#3647;560', format: 'Online', description: 'Practice product update presentation and improve transitions.' },
+      'BR-2488': { title: 'Krit K. - Academic English', students: 'Krit K. (1 student)', subject: 'Academic English', when: 'Thu 19 Sep - 4:00-5:00 PM', duration: '1 hour', payout: '&#3647;500', format: 'In-person', description: 'Needs help summarizing a research article and discussion vocabulary.' },
+      'BR-2489': { title: 'Fern V. + 1 friend - Business English', students: 'Fern V. and Aim R. (2 students)', subject: 'Business English', when: 'Fri 20 Sep - 7:30-8:30 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Role play sales calls and follow-up email corrections.' },
+      'CL-9101': { title: 'Jared W. - Interview prep', students: 'Jared W. (1 student)', subject: 'Interview prep', when: 'Today - 2:00-3:00 PM', duration: '1 hour', payout: '&#3647;480', format: 'Online', description: 'Mock interview for account manager role, especially behavioral answers.' },
+      'CL-9102': { title: 'Hannah L. + 1 friend - Business English', students: 'Hannah L. and Ben C. (2 students)', subject: 'Business English', when: 'Today - 7:00-8:00 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Practice meeting interruptions, summaries, and action items.' },
+      'CL-9103': { title: 'May N. - IELTS Writing', students: 'May N. (1 student)', subject: 'IELTS Writing', when: 'Tomorrow - 10:00-11:30 AM', duration: '1.5 hours', payout: '&#3647;720', format: 'Online', description: 'Essay plan review and timed Task 2 correction.' },
+      'CL-9104': { title: 'Ploy C. - TOEIC Grammar', students: 'Ploy C. (1 student)', subject: 'TOEIC Grammar', when: 'Tomorrow - 1:00-2:00 PM', duration: '1 hour', payout: '&#3647;450', format: 'Online', description: 'Mini test review and grammar pattern drilling.' },
+      'CL-9105': { title: 'Arun K. + 2 friends - Conversation', students: 'Arun K., Bee S., and Ken T. (3 students)', subject: 'Conversation', when: 'Mon 16 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;600', format: 'Online', description: 'Group discussion practice with corrections after each round.' },
+      'CL-9106': { title: 'Nara S. - Presentation coaching', students: 'Nara S. (1 student)', subject: 'Presentation coaching', when: 'Tue 17 Sep - 9:30-10:30 AM', duration: '1 hour', payout: '&#3647;560', format: 'Online', description: 'Final rehearsal for investor presentation.' },
+      'CL-9107': { title: 'Krit K. - Academic English', students: 'Krit K. (1 student)', subject: 'Academic English', when: 'Wed 18 Sep - 4:00-5:00 PM', duration: '1 hour', payout: '&#3647;500', format: 'In-person', description: 'Discuss article outline and citation vocabulary.' },
+      'CL-9108': { title: 'Fern V. + 1 friend - Business English', students: 'Fern V. and Aim R. (2 students)', subject: 'Business English', when: 'Thu 19 Sep - 7:30-8:30 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Follow-up from sales call role play and email tone corrections.' }
+    };
+    var info = details[BOOKING_ID] || details[STATE === 'upcoming' ? 'CL-9101' : 'BR-2481'];
+    Object.keys(info).forEach(function (key) {
+      document.querySelectorAll('[data-tv="' + key + '"]').forEach(function (el) {
+        if (key === 'payout') el.innerHTML = info[key];
+        else el.textContent = info[key];
+      });
+    });
+  }
+
+  if (AS_TUTOR) {
+    renderTutorView();
+    return;
+  }
 
   var tutor = tmParam('tutor', '');
   if (tutor) {
