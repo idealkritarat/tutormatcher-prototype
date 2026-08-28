@@ -73,8 +73,8 @@
 
   <div class="rowitem card" style="border-radius:14px;margin-bottom:18px">
     <span class="avatar">AN</span>
-    <div class="grow"><div class="title" id="tutor-name">Anong P.</div><div class="sub">IELTS &amp; Business English · ฿480 / hour</div></div>
-    <a class="btn ghost sm" href="tutor-detail.html">Profile</a>
+    <div class="grow"><div class="title" id="tutor-name">Anong P.</div><div class="sub" id="booking-subject">IELTS Speaking &middot; &#3647;480 / hour</div></div>
+    <a class="btn ghost sm" id="profile-link" href="tutor-detail.html">Profile</a>
   </div>
 
   <!-- ============ DRAFT ============ -->
@@ -290,6 +290,9 @@
   var STATE = tmParam('s', 'draft');
   var AS_TUTOR = tmParam('as', '') === 'tutor';
   var BOOKING_ID = tmParam('id', AS_TUTOR ? (STATE === 'upcoming' ? 'CL-9101' : 'BR-2481') : 'BK-2481');
+  var SUBJECT_ID = tmParam("subjectId", "");
+  var SUBJECT = tmParam("subject", "IELTS Speaking");
+  var SUBJECT_RATE = parseInt(tmParam("rate", "480"), 10) || 480;
   var ORDER = ['draft', 'invites', 'pending', 'accepted', 'upcoming', 'done', 'declined'];
   if (ORDER.indexOf(STATE) === -1) STATE = 'draft';
   if (AS_TUTOR && ['pending', 'upcoming'].indexOf(STATE) === -1) STATE = 'pending';
@@ -305,7 +308,7 @@
   };
   document.querySelector('.eyebrow').textContent = 'Booking #' + BOOKING_ID;
   document.getElementById('page-title').textContent = AS_TUTOR ? (STATE === 'upcoming' ? 'Upcoming class' : 'Booking request') : TITLES[STATE][0];
-  document.getElementById('page-sub').textContent = AS_TUTOR ? 'Tutor view for this booking.' : TITLES[STATE][1];
+  document.getElementById('page-sub').textContent = AS_TUTOR ? 'Tutor view for this booking.' : (STATE === 'draft' && SUBJECT ? 'Book ' + SUBJECT + ' with this tutor.' : TITLES[STATE][1]);
   document.getElementById('devstate').value = STATE;
   document.getElementById('devstate').addEventListener('change', function () {
     var next = 'booking-detail.html?s=' + this.value;
@@ -375,6 +378,8 @@
     var ini = tutor.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
     document.querySelector('.rowitem.card .avatar').textContent = ini;
   }
+  document.getElementById('booking-subject').textContent = SUBJECT + ' · ฿' + SUBJECT_RATE.toLocaleString('en-US') + ' / hour';
+  document.getElementById('profile-link').href = SUBJECT_ID ? 'tutor-detail.html?subject=' + encodeURIComponent(SUBJECT_ID) : 'tutor-detail.html';
 
   /* ---------------- done: review form (the ONLY place to write a review) ---------------- */
   if (STATE === 'done') {
@@ -393,7 +398,7 @@
   if (STATE !== 'draft') return;
 
   /* ---------------- draft: month calendar + time slots ---------------- */
-  var RATE = 480; // per hour
+  var RATE = SUBJECT_RATE; // per hour
   var Q_START = 16, Q_END = 41; // 08:00 .. 20:30 (last block 20:30-21:00)
   var SLOT_LABELS = [];
   for (var q = Q_START; q <= Q_END; q++) SLOT_LABELS.push(labelFor(q));
@@ -423,6 +428,11 @@
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function labelFor(q) { return pad(Math.floor(q / 2)) + ':' + (q % 2 ? '30' : '00'); }
   function endOf(q) { return labelFor(q + 1); }
+  function slotFromLabel(label) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(label || '');
+    if (!m) return null;
+    return parseInt(m[1], 10) * 2 + (m[2] === '30' ? 1 : 0);
+  }
   function slotAvailable(q, freeHours) { return freeHours.indexOf(Math.floor(q / 2)) !== -1; }
   function formatDuration(n) {
     var mins = n * 30;
@@ -476,6 +486,24 @@
     renderMonth();
   });
   renderMonth();
+  (function preselectFromSubjectPage() {
+    var dateTxt = tmParam('date', '');
+    var timeTxt = tmParam('time', '');
+    if (!dateTxt || !timeTxt) return;
+    var bits = dateTxt.split(' ');
+    var month = MON.indexOf(bits[1]);
+    var slot = slotFromLabel(timeTxt);
+    if (bits.length < 3 || month < 0 || slot === null) return;
+    selDate = new Date(parseInt(bits[2], 10), month, parseInt(bits[0], 10));
+    selDate.setHours(0, 0, 0, 0);
+    viewY = selDate.getFullYear();
+    viewM = selDate.getMonth();
+    selSlots = [slot];
+    renderMonth();
+    document.getElementById('time-wrap').hidden = false;
+    renderSlots();
+    updateSummary();
+  })();
 
   function renderSlots() {
     var box = document.getElementById('timeslots');
@@ -548,7 +576,9 @@
 
   document.getElementById('send-request').addEventListener('click', function () {
     if (!selSlots.length) { tmToast('Pick a time first.'); return; }
-    location.href = 'booking-detail.html?s=' + (friends.length ? 'invites' : 'pending');
+    var next = 'booking-detail.html?s=' + (friends.length ? 'invites' : 'pending') + '&tutor=' + encodeURIComponent(tutor || 'Anong P.') + '&subject=' + encodeURIComponent(SUBJECT) + '&rate=' + encodeURIComponent(RATE);
+    if (SUBJECT_ID) next += '&subjectId=' + encodeURIComponent(SUBJECT_ID);
+    location.href = next;
   });
 })();
 </script>

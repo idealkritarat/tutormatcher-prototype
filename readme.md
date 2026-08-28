@@ -19,7 +19,7 @@ prototype/
 ├─ enroll-tutor.html             → /(auth)/enroll-tutor apply to be a tutor: upload docs → pending → approved
 ├─ admin.html                    → /admin/tutor-requests prototype console — approve your own tutor request
 ├─ search.html                   → /search
-├─ tutor-detail.html             → /tutors/:id
+├─ tutor-detail.html             → /tutors/:id and /tutors/:id/:subjectId
 ├─ dashboard-student.html        → /dashboard           full-width Student ⇄ Tutor switch
 ├─ dashboard-tutor.html          → /dashboard/tutor    TUTORS ONLY · requests, schedule, availability editor
 ├─ booking-detail.html           → /bookings/:id        one booking: draft, then its status
@@ -68,11 +68,13 @@ No build step, no dependencies. Open `index.html` directly, or serve the folder
 
 ## The booking flow
 
-`Book a lesson` on a tutor profile **creates a draft immediately** and opens
-`/bookings/:id` (not `/bookings`). From there:
+`Book a lesson` starts from a tutor subject page. `/tutors/:id` shows the tutor,
+while `/tutors/:id/:subjectId` shows that subject's details, subject-only
+availability, and subject-only reviews. Booking from there creates a draft and opens
+`/bookings/:id` (not `/bookings`) with the subject locked in. From there:
 
 1. **Draft** — a **month calendar** (‹ › to change month, up to 3 months out) shows a dot
-   on days the tutor has free; pick one, then tap **back-to-back** hourly slots.
+   on days the tutor has free for that subject; pick one, then tap **back-to-back** hourly slots.
    Non-adjacent slots are rejected; there's no weekly option — one booking is one
    continuous block. Add a note, and optionally add friends.
 2. **Friend invites** — if you added friends, the request waits until every friend

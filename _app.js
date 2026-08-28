@@ -228,6 +228,9 @@
       ];
       var file = location.pathname.split('/').pop() || 'index.html';
       var current = routes.filter(function (r) { return r.file === file; })[0] || routes[0];
+      if (file === 'tutor-detail.html' && location.search.indexOf('subject=') !== -1) {
+        current = { file: 'tutor-detail.html', path: '/tutors/:id/:subjectId', title: 'Tutor subject', access: 'public' };
+      }
       bar.classList.add('routebar');
       bar.innerHTML =
         '<span class="routebar-label">on the real site</span>' +

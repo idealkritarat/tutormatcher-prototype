@@ -693,11 +693,13 @@ body.chat-page .chat { flex: 1; height: auto; min-height: 0; }
 .cal-legend .dot.gold { background: var(--gold); }
 
 .timeslots { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
-.timeslots button {
+.timeslots button,
+.timeslots a {
   padding: 11px 6px; border: 1px solid var(--line); border-radius: 9px; background: var(--paper);
   cursor: pointer; font-size: 13px; color: var(--ink); font-variant-numeric: tabular-nums;
+  display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
 }
-.timeslots button:hover:not([disabled]) { border-color: var(--teal); }
+.timeslots button:hover:not([disabled]), .timeslots a:hover { border-color: var(--teal); }
 .timeslots button.sel { border-color: var(--teal); background: var(--teal); color: #fff; }
 .timeslots button[disabled] { opacity: .3; cursor: not-allowed; background: var(--line-soft); }
 
