@@ -9,7 +9,7 @@
 <body data-requires-auth data-requires-tutor>
 <div class="chrome">
   <div class="dots"><span></span><span></span><span></span></div>
-  <div class="bar">on the real site, this is <b>/settings/tutor</b><span class="tag">requires login</span></div>
+  <div class="bar">on the real site, this is <b>/settings/tutor</b><span class="tag">role: tutor</span></div>
 </div>
 
 <header class="appbar">
@@ -26,12 +26,13 @@
       <a class="btn ghost sm" href="login.html">Log in</a>
       <a class="btn sm" href="login.html">Sign up</a>
     </div>
-    <a class="wallet" data-auth="in" hidden href="topup.html" title="Wallet balance"><span class="w-ico">฿</span><b data-wallet>0</b></a>
+    <a class="wallet" data-auth="in" hidden href="payments.html" title="Wallet balance"><span class="w-ico">&#3647;</span><b data-wallet>0</b></a>
     <div class="menu-wrap" data-auth="in" hidden>
       <button class="menu-btn" data-menu="usermenu"><span class="avatar">MK</span></button>
       <div class="menu" id="usermenu" hidden>
         <div class="who">Signed in as <b>Mina K.</b></div>
         <a href="settings-account.html">Settings</a>
+        <a href="payments.html">Payments</a>
         <a href="topup.html">Top up wallet</a>
         <a href="admin.html">Admin</a>
         <div class="sep"></div>
@@ -42,67 +43,108 @@
 </header>
 
 <main class="page">
-  <div class="page-head">
-    <p class="eyebrow">Settings</p>
-    <h1>Tutor profile</h1>
-    <p class="desc">This is your public tutor listing. Your teaching availability is set on the
-      <a href="dashboard-tutor.html">tutor dashboard</a>, not here.</p>
-  </div>
+  <div class="settings-wrap">
+    <aside class="side-rail sticky">
+      <div class="page-head"><p class="eyebrow">Settings</p><h1>Tutor profile</h1></div>
+      <nav class="subnav">
+        <a href="settings-account.html">Account</a>
+        <a href="settings-notifications.html">Notifications</a>
+        <a href="settings-tutor.html" class="active">Tutor</a>
+        <a href="settings-wallet.html">Wallet</a>
+      </nav>
+    </aside>
 
-  <nav class="subnav">
-    <a href="settings-account.html">Account</a>
-    <a href="settings-notifications.html">Notifications</a>
-    <a href="settings-tutor.html" class="active">Tutor</a>
-    <a href="settings-wallet.html">Wallet</a>
-  </nav>
-
-  <form data-toast="Tutor profile saved.">
-    <div class="card">
-      <div class="card-head"><h2>Listing</h2><label class="check" style="align-items:center"><span class="switch"><input type="checkbox" checked><span class="track"></span></span> Published</label></div>
-      <div class="cluster" style="gap:16px;margin-bottom:16px"><span class="avatar xl">MK</span><button class="btn ghost sm" type="button" data-toast-btn="File picker is disabled in the prototype.">Upload photo</button></div>
-      <div class="field"><label for="t-name">Display name</label><input type="text" id="t-name" value="Mina Kittikul"></div>
-      <div class="field"><label for="t-head">Headline</label><input type="text" id="t-head" value="IELTS & Business English coach · 8 years experience"></div>
-      <div class="field"><label for="t-bio">Bio</label><textarea id="t-bio">I help students reach Band 7+ in IELTS with weekly speaking practice and detailed feedback. I've prepared over 300 students for IELTS, TOEFL and job interviews.</textarea></div>
-      <div class="field"><label for="t-video">Intro video URL</label><input type="url" id="t-video" placeholder="https://youtu.be/…" value="https://youtu.be/intro-anong"></div>
-    </div>
-
-    <div class="card">
-      <h2>Rate &amp; subjects</h2>
-      <div class="row">
-        <div class="field"><label for="t-rate">Hourly rate (฿)</label><input type="number" id="t-rate" value="480" min="100" step="10"></div>
-        <div class="field"><label for="t-trial">Trial rate (฿ / 30 min)</label><input type="number" id="t-trial" value="260" min="0" step="10"></div>
-      </div>
-      <div class="field"><label>Subjects &amp; levels</label>
-        <div class="grid cols-3" style="gap:10px">
-          <label class="check"><input type="checkbox" checked> IELTS Academic</label>
-          <label class="check"><input type="checkbox" checked> IELTS General</label>
-          <label class="check"><input type="checkbox" checked> Business English</label>
-          <label class="check"><input type="checkbox" checked> Interview prep</label>
-          <label class="check"><input type="checkbox"> TOEFL</label>
-          <label class="check"><input type="checkbox"> Kids (7–12)</label>
+    <div>
+      <form id="listing-form">
+        <div class="card">
+          <div class="card-head"><h2>Listing</h2><label class="check" style="align-items:center"><span class="switch"><input type="checkbox" id="t-published" checked><span class="track"></span></span> Published</label></div>
+          <div class="cluster" style="gap:16px;margin-bottom:16px"><span class="avatar xl">MK</span><button class="btn ghost sm" type="button" data-toast-btn="File picker is disabled in the prototype.">Upload photo</button></div>
+          <div class="field"><label for="t-name">Display name</label><input type="text" id="t-name"></div>
+          <div class="field"><label for="t-head">Headline</label><input type="text" id="t-head"></div>
+          <div class="field"><label for="t-bio">Bio</label><textarea id="t-bio"></textarea></div>
+          <div class="field"><label for="t-video">Intro video URL</label><input type="url" id="t-video" placeholder="https://youtu.be/..."></div>
         </div>
-      </div>
-    </div>
 
-    <div class="card">
-      <h2>Verification</h2>
-      <div class="between">
-        <div><div class="fr-label">ID &amp; teaching certification</div><div class="fr-sub">Verified 4 Mar 2025</div></div>
-        <span class="badge verified">Verified</span>
-      </div>
-      <div class="hr"></div>
-      <button class="btn ghost sm" type="button" data-toast-btn="Upload is disabled in the prototype.">Replace documents</button>
-    </div>
+        <div class="card">
+          <div class="card-head"><h2>Subjects</h2><button class="btn ghost sm" type="button" id="subj-add-open">Add subject</button></div>
+          <div id="subj-list"></div>
+          <div id="subj-form" hidden>
+            <div class="hr"></div>
+            <h3>Add subject</h3>
+            <div class="row">
+              <div class="field"><label for="subj-name">Subject</label><input type="text" id="subj-name" placeholder="IELTS Speaking"></div>
+              <div class="field"><label for="subj-rate">Hourly rate (&#3647;)</label><input type="number" id="subj-rate" min="100" step="10" placeholder="480"></div>
+            </div>
+            <div class="field"><label for="subj-desc">Description</label><textarea id="subj-desc" placeholder="What students can book you for"></textarea></div>
+            <div class="cluster" style="justify-content:flex-end"><button class="btn ghost" type="button" id="subj-cancel">Cancel</button><button class="btn" type="button" id="subj-add-save">Add subject</button></div>
+          </div>
+        </div>
 
-    <div class="card between" style="position:sticky;bottom:16px">
-      <span class="small muted">Changes apply to your public profile immediately.</span>
-      <button class="btn" type="submit">Save changes</button>
+        <div class="card">
+          <h2>Verification</h2>
+          <div class="between"><div><div class="fr-label">ID &amp; teaching certification</div><div class="fr-sub">Verified 4 Mar 2025</div></div><span class="badge verified">Verified</span></div>
+          <div class="hr"></div>
+          <button class="btn ghost sm" type="button" data-toast-btn="Upload is disabled in the prototype.">Replace documents</button>
+        </div>
+
+        <div class="card between">
+          <span class="small muted">Listing &amp; document changes are reviewed by an admin before they go live.</span>
+          <button class="btn" type="submit" id="listing-submit" disabled>Submit for review</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 
   <a class="linkback" href="index.html">&larr; back to /</a>
 </main>
 
 <script src="_app.js"></script>
+<script>
+(function () {
+  var pending = tmListing.pending();
+  var cur = pending || tmListing.live();
+  var fields = { published: document.getElementById('t-published'), name: document.getElementById('t-name'), headline: document.getElementById('t-head'), bio: document.getElementById('t-bio'), video: document.getElementById('t-video') };
+  fields.published.checked = cur.published !== false; fields.name.value = cur.name || ''; fields.headline.value = cur.headline || ''; fields.bio.value = cur.bio || ''; fields.video.value = cur.video || '';
+  var submit = document.getElementById('listing-submit');
+  function payload() { return { published: fields.published.checked, name: fields.name.value.trim(), headline: fields.headline.value.trim(), bio: fields.bio.value.trim(), video: fields.video.value.trim() }; }
+  function same(a, b) { return JSON.stringify(a) === JSON.stringify({ published: b.published !== false, name: b.name || '', headline: b.headline || '', bio: b.bio || '', video: b.video || '' }); }
+  document.getElementById('listing-form').addEventListener('input', function () { submit.disabled = same(payload(), cur); });
+  document.getElementById('listing-form').addEventListener('change', function () { submit.disabled = same(payload(), cur); });
+  document.getElementById('listing-form').addEventListener('submit', function (e) { e.preventDefault(); if (submit.disabled) return; tmListing.submit(payload()); submit.disabled = true; tmToast('Submitted for admin review.'); });
+})();
+
+(function () {
+  var listEl = document.getElementById('subj-list');
+  var form = document.getElementById('subj-form');
+  var nameEl = document.getElementById('subj-name');
+  var rateEl = document.getElementById('subj-rate');
+  var descEl = document.getElementById('subj-desc');
+  var editing = '';
+  function resetForm() { form.hidden = true; nameEl.value = ''; rateEl.value = ''; descEl.value = ''; }
+  function render() {
+    var subs = tmSubjects.list(); listEl.innerHTML = '';
+    if (!subs.length) listEl.innerHTML = '<div class="subj-empty">No subjects yet.</div>';
+    subs.forEach(function (s) {
+      var row = document.createElement('div'); row.className = 'subj-item';
+      if (editing === s.id) {
+        row.innerHTML = '<div class="subj-inline-form"><div class="row"><div class="field"><label>Subject</label><input name="name" type="text"></div><div class="field"><label>Hourly rate (&#3647;)</label><input name="rate" type="number" min="100" step="10"></div></div><div class="field"><label>Description</label><textarea name="desc"></textarea></div><div class="cluster" style="justify-content:flex-end"><button class="btn ghost sm" type="button" data-cancel>Cancel</button><button class="btn sm" type="button" data-save>Save changes</button></div></div>';
+        row.querySelector('[name="name"]').value = s.name; row.querySelector('[name="rate"]').value = s.rate; row.querySelector('[name="desc"]').value = s.desc || '';
+        row.querySelector('[data-save]').addEventListener('click', function () { tmSubjects.update(s.id, { name: row.querySelector('[name="name"]').value.trim(), rate: row.querySelector('[name="rate"]').value, desc: row.querySelector('[name="desc"]').value.trim() }); editing = ''; tmToast('Subject updated.'); render(); });
+        row.querySelector('[data-cancel]').addEventListener('click', function () { editing = ''; render(); });
+      } else {
+        row.innerHTML = '<div class="s-top"><span class="s-name"></span><span class="s-rate"></span></div><div class="s-desc"></div><div class="s-actions"><button class="btn ghost sm" type="button" data-edit>Edit</button><button class="btn danger sm" type="button" data-remove>Remove</button></div>';
+        row.querySelector('.s-name').textContent = s.name; row.querySelector('.s-rate').textContent = '฿' + (+s.rate).toLocaleString('en-US') + ' / hr'; row.querySelector('.s-desc').textContent = s.desc || '';
+        row.querySelector('[data-edit]').addEventListener('click', function () { editing = s.id; resetForm(); render(); });
+        row.querySelector('[data-remove]').addEventListener('click', function () { tmSubjects.remove(s.id); tmToast('Subject removed.'); render(); });
+      }
+      listEl.appendChild(row);
+    });
+  }
+  document.getElementById('subj-add-open').addEventListener('click', function () { editing = ''; render(); form.hidden = false; nameEl.focus(); });
+  document.getElementById('subj-cancel').addEventListener('click', resetForm);
+  document.getElementById('subj-add-save').addEventListener('click', function () { if (!nameEl.value.trim()) { tmToast('Add a subject name first.'); return; } tmSubjects.add({ name: nameEl.value.trim(), rate: rateEl.value, desc: descEl.value.trim() }); tmToast('Subject added.'); resetForm(); render(); });
+  render();
+})();
+</script>
 </body>
 </html>
