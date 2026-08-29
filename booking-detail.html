@@ -489,16 +489,16 @@
   (function preselectFromSubjectPage() {
     var dateTxt = tmParam('date', '');
     var timeTxt = tmParam('time', '');
-    if (!dateTxt || !timeTxt) return;
+    if (!dateTxt) return;
     var bits = dateTxt.split(' ');
     var month = MON.indexOf(bits[1]);
     var slot = slotFromLabel(timeTxt);
-    if (bits.length < 3 || month < 0 || slot === null) return;
+    if (bits.length < 3 || month < 0) return;
     selDate = new Date(parseInt(bits[2], 10), month, parseInt(bits[0], 10));
     selDate.setHours(0, 0, 0, 0);
     viewY = selDate.getFullYear();
     viewM = selDate.getMonth();
-    selSlots = [slot];
+    selSlots = slot === null ? [] : [slot];
     renderMonth();
     document.getElementById('time-wrap').hidden = false;
     renderSlots();

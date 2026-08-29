@@ -103,7 +103,7 @@
       <section class="card" id="availability-card" hidden>
         <div class="card-head">
           <h2>Available times</h2>
-          <span class="small muted" id="availability-note">Only slots for this subject are shown</span>
+          <span class="small muted" id="availability-note">All slots for the selected day</span>
         </div>
         <div class="cal-wrap">
           <div class="cal-head">
@@ -120,6 +120,9 @@
           <div class="hr"></div>
           <h3 id="slot-title">Times</h3>
           <div class="timeslots" id="slot-list"></div>
+          <div class="cluster" style="justify-content:flex-end;margin-top:14px">
+            <a class="btn lg" id="slot-book" href="#">Book this subject</a>
+          </div>
         </div>
       </section>
 
@@ -229,14 +232,17 @@
   var today = new Date(2026, 8, 10);
   var viewY = today.getFullYear(), viewM = today.getMonth();
   var selectedDate = null;
+  var ALL_SLOTS = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00'];
 
   function money(n) { return '&#3647;' + Number(n).toLocaleString('en-US'); }
   function subjectHref(s) { return 'tutor-detail.html?subject=' + encodeURIComponent(s.id); }
   function bookingHref(s, slot) {
     var href = 'booking-detail.html?s=draft&tutor=Anong%20P.&subjectId=' + encodeURIComponent(s.id) +
       '&subject=' + encodeURIComponent(s.name) + '&rate=' + encodeURIComponent(s.rate);
-    if (selectedDate && slot) {
+    if (selectedDate) {
       href += '&date=' + encodeURIComponent(selectedDate.getDate() + ' ' + MON[selectedDate.getMonth()] + ' ' + selectedDate.getFullYear());
+    }
+    if (selectedDate && slot) {
       href += '&time=' + encodeURIComponent(slot);
     }
     return href;
@@ -267,6 +273,14 @@
   function hasSlots(d, subject) {
     return d >= today && !!((AVAIL[subject.id] || {})[d.getDay()] || []).length;
   }
+  function firstAvailableDate(subject) {
+    var days = new Date(viewY, viewM + 1, 0).getDate();
+    for (var day = 1; day <= days; day++) {
+      var d = new Date(viewY, viewM, day); d.setHours(0, 0, 0, 0);
+      if (hasSlots(d, subject)) return d;
+    }
+    return null;
+  }
   function renderCalendar(subject) {
     var cal = document.getElementById('cal');
     var title = document.getElementById('cal-title');
@@ -295,10 +309,12 @@
   function renderSlots(subject) {
     var slots = (AVAIL[subject.id] || {})[selectedDate.getDay()] || [];
     document.getElementById('slot-preview').hidden = false;
-    document.getElementById('slot-title').textContent = selectedDate.getDate() + ' ' + MON[selectedDate.getMonth()] + ' available times';
-    document.getElementById('slot-list').innerHTML = slots.map(function (slot) {
-      return '<a class="btn ghost sm" href="' + bookingHref(subject, slot) + '">' + tmEsc(slot) + '</a>';
+    document.getElementById('slot-title').textContent = selectedDate.getDate() + ' ' + MON[selectedDate.getMonth()] + ' time slots';
+    document.getElementById('slot-list').innerHTML = ALL_SLOTS.map(function (slot) {
+      var open = slots.indexOf(slot) !== -1;
+      return '<div class="slot-status ' + (open ? 'open' : 'closed') + '"><b>' + tmEsc(slot) + '</b><span>' + (open ? 'Available' : 'Not available') + '</span></div>';
     }).join('');
+    document.getElementById('slot-book').href = bookingHref(subject);
   }
 
   renderSubjects();
@@ -326,13 +342,17 @@
     document.getElementById('book-btn').href = bookingHref(current);
     document.querySelector('.chrome .bar b').textContent = '/tutors/:id/:subjectId';
     renderCalendar(current);
+    selectedDate = firstAvailableDate(current);
+    if (selectedDate) { renderCalendar(current); renderSlots(current); }
     document.getElementById('cal-prev').addEventListener('click', function () {
       if (viewM === 0) { viewM = 11; viewY--; } else { viewM--; }
-      selectedDate = null; document.getElementById('slot-preview').hidden = true; renderCalendar(current);
+      selectedDate = firstAvailableDate(current); renderCalendar(current);
+      if (selectedDate) renderSlots(current); else document.getElementById('slot-preview').hidden = true;
     });
     document.getElementById('cal-next').addEventListener('click', function () {
       if (viewM === 11) { viewM = 0; viewY++; } else { viewM++; }
-      selectedDate = null; document.getElementById('slot-preview').hidden = true; renderCalendar(current);
+      selectedDate = firstAvailableDate(current); renderCalendar(current);
+      if (selectedDate) renderSlots(current); else document.getElementById('slot-preview').hidden = true;
     });
   }
 })();

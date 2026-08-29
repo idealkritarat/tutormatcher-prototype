@@ -702,6 +702,15 @@ body.chat-page .chat { flex: 1; height: auto; min-height: 0; }
 .timeslots button:hover:not([disabled]), .timeslots a:hover { border-color: var(--teal); }
 .timeslots button.sel { border-color: var(--teal); background: var(--teal); color: #fff; }
 .timeslots button[disabled] { opacity: .3; cursor: not-allowed; background: var(--line-soft); }
+.slot-status {
+  min-height: 54px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px; background: var(--paper);
+}
+.slot-status b { font-size: 13px; font-variant-numeric: tabular-nums; }
+.slot-status span { font-size: 11px; color: var(--ink-soft); }
+.slot-status.open { border-color: rgba(15,110,86,.45); background: rgba(15,110,86,.08); }
+.slot-status.open span { color: var(--teal-deep); font-weight: 700; }
+.slot-status.closed { opacity: .52; background: var(--line-soft); }
 
 /* ---------- tutor availability editor (month calendar + 30-min slot toggles) ---------- */
 .quickfill { display: flex; flex-wrap: wrap; gap: 6px; }
