@@ -1,14 +1,16 @@
 # TutorMatcher — HTML Prototype
 
 A clickable, no-backend prototype of the product. 18 HTML pages, one shared stylesheet,
-one shared script. Open it and use it: log in, browse tutors, build a booking slot by
-slot, add friends to a lesson, watch it move through friend-invites → tutor confirmation →
-payment, pay from a wallet, and top that wallet up with a (fake) PromptPay QR. Every
-screen shows, in the dark bar up top, what URL it would be on the real site.
+one shared script. Open it and use it: log in, browse tutors, open subject-specific tutor
+pages, inspect availability, build a booking slot by slot, add friends to a lesson, watch
+it move through friend-invites → tutor confirmation → payment, pay from a unified wallet,
+top that wallet up with a fake PromptPay QR, and request payouts. Every screen shows, in
+the dark bar up top, what URL it would be on the real site.
 
-Two things persist in your browser's `localStorage`: the **wallet balance** and whether
-you're **logged in**. Everything else — messages, bookings, reviews — resets on reload.
-It's a UI prototype for click-testing flows and layout, not a working app.
+The prototype persists a few client-side values in `localStorage`: login state, tutor role,
+wallet balance, tutor subjects, tutor availability, and tutor listing drafts. Hard-coded
+messages, bookings, reviews, and ledger examples reset on reload. It's a UI prototype for
+click-testing flows and layout, not a working app.
 
 ## File structure
 
@@ -31,9 +33,10 @@ prototype/
 ├─ settings-account.html         → /settings/account
 ├─ settings-notifications.html   → /settings/notifications
 ├─ settings-tutor.html           → /settings/tutor      public tutor listing (bio, rate, subjects, verification)
-├─ settings-wallet.html          → /settings/wallet     balance + "reset to ฿250"
+├─ settings-wallet.html          → /settings/wallet     balance, payout account, wallet shortcut
 ├─ earnings.html                 → legacy tutor earnings detail; /wallet is the primary money page
 ├─ reviews.html                  → /reviews/:tutorId    read-only list (writing lives on a completed booking)
+├─ USER_STORIES.md               → YAML user stories for the real product
 ├─ _shared.css                   → design tokens + every component style
 └─ _app.js                       → shared behaviour (auth, wallet, toasts, tabs, chat, pickers…)
 ```
@@ -64,17 +67,24 @@ No build step, no dependencies. Open `index.html` directly, or serve the folder
 - The **Student ⇄ Tutor switch** navigates between `/dashboard` and `/dashboard/tutor`
   (non-tutors land on the application). On messages the same switch flips which side you're
   chatting as without leaving the page.
+- The real route label shown in the top bar is part of the prototype navigation model.
+  In the real app it should act as a page switcher/dropdown for reviewers, with route
+  access tags like `Public`, `Requires login`, `Role: tutor`, and `Role: admin`.
 - Unread messages put a red dot on the Messages nav link (every page except that one).
 
 ## The booking flow
 
-`Book a lesson` starts from a tutor subject page. `/tutors/:id` shows the tutor,
-while `/tutors/:id/:subjectId` shows that subject's details, subject-only
-availability, and subject-only reviews. Booking from there creates a draft and opens
-`/bookings/:id` (not `/bookings`) with the subject locked in. From there:
+`Book a lesson` starts from a tutor subject page. `/tutors/:id` shows the tutor, while
+`/tutors/:id/:subjectId` shows that subject's details, subject-only reviews, and a
+subject-only availability calendar. On the subject page, selecting a date shows every
+30-minute slot from `00:00` through `23:30` as `Available` or `Not available`; the slots
+are informational, and the booking button below the slot table starts a subject-locked
+draft in `/bookings/:id`.
+
+From there:
 
 1. **Draft** — a **month calendar** (‹ › to change month, up to 3 months out) shows a dot
-   on days the tutor has free for that subject; pick one, then tap **back-to-back** hourly slots.
+   on days the tutor has free for that subject; pick one, then tap **back-to-back** 30-minute slots.
    Non-adjacent slots are rejected; there's no weekly option — one booking is one
    continuous block. Add a note, and optionally add friends.
 2. **Friend invites** — if you added friends, the request waits until every friend
@@ -103,22 +113,39 @@ each row to the right state.
 
 ## The wallet
 
-Real money enters at **`/wallet/topup`** and cleared tutor earnings enter the same
-wallet balance. `/wallet` is the combined ledger for top-ups, lesson payments,
-class earnings, refunds, and payout withdrawals. Lesson payments at
-`/wallet/transactions/:id` spend that balance; if it's short, the page sends you to
-`/wallet/topup` for the difference and back. `/settings/wallet` has a "reset to ฿250"
-button.
+Real money enters at **`/wallet/topup`** and cleared tutor earnings enter the same wallet
+balance. `/wallet` is the combined ledger for top-ups, lesson payments, class earnings,
+refunds, and payout withdrawals. Payouts are not tutor-only: any user can withdraw
+available wallet balance to a saved payout account, including a student who only topped
+up. Lesson payments at `/wallet/transactions/:id` spend that balance; if it's short, the
+page sends you to `/wallet/topup` for the difference and back. `/settings/wallet` holds
+wallet settings and payout account details.
+
+## Dashboards and settings
+
+`/dashboard` keeps the student view focused on upcoming lessons/classes, wallet balance,
+and learning progress without oversized quick-action blocks. `/dashboard/tutor` puts the
+important operational work first: compact stat cards, upcoming classes, booking requests,
+then wallet/earnings preview and subjects. Long upcoming-class, booking-request, and
+subject sections scroll inside the card instead of pushing the entire page.
+
+Settings pages keep the top navbar in place and use a sticky left rail for page-specific
+settings navigation. `/settings/tutor` keeps Listing first, Verification second, Subjects
+below Verification, and a non-sticky submit-for-review action at the bottom. Subject add
+starts as a single button; clicking it opens the add form. Editing a subject happens inline
+on the selected subject row. Availability subject assignment should use compact subject
+toggle boxes in an internal scroll area instead of small checkboxes that push the page.
 
 ## What's real vs. fake
 
 - **Design/layout**: real. `_shared.css` holds the tokens (teal `#0F6E56` / deep teal
   `#0B2B22` on cream, Fraunces headings, Inter body) and every component.
 - **Content**: real-looking placeholder data, hard-coded in the HTML.
-- **Interactions**: real but client-side. The calendar/slot picker enforces adjacency and
-  prices the lesson; friend chips add/remove; the booking state machine advances; wallet
-  top-up and lesson payment move a real (localStorage) number; filters filter; chat
-  appends bubbles; forms toast instead of submitting.
+- **Interactions**: real but client-side. The subject page shows subject-only availability;
+  the booking calendar/slot picker enforces adjacency and prices the lesson; friend chips
+  add/remove; the booking state machine advances; tutor booking detail shows students and
+  descriptions; wallet top-up, lesson payment, and payout move a real `localStorage`
+  number; filters filter; chat appends bubbles; forms toast instead of submitting.
 - **Login/role**: a `localStorage` flag, not real auth — no password is checked and the
   role switch just picks which dashboard / chat side you see. But the flag does gate the
   app pages (logged out → bounced to `login.html`), and logout clears it.
@@ -129,15 +156,13 @@ button.
 
 ## Taking this to real pages
 
-The other docs in this project are the source of truth for scope and shape:
+The source of truth for real product scope is now **`USER_STORIES.md`**. It is written as
+YAML inside Markdown and covers the real app epics: auth, profiles/settings, discovery,
+subject detail pages, booking, wallet/payments/payouts, lesson delivery, messaging,
+reviews, admin trust/safety, dashboards, and navigation.
 
-1. **`backlog.yaml`** — user stories + acceptance criteria.
-2. **`tutor-matcher-fullstack-map.md`** — API table, request/response shapes, Prisma
-   schema.
-
-Per page, "making it real" means: swap the hard-coded data for `fetch` calls against the
-fullstack-map's endpoints; give the dynamic routes a real `:id`; replace `_app.js`'s fake
-handlers (wallet math, state jumps, fake QR, toast-on-submit) with real requests, a
-payment provider for top-ups, and websocket/polling for booking status and chat; and add
-the auth/role checks the "Access" text only describes today. Do it one page at a time,
-following the "Feature module structure" section of the fullstack-map.
+Per page, "making it real" means: swap hard-coded data for API calls; give dynamic routes
+real `:id` values; replace `_app.js` fake handlers with real auth, booking, wallet ledger,
+payout, notification, and chat services; integrate a real payment provider for top-ups;
+and enforce role/access checks server-side as well as client-side. Do it one page at a
+time, using `USER_STORIES.md` as the acceptance checklist.
