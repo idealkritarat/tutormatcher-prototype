@@ -198,7 +198,7 @@
   var subs = window.tmSubjects.list();
   var locked = { '2026-8-10': ['14:00','19:00'] };
   var hours = [];
-  for (var q = 16; q <= 43; q++) hours.push(q);
+  for (var q = 0; q <= 47; q++) hours.push(q);
   noSubjects.hidden = subs.length > 0;
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function label(q) { return pad(Math.floor(q / 2)) + ':' + (q % 2 ? '30' : '00'); }

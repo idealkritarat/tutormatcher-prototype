@@ -232,7 +232,8 @@
   var today = new Date(2026, 8, 10);
   var viewY = today.getFullYear(), viewM = today.getMonth();
   var selectedDate = null;
-  var ALL_SLOTS = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00'];
+  var ALL_SLOTS = [];
+  for (var q = 0; q <= 47; q++) ALL_SLOTS.push((q < 20 ? '0' : '') + Math.floor(q / 2) + ':' + (q % 2 ? '30' : '00'));
 
   function money(n) { return '&#3647;' + Number(n).toLocaleString('en-US'); }
   function subjectHref(s) { return 'tutor-detail.html?subject=' + encodeURIComponent(s.id); }

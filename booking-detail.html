@@ -399,7 +399,7 @@
 
   /* ---------------- draft: month calendar + time slots ---------------- */
   var RATE = SUBJECT_RATE; // per hour
-  var Q_START = 16, Q_END = 41; // 08:00 .. 20:30 (last block 20:30-21:00)
+  var Q_START = 0, Q_END = 47; // 00:00 .. 23:30
   var SLOT_LABELS = [];
   for (var q = Q_START; q <= Q_END; q++) SLOT_LABELS.push(labelFor(q));
   var AVAIL = { // by getDay(): 0 Sun .. 6 Sat
