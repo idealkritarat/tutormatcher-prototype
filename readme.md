@@ -44,6 +44,10 @@ prototype/
 No build step, no dependencies. Open `index.html` directly, or serve the folder
 (`python3 -m http.server`, VS Code Live Server, etc.).
 
+For GitHub Pages, keep `.nojekyll` in the repo. The prototype uses `_shared.css` and
+`_app.js`; without `.nojekyll`, Jekyll can skip underscore-prefixed files and the hosted
+site will load without CSS/JS.
+
 ## Shell: one header, login/logout, and the role switch
 
 - **Every page uses the same header component**: brand · `Dashboard · Find tutors ·
