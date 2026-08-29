@@ -230,7 +230,9 @@ epics:
         user_story: As a user, I want confirmed lessons to have a joinable online classroom so that I can attend at lesson time.
         acceptance_criteria:
           - Given a booking is confirmed and online, when class setup runs, then a meeting link is attached.
-          - Given the room is not open yet, when the user clicks Join or Start early, then the UI explains when it opens.
+          - Given a student opens a confirmed online booking at /bookings/:id, when the page loads, then the Zoom link is visible and can be opened.
+          - Given a tutor opens an upcoming online class at /bookings/:id in tutor view, when the page loads, then the Zoom link is visible and can be opened.
+          - Given the room is not open yet, when the user clicks Join or Start early, then the UI explains when it opens or opens the configured waiting room.
       - user_story_id: US6-2
         user_story: As a tutor, I want upcoming classes to show what I need to teach next so that my dashboard is actionable.
         acceptance_criteria:

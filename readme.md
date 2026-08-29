@@ -24,7 +24,7 @@ prototype/
 ├─ tutor-detail.html             → /tutors/:id and /tutors/:id/:subjectId
 ├─ dashboard-student.html        → /dashboard           full-width Student ⇄ Tutor switch
 ├─ dashboard-tutor.html          → /dashboard/tutor    TUTORS ONLY · requests, schedule, availability editor
-├─ booking-detail.html           → /bookings/:id        one booking: draft, then its status
+├─ booking-detail.html           → /bookings/:id        one booking: draft, status, Zoom link
 ├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Pending / Invites / Past
 ├─ payments.html                 → /wallet              combined wallet ledger: top-ups, lesson payments, earnings, payouts
 ├─ payment-detail.html           → /wallet/transactions/:id pay a lesson or view one wallet transaction
@@ -92,7 +92,8 @@ From there:
 3. **Pending tutor** — the tutor accepts or declines.
 4. **Payment due** — once accepted, you pay. `/wallet/transactions/:id` deducts straight from your
    **wallet balance** — no card, no QR here.
-5. **Confirmed** — paid; the lesson is locked in.
+5. **Confirmed** — paid; the lesson is locked in and `/bookings/:id` shows the Zoom link
+   for students and tutors.
 6. **Completed** — after the lesson, this is the **only place to write a review** (star
    rating + comment, posts to the tutor's profile). `/reviews/:tutorId` is a read-only
    list; `/tutors/:id` shows recent reviews with a link back here to write one.
@@ -144,8 +145,9 @@ toggle boxes in an internal scroll area instead of small checkboxes that push th
 - **Interactions**: real but client-side. The subject page shows subject-only availability;
   the booking calendar/slot picker enforces adjacency and prices the lesson; friend chips
   add/remove; the booking state machine advances; tutor booking detail shows students and
-  descriptions; wallet top-up, lesson payment, and payout move a real `localStorage`
-  number; filters filter; chat appends bubbles; forms toast instead of submitting.
+  descriptions; confirmed bookings expose a Zoom link; wallet top-up, lesson payment, and
+  payout move a real `localStorage` number; filters filter; chat appends bubbles; forms
+  toast instead of submitting.
 - **Login/role**: a `localStorage` flag, not real auth — no password is checked and the
   role switch just picks which dashboard / chat side you see. But the flag does gate the
   app pages (logged out → bounced to `login.html`), and logout clears it.
