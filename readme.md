@@ -162,10 +162,10 @@ toggle boxes in an internal scroll area instead of small checkboxes that push th
 The source of truth for real product scope is now **`USER_STORIES.md`**. It is written as
 YAML inside Markdown and covers the real app epics: auth, profiles/settings, discovery,
 subject detail pages, booking, wallet/payments/payouts, lesson delivery, messaging,
-reviews, admin trust/safety, dashboards, and navigation.
+reviews, admin trust/safety, dashboards, navigation, and data integrity.
 
 The database sketch for that real scope is **`tutormatcher.dbml`**. It can be pasted into
-dbdiagram.io and covers users, tutor applications, documents, tutor subjects,
+dbdiagram.io and is linked from the technical foundation stories. It covers users, tutor applications, documents, tutor subjects,
 subject-specific availability, 1-1 bookings, wallet transactions, payouts, messages,
 reviews, notifications, admin reviews, and audit logs.
 

@@ -341,4 +341,23 @@ epics:
         acceptance_criteria:
           - Given the top route label is clicked, when the route switcher opens, then it lists important routes with access tags such as Public, Requires login, Role: tutor, or Role: admin.
           - Given a route is selected from the switcher, when navigation occurs, then the user is taken to that prototype page or prompted by the correct auth/role guard.
+
+  - epic_id: EPIC11
+    epic_name: Technical Foundation & Data Integrity
+    user_stories:
+      - user_story_id: US11-1
+        user_story: As a developer, I want the real product schema documented in DBML so that frontend flows, backend APIs, and database design stay aligned.
+        acceptance_criteria:
+          - Given the product scope changes, when database entities or relationships change, then tutormatcher.dbml is updated in the same work.
+          - Given a developer opens tutormatcher.dbml, when they paste it into dbdiagram.io, then it represents the current real product model.
+      - user_story_id: US11-2
+        user_story: As a developer, I want availability slots and booking slots modeled separately so that instant-paid 1-1 bookings cannot double-book tutor time.
+        acceptance_criteria:
+          - Given a tutor publishes availability, when subjects are assigned to open slots, then each slot can advertise the exact subjects available at that time.
+          - Given a student pays for a slot, when booking confirmation is saved, then the slot is locked to one booking.
+      - user_story_id: US11-3
+        user_story: As a finance operator, I want wallet transactions to be the source of truth for every money movement so that balances are auditable.
+        acceptance_criteria:
+          - Given money enters or leaves the wallet, when the transaction is recorded, then it has a type, direction, status, amount, and balance-after value.
+          - Given a payout is requested, when it is recorded, then it appears as a debit transaction linked to the user's payout account.
 ```
