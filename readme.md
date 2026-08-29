@@ -36,6 +36,7 @@ prototype/
 ├─ earnings.html                 → legacy tutor earnings detail; /wallet is the primary money page
 ├─ reviews.html                  → /reviews/:tutorId    read-only list (writing lives on a completed booking)
 ├─ USER_STORIES.md               → YAML user stories for the real product
+├─ tutormatcher.dbml             → database diagram/model for the real product
 ├─ _shared.css                   → design tokens + every component style
 └─ _app.js                       → shared behaviour (auth, wallet, toasts, tabs, chat, pickers…)
 ```
@@ -162,6 +163,11 @@ The source of truth for real product scope is now **`USER_STORIES.md`**. It is w
 YAML inside Markdown and covers the real app epics: auth, profiles/settings, discovery,
 subject detail pages, booking, wallet/payments/payouts, lesson delivery, messaging,
 reviews, admin trust/safety, dashboards, and navigation.
+
+The database sketch for that real scope is **`tutormatcher.dbml`**. It can be pasted into
+dbdiagram.io and covers users, tutor applications, documents, tutor subjects,
+subject-specific availability, 1-1 bookings, wallet transactions, payouts, messages,
+reviews, notifications, admin reviews, and audit logs.
 
 Per page, "making it real" means: swap hard-coded data for API calls; give dynamic routes
 real `:id` values; replace `_app.js` fake handlers with real auth, booking, wallet ledger,
