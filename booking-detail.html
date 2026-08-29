@@ -47,27 +47,22 @@
   <div class="page-head" style="margin-top:10px">
     <p class="eyebrow">Booking #BK-2481</p>
     <h1 id="page-title">New booking</h1>
-    <p class="desc" id="page-sub">Pick a time, add a note, and send the request to your tutor.</p>
+    <p class="desc" id="page-sub">Pick a time, add a note, and pay to confirm your 1-1 lesson.</p>
   </div>
 
   <div class="devbar">
     <span>Prototype — jump to state:</span>
     <select id="devstate">
       <option value="draft">Draft (pick a time)</option>
-      <option value="invites">Pending friend invites</option>
-      <option value="pending">Pending tutor confirmation</option>
-      <option value="accepted">Accepted — awaiting payment</option>
       <option value="upcoming">Confirmed / upcoming</option>
       <option value="done">Completed</option>
-      <option value="declined">Declined by tutor</option>
+      <option value="cancelled">Cancelled</option>
     </select>
   </div>
 
   <div class="tracker" id="tracker">
-    <div class="st" data-step="draft">Draft</div>
-    <div class="st" data-step="invites">Friends</div>
-    <div class="st" data-step="pending">Tutor</div>
-    <div class="st" data-step="accepted">Payment</div>
+    <div class="st" data-step="draft">Pick time</div>
+    <div class="st" data-step="payment">Payment</div>
     <div class="st" data-step="upcoming">Confirmed</div>
   </div>
 
@@ -111,72 +106,10 @@
       <textarea id="note" placeholder="e.g. Focus on IELTS Part 2 long turn, and review my last essay."></textarea>
     </div>
 
-    <h2>Add friends <span class="small muted" style="font-weight:400">(optional)</span></h2>
-    <p class="small muted" style="margin-bottom:10px">Everyone you add must accept before the request goes to Anong. Price is per lesson, not per person.</p>
-    <div class="cluster" style="margin-bottom:10px">
-      <input type="text" id="friend-input" placeholder="Friend's name or email" style="max-width:280px">
-      <button class="btn secondary sm" type="button" id="friend-add">Add</button>
-    </div>
-    <div class="cluster" id="friend-list"></div>
-
     <div class="hr"></div>
     <div class="cluster" style="justify-content:flex-end">
-      <button class="btn ghost" type="button" data-toast-btn="Draft saved. Find it under Bookings → Pending.">Save draft</button>
-      <button class="btn" type="button" id="send-request" disabled>Send request</button>
-    </div>
-  </section>
-
-  <!-- ============ INVITES ============ -->
-  <section class="card" data-state="invites" hidden>
-    <span class="badge warn">Waiting on friends</span>
-    <h2 style="margin-top:12px">Waiting for your friends to accept</h2>
-    <p class="small muted">Once everyone accepts, the request goes to Anong automatically.</p>
-    <div class="hr"></div>
-    <div class="rowitem"><span class="avatar sm">TS</span><div class="grow"><div class="title">Tom S.</div><div class="sub">Invited · 2h ago</div></div><span class="badge muted">Pending</span></div>
-    <div class="rowitem"><span class="avatar sm">NW</span><div class="grow"><div class="title">Nina W.</div><div class="sub">Invited · 2h ago</div></div><span class="badge ok">Accepted</span></div>
-    <div class="hr"></div>
-    <div class="summary">
-      <div class="line"><span>Proposed time</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
-      <div class="line total"><span>2 hours</span><span>฿960</span></div>
-    </div>
-    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
-      <a class="btn danger" href="bookings.html">Cancel booking</a>
-      <button class="btn" type="button" data-jump="pending">Simulate: everyone accepts &rarr;</button>
-    </div>
-  </section>
-
-  <!-- ============ PENDING TUTOR ============ -->
-  <section class="card" data-state="pending" hidden>
-    <span class="badge warn">Pending confirmation</span>
-    <h2 style="margin-top:12px">Request sent to Anong P.</h2>
-    <p class="small muted">She usually responds within 2 hours. You'll be able to pay once she accepts.</p>
-    <div class="hr"></div>
-    <div class="summary">
-      <div class="line"><span>Requested time</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
-      <div class="line"><span>Note</span><span>IELTS Part 2 practice</span></div>
-      <div class="line total"><span>2 hours</span><span>฿960</span></div>
-    </div>
-    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
-      <a class="btn danger" href="bookings.html">Cancel request</a>
-      <button class="btn ghost" type="button" data-jump="declined">Simulate: declined</button>
-      <button class="btn" type="button" data-jump="accepted">Simulate: Anong accepts &rarr;</button>
-    </div>
-  </section>
-
-  <!-- ============ ACCEPTED / PAY ============ -->
-  <section class="card" data-state="accepted" hidden>
-    <span class="badge ok">Accepted</span>
-    <h2 style="margin-top:12px">Anong accepted your booking 🎉</h2>
-    <p class="small muted">Complete payment to lock in the lesson. Paid from your wallet — no card, no QR.</p>
-    <div class="hr"></div>
-    <div class="summary">
-      <div class="line"><span>Lesson</span><b>IELTS Speaking with Anong P.</b></div>
-      <div class="line"><span>When</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
-      <div class="line total"><span>2 hours</span><span>฿960</span></div>
-    </div>
-    <div class="note" style="margin-top:14px">Your wallet balance is ฿<b data-wallet>0</b>. <a href="topup.html">Top up</a> if it's not enough.</div>
-    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
-      <a class="btn lg" href="payment-detail.html?id=PM-7731&amp;amt=960&amp;for=IELTS%20Speaking%20with%20Anong%20P.&amp;when=Fri%2013%20Sep%20%C2%B7%202%3A00%E2%80%934%3A00%20PM">Pay ฿960</a>
+      <button class="btn ghost" type="button" data-toast-btn="Draft saved. Find it under Bookings.">Save draft</button>
+      <button class="btn" type="button" id="pay-now" disabled>Pay and confirm</button>
     </div>
   </section>
 
@@ -228,36 +161,15 @@
     <div id="review-posted" hidden class="note">✓ Review posted — thanks! It now appears on Anong's profile.</div>
   </section>
 
-  <!-- ============ DECLINED ============ -->
-  <section class="card" data-state="declined" hidden>
-    <span class="badge muted">Declined</span>
-    <h2 style="margin-top:12px">Anong couldn't take this booking</h2>
-    <p class="small muted">Nothing was charged. Try another time, or find a different tutor.</p>
+  <!-- ============ CANCELLED ============ -->
+  <section class="card" data-state="cancelled" hidden>
+    <span class="badge muted">Cancelled</span>
+    <h2 style="margin-top:12px">Booking cancelled</h2>
+    <p class="small muted">The lesson is no longer on your schedule. Any eligible refund goes back to your wallet.</p>
     <div class="hr"></div>
     <div class="cluster" style="justify-content:flex-end">
       <a class="btn ghost" href="booking-detail.html?s=draft">Pick another time</a>
       <a class="btn" href="search.html">Find another tutor</a>
-    </div>
-  </section>
-
-  <!-- ============ TUTOR: REQUEST ============ -->
-  <section class="card" data-tutor-state="pending" hidden>
-    <span class="badge warn">Booking request</span>
-    <h2 style="margin-top:12px" data-tv="title">New request</h2>
-    <p class="small muted">Review the students, lesson description, time, and payout before accepting.</p>
-    <div class="hr"></div>
-    <div class="summary">
-      <div class="line"><span>Students</span><b data-tv="students">-</b></div>
-      <div class="line"><span>Subject</span><b data-tv="subject">-</b></div>
-      <div class="line"><span>Requested time</span><b data-tv="when">-</b></div>
-      <div class="line"><span>Format</span><span data-tv="format">-</span></div>
-      <div class="line"><span>Description</span><span data-tv="description">-</span></div>
-      <div class="line total"><span data-tv="duration">-</span><span data-tv="payout">-</span></div>
-    </div>
-    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
-      <a class="btn ghost" href="dashboard-tutor.html">Back to dashboard</a>
-      <button class="btn ghost" type="button" data-toast-btn="Request declined.">Decline</button>
-      <button class="btn" type="button" data-toast-btn="Request accepted. Student can now pay.">Accept request</button>
     </div>
   </section>
 
@@ -291,25 +203,22 @@
 (function () {
   var STATE = tmParam('s', 'draft');
   var AS_TUTOR = tmParam('as', '') === 'tutor';
-  var BOOKING_ID = tmParam('id', AS_TUTOR ? (STATE === 'upcoming' ? 'CL-9101' : 'BR-2481') : 'BK-2481');
+  var BOOKING_ID = tmParam('id', AS_TUTOR ? 'CL-9101' : 'BK-2481');
   var SUBJECT_ID = tmParam("subjectId", "");
   var SUBJECT = tmParam("subject", "IELTS Speaking");
   var SUBJECT_RATE = parseInt(tmParam("rate", "480"), 10) || 480;
-  var ORDER = ['draft', 'invites', 'pending', 'accepted', 'upcoming', 'done', 'declined'];
+  var ORDER = ['draft', 'upcoming', 'done', 'cancelled'];
   if (ORDER.indexOf(STATE) === -1) STATE = 'draft';
-  if (AS_TUTOR && ['pending', 'upcoming'].indexOf(STATE) === -1) STATE = 'pending';
+  if (AS_TUTOR) STATE = 'upcoming';
 
   var TITLES = {
-    draft:    ['New booking', 'Pick a time, add a note, and send the request to your tutor.'],
-    invites:  ['Waiting on friends', 'Your friends need to accept before this goes to the tutor.'],
-    pending:  ['Pending confirmation', 'The request is with your tutor.'],
-    accepted: ['Payment due', 'Your tutor accepted — pay to confirm.'],
+    draft:    ['New booking', 'Pick a time, add a note, and pay to confirm your 1-1 lesson.'],
     upcoming: ['Confirmed lesson', 'All set. See you in class.'],
     done:     ['Completed lesson', 'This lesson is done.'],
-    declined: ['Booking declined', 'The tutor could not take this one.']
+    cancelled: ['Booking cancelled', 'This lesson is no longer on your schedule.']
   };
   document.querySelector('.eyebrow').textContent = 'Booking #' + BOOKING_ID;
-  document.getElementById('page-title').textContent = AS_TUTOR ? (STATE === 'upcoming' ? 'Upcoming class' : 'Booking request') : TITLES[STATE][0];
+  document.getElementById('page-title').textContent = AS_TUTOR ? 'Upcoming class' : TITLES[STATE][0];
   document.getElementById('page-sub').textContent = AS_TUTOR ? 'Tutor view for this booking.' : (STATE === 'draft' && SUBJECT ? 'Book ' + SUBJECT + ' with this tutor.' : TITLES[STATE][1]);
   document.getElementById('devstate').value = STATE;
   document.getElementById('devstate').addEventListener('change', function () {
@@ -327,40 +236,26 @@
   });
   document.getElementById('tracker').hidden = AS_TUTOR;
 
-  // tracker (5 steps: Draft, Friends, Tutor, Payment, Confirmed)
-  var reached = { draft: 0, invites: 1, pending: 2, accepted: 3, upcoming: 4, done: 5, declined: 2 };
+  // tracker (3 steps: pick time, pay, confirmed)
+  var reached = { draft: 0, upcoming: 2, done: 3, cancelled: 1 };
   var idx = reached[STATE];
   document.querySelectorAll('#tracker .st').forEach(function (st, i) {
     st.classList.toggle('done', i < idx);
     st.classList.toggle('now', i === idx);
   });
 
-  // simulate buttons
-  document.querySelectorAll('[data-jump]').forEach(function (b) {
-    b.addEventListener('click', function () { location.href = 'booking-detail.html?s=' + b.getAttribute('data-jump'); });
-  });
-
   function renderTutorView() {
     var details = {
-      'BR-2481': { title: 'Rin T. - IELTS Speaking', students: 'Rin T. and Nicha W. (2 students)', subject: 'IELTS Speaking', when: 'Thu 12 Sep - 9:00-11:00 AM', duration: '2 hours', payout: '&#3647;960', format: 'Online', description: 'Band 7 speaking practice. Focus on Part 2 long answers and pronunciation feedback.' },
-      'BR-2482': { title: 'Hannah L. + 1 friend - Business English', students: 'Hannah L. and Ben C. (2 students)', subject: 'Business English', when: 'Fri 13 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Meeting phrases, concise email language, and presentation Q&A practice.' },
-      'BR-2483': { title: 'Tom S. - Conversation trial', students: 'Tom S. (1 student)', subject: 'Conversation', when: 'Sat 14 Sep - 5:00-6:00 PM', duration: '1 hour', payout: '&#3647;480', format: 'Online', description: 'First lesson. Wants confidence speaking about work and travel topics.' },
-      'BR-2484': { title: 'May N. - IELTS Writing', students: 'May N. (1 student)', subject: 'IELTS Writing', when: 'Sun 15 Sep - 10:00-11:30 AM', duration: '1.5 hours', payout: '&#3647;720', format: 'Online', description: 'Task 2 essay structure, thesis clarity, and grammar correction.' },
-      'BR-2485': { title: 'Ploy C. - TOEIC Grammar', students: 'Ploy C. (1 student)', subject: 'TOEIC Grammar', when: 'Mon 16 Sep - 1:00-2:00 PM', duration: '1 hour', payout: '&#3647;450', format: 'Online', description: 'Review common TOEIC grammar traps and timed practice questions.' },
-      'BR-2486': { title: 'Arun K. + 2 friends - Conversation', students: 'Arun K., Bee S., and Ken T. (3 students)', subject: 'Conversation', when: 'Tue 17 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;600', format: 'Online', description: 'Small group conversation class around workplace problem solving.' },
-      'BR-2487': { title: 'Nara S. - Presentation coaching', students: 'Nara S. (1 student)', subject: 'Presentation coaching', when: 'Wed 18 Sep - 9:30-10:30 AM', duration: '1 hour', payout: '&#3647;560', format: 'Online', description: 'Practice product update presentation and improve transitions.' },
-      'BR-2488': { title: 'Krit K. - Academic English', students: 'Krit K. (1 student)', subject: 'Academic English', when: 'Thu 19 Sep - 4:00-5:00 PM', duration: '1 hour', payout: '&#3647;500', format: 'In-person', description: 'Needs help summarizing a research article and discussion vocabulary.' },
-      'BR-2489': { title: 'Fern V. + 1 friend - Business English', students: 'Fern V. and Aim R. (2 students)', subject: 'Business English', when: 'Fri 20 Sep - 7:30-8:30 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Role play sales calls and follow-up email corrections.' },
       'CL-9101': { title: 'Jared W. - Interview prep', students: 'Jared W. (1 student)', subject: 'Interview prep', when: 'Today - 2:00-3:00 PM', duration: '1 hour', payout: '&#3647;480', format: 'Online', description: 'Mock interview for account manager role, especially behavioral answers.' },
-      'CL-9102': { title: 'Hannah L. + 1 friend - Business English', students: 'Hannah L. and Ben C. (2 students)', subject: 'Business English', when: 'Today - 7:00-8:00 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Practice meeting interruptions, summaries, and action items.' },
+      'CL-9102': { title: 'Hannah L. - Business English', students: 'Hannah L. (1 student)', subject: 'Business English', when: 'Today - 7:00-8:00 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Practice meeting interruptions, summaries, and action items.' },
       'CL-9103': { title: 'May N. - IELTS Writing', students: 'May N. (1 student)', subject: 'IELTS Writing', when: 'Tomorrow - 10:00-11:30 AM', duration: '1.5 hours', payout: '&#3647;720', format: 'Online', description: 'Essay plan review and timed Task 2 correction.' },
       'CL-9104': { title: 'Ploy C. - TOEIC Grammar', students: 'Ploy C. (1 student)', subject: 'TOEIC Grammar', when: 'Tomorrow - 1:00-2:00 PM', duration: '1 hour', payout: '&#3647;450', format: 'Online', description: 'Mini test review and grammar pattern drilling.' },
-      'CL-9105': { title: 'Arun K. + 2 friends - Conversation', students: 'Arun K., Bee S., and Ken T. (3 students)', subject: 'Conversation', when: 'Mon 16 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;600', format: 'Online', description: 'Group discussion practice with corrections after each round.' },
+      'CL-9105': { title: 'Arun K. - Conversation', students: 'Arun K. (1 student)', subject: 'Conversation', when: 'Mon 16 Sep - 6:00-7:00 PM', duration: '1 hour', payout: '&#3647;500', format: 'Online', description: 'Conversation class around workplace problem solving.' },
       'CL-9106': { title: 'Nara S. - Presentation coaching', students: 'Nara S. (1 student)', subject: 'Presentation coaching', when: 'Tue 17 Sep - 9:30-10:30 AM', duration: '1 hour', payout: '&#3647;560', format: 'Online', description: 'Final rehearsal for investor presentation.' },
       'CL-9107': { title: 'Krit K. - Academic English', students: 'Krit K. (1 student)', subject: 'Academic English', when: 'Wed 18 Sep - 4:00-5:00 PM', duration: '1 hour', payout: '&#3647;500', format: 'In-person', description: 'Discuss article outline and citation vocabulary.' },
-      'CL-9108': { title: 'Fern V. + 1 friend - Business English', students: 'Fern V. and Aim R. (2 students)', subject: 'Business English', when: 'Thu 19 Sep - 7:30-8:30 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Follow-up from sales call role play and email tone corrections.' }
+      'CL-9108': { title: 'Fern V. - Business English', students: 'Fern V. (1 student)', subject: 'Business English', when: 'Thu 19 Sep - 7:30-8:30 PM', duration: '1 hour', payout: '&#3647;520', format: 'Online', description: 'Follow-up from sales call role play and email tone corrections.' }
     };
-    var info = details[BOOKING_ID] || details[STATE === 'upcoming' ? 'CL-9101' : 'BR-2481'];
+    var info = details[BOOKING_ID] || details['CL-9101'];
     Object.keys(info).forEach(function (key) {
       document.querySelectorAll('[data-tv="' + key + '"]').forEach(function (el) {
         if (key === 'payout') el.innerHTML = info[key];
@@ -541,46 +436,27 @@
 
   function updateSummary() {
     var box = document.getElementById('sel-summary');
-    var send = document.getElementById('send-request');
-    if (!selDate || !selSlots.length) { box.hidden = true; send.disabled = true; return; }
+    var pay = document.getElementById('pay-now');
+    if (!selDate || !selSlots.length) { box.hidden = true; pay.disabled = true; return; }
     var n = selSlots.length, start = Math.min.apply(null, selSlots), last = Math.max.apply(null, selSlots);
-    document.getElementById('sel-when').textContent =
+    var whenText =
       DOW[selDate.getDay()] + ' ' + selDate.getDate() + ' ' + MON[selDate.getMonth()] +
       ' · ' + labelFor(start) + '-' + endOf(last);
+    var amount = n * RATE / 2;
+    document.getElementById('sel-when').textContent = whenText;
     document.getElementById('sel-hours').textContent = formatDuration(n);
-    document.getElementById('sel-price').textContent = '฿' + (n * RATE / 2).toLocaleString('en-US');
+    document.getElementById('sel-price').textContent = '฿' + amount.toLocaleString('en-US');
+    pay.textContent = 'Pay ฿' + amount.toLocaleString('en-US') + ' and confirm';
+    pay.dataset.href = 'payment-detail.html?id=PM-7731&amt=' + encodeURIComponent(amount) +
+      '&for=' + encodeURIComponent(SUBJECT + ' with ' + (tutor || 'Anong P.')) +
+      '&when=' + encodeURIComponent(whenText);
     box.hidden = false;
-    send.disabled = false;
+    pay.disabled = false;
   }
 
-
-  /* friends */
-  var friends = [];
-  var fInput = document.getElementById('friend-input');
-  var fList = document.getElementById('friend-list');
-  function renderFriends() {
-    fList.innerHTML = '';
-    friends.forEach(function (name, i) {
-      var c = document.createElement('span');
-      c.className = 'chip';
-      c.innerHTML = tmEsc(name) + ' <button type="button" aria-label="remove">&times;</button>';
-      c.querySelector('button').addEventListener('click', function () { friends.splice(i, 1); renderFriends(); });
-      fList.appendChild(c);
-    });
-    document.getElementById('send-request').textContent = friends.length ? 'Send invites' : 'Send request';
-  }
-  document.getElementById('friend-add').addEventListener('click', function () {
-    var v = fInput.value.trim();
-    if (!v) return;
-    friends.push(v); fInput.value = ''; renderFriends();
-  });
-  fInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('friend-add').click(); } });
-
-  document.getElementById('send-request').addEventListener('click', function () {
+  document.getElementById('pay-now').addEventListener('click', function () {
     if (!selSlots.length) { tmToast('Pick a time first.'); return; }
-    var next = 'booking-detail.html?s=' + (friends.length ? 'invites' : 'pending') + '&tutor=' + encodeURIComponent(tutor || 'Anong P.') + '&subject=' + encodeURIComponent(SUBJECT) + '&rate=' + encodeURIComponent(RATE);
-    if (SUBJECT_ID) next += '&subjectId=' + encodeURIComponent(SUBJECT_ID);
-    location.href = next;
+    location.href = this.dataset.href || 'payment-detail.html';
   });
 })();
 </script>

@@ -50,13 +50,13 @@
 
   <div class="page-head">
     <h1>Welcome back, Mina</h1>
-    <p class="desc"><span class="badge ok">Profile published</span> &nbsp;You're accepting bookings.</p>
+    <p class="desc"><span class="badge ok">Profile published</span> &nbsp;Students can book and pay available slots instantly.</p>
   </div>
 
   <div class="grid cols-4 dash-stats" style="margin-bottom:8px">
     <div class="stat"><div class="k">Classes this week</div><div class="v">9</div><div class="d">3 today</div></div>
     <div class="stat"><div class="k">Earnings this month</div><div class="v">&#3647;18,400</div><div class="d up">+12%</div></div>
-    <div class="stat"><div class="k">Pending requests</div><div class="v" id="pending-count">9</div><div class="d">Respond within 24h</div></div>
+    <div class="stat"><div class="k">Paid bookings</div><div class="v" id="paid-count">9</div><div class="d">Auto-confirmed</div></div>
     <div class="stat"><div class="k">Rating</div><div class="v">4.8</div><div class="d">97 reviews</div></div>
   </div>
 
@@ -78,30 +78,26 @@
     <div class="card-head"><h2>Upcoming classes</h2><span class="small muted">What you need to teach next</span></div>
     <div class="dash-scroll">
       <div class="rowitem"><span class="avatar">JW</span><div class="grow"><div class="title">Jared W. &middot; Interview prep</div><div class="sub">Today &middot; 2:00-3:00 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9101">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
-      <div class="rowitem"><span class="avatar">HL</span><div class="grow"><div class="title">Hannah L. + 1 friend &middot; Business English</div><div class="sub">Today &middot; 7:00-8:00 PM &middot; 2 students &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9102">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">HL</span><div class="grow"><div class="title">Hannah L. &middot; Business English</div><div class="sub">Today &middot; 7:00-8:00 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9102">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
       <div class="rowitem"><span class="avatar">MN</span><div class="grow"><div class="title">May N. &middot; IELTS Writing</div><div class="sub">Tomorrow &middot; 10:00-11:30 AM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9103">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
       <div class="rowitem"><span class="avatar">PC</span><div class="grow"><div class="title">Ploy C. &middot; TOEIC Grammar</div><div class="sub">Tomorrow &middot; 1:00-2:00 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9104">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
-      <div class="rowitem"><span class="avatar">AK</span><div class="grow"><div class="title">Arun K. + 2 friends &middot; Conversation</div><div class="sub">Mon 16 Sep &middot; 6:00-7:00 PM &middot; 3 students &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9105">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">AK</span><div class="grow"><div class="title">Arun K. &middot; Conversation</div><div class="sub">Mon 16 Sep &middot; 6:00-7:00 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9105">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
       <div class="rowitem"><span class="avatar">NS</span><div class="grow"><div class="title">Nara S. &middot; Presentation coaching</div><div class="sub">Tue 17 Sep &middot; 9:30-10:30 AM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9106">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
       <div class="rowitem"><span class="avatar">KK</span><div class="grow"><div class="title">Krit K. &middot; Academic English</div><div class="sub">Wed 18 Sep &middot; 4:00-5:00 PM &middot; 1 student &middot; In-person</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9107">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
-      <div class="rowitem"><span class="avatar">FV</span><div class="grow"><div class="title">Fern V. + 1 friend &middot; Business English</div><div class="sub">Thu 19 Sep &middot; 7:30-8:30 PM &middot; 2 students &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9108">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
+      <div class="rowitem"><span class="avatar">FV</span><div class="grow"><div class="title">Fern V. &middot; Business English</div><div class="sub">Thu 19 Sep &middot; 7:30-8:30 PM &middot; 1 student &middot; Online</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9108">View</a><button class="btn sm" data-toast-btn="Room opens 10 minutes before start.">Start</button></div>
     </div>
   </div>
 
   <div class="card dash-requests">
-    <div class="card-head"><h2>Booking requests</h2><span class="small muted">Accept to confirm the lesson</span></div>
-    <div id="requests">
-      <div class="rowitem" data-req><span class="avatar">RT</span><div class="grow"><div class="title">Rin T. &middot; IELTS Speaking</div><div class="sub">Thu 12 Sep &middot; 9:00-11:00 AM &middot; 2 hours &middot; &#3647;960</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2481">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">HL</span><div class="grow"><div class="title">Hannah L. + 1 friend &middot; Business English</div><div class="sub">Fri 13 Sep &middot; 6:00-7:00 PM &middot; 1 hour &middot; &#3647;520</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2482">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">TS</span><div class="grow"><div class="title">Tom S. &middot; Trial &middot; Conversation</div><div class="sub">Sat 14 Sep &middot; 5:00-6:00 PM &middot; 1 hour &middot; &#3647;480</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2483">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">MN</span><div class="grow"><div class="title">May N. &middot; IELTS Writing</div><div class="sub">Sun 15 Sep &middot; 10:00-11:30 AM &middot; 1.5 hours &middot; &#3647;720</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2484">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">PC</span><div class="grow"><div class="title">Ploy C. &middot; TOEIC Grammar</div><div class="sub">Mon 16 Sep &middot; 1:00-2:00 PM &middot; 1 hour &middot; &#3647;450</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2485">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">AK</span><div class="grow"><div class="title">Arun K. + 2 friends &middot; Conversation</div><div class="sub">Tue 17 Sep &middot; 6:00-7:00 PM &middot; 1 hour &middot; &#3647;600</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2486">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">NS</span><div class="grow"><div class="title">Nara S. &middot; Presentation coaching</div><div class="sub">Wed 18 Sep &middot; 9:30-10:30 AM &middot; 1 hour &middot; &#3647;560</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2487">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">KK</span><div class="grow"><div class="title">Krit K. &middot; Academic English</div><div class="sub">Thu 19 Sep &middot; 4:00-5:00 PM &middot; 1 hour &middot; &#3647;500</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2488">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
-      <div class="rowitem" data-req><span class="avatar">FV</span><div class="grow"><div class="title">Fern V. + 1 friend &middot; Business English</div><div class="sub">Fri 20 Sep &middot; 7:30-8:30 PM &middot; 1 hour &middot; &#3647;520</div></div><a class="btn ghost sm" href="booking-detail.html?s=pending&amp;as=tutor&amp;id=BR-2489">View details</a><button class="btn sm" data-accept>Accept</button><button class="btn ghost sm" data-decline>Decline</button></div>
+    <div class="card-head"><h2>New paid bookings</h2><span class="small muted">Already confirmed from your availability</span></div>
+    <div id="paid-bookings">
+      <div class="rowitem" data-paid><span class="avatar">RT</span><div class="grow"><div class="title">Rin T. &middot; IELTS Speaking</div><div class="sub">Thu 12 Sep &middot; 9:00-11:00 AM &middot; 1 student &middot; &#3647;960 paid</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9101">View details</a></div>
+      <div class="rowitem" data-paid><span class="avatar">HL</span><div class="grow"><div class="title">Hannah L. &middot; Business English</div><div class="sub">Fri 13 Sep &middot; 6:00-7:00 PM &middot; 1 student &middot; &#3647;520 paid</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9102">View details</a></div>
+      <div class="rowitem" data-paid><span class="avatar">TS</span><div class="grow"><div class="title">Tom S. &middot; Trial &middot; Conversation</div><div class="sub">Sat 14 Sep &middot; 5:00-6:00 PM &middot; 1 student &middot; &#3647;480 paid</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9103">View details</a></div>
+      <div class="rowitem" data-paid><span class="avatar">MN</span><div class="grow"><div class="title">May N. &middot; IELTS Writing</div><div class="sub">Sun 15 Sep &middot; 10:00-11:30 AM &middot; 1 student &middot; &#3647;720 paid</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9104">View details</a></div>
+      <div class="rowitem" data-paid><span class="avatar">PC</span><div class="grow"><div class="title">Ploy C. &middot; TOEIC Grammar</div><div class="sub">Mon 16 Sep &middot; 1:00-2:00 PM &middot; 1 student &middot; &#3647;450 paid</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9105">View details</a></div>
+      <div class="rowitem" data-paid><span class="avatar">NS</span><div class="grow"><div class="title">Nara S. &middot; Presentation coaching</div><div class="sub">Wed 18 Sep &middot; 9:30-10:30 AM &middot; 1 student &middot; &#3647;560 paid</div></div><a class="btn ghost sm" href="booking-detail.html?s=upcoming&amp;as=tutor&amp;id=CL-9106">View details</a></div>
     </div>
-    <div class="empty" id="requests-empty" hidden><div class="ico">OK</div><p>All caught up.</p></div>
   </div>
 
   <div class="dash-subjects card">
@@ -137,23 +133,6 @@
 
 <script src="_app.js"></script>
 <script>
-(function () {
-  var list = document.getElementById('requests');
-  var countEl = document.getElementById('pending-count');
-  var emptyEl = document.getElementById('requests-empty');
-  function refresh() {
-    var n = list.querySelectorAll('[data-req]').length;
-    countEl.textContent = n;
-    emptyEl.hidden = n !== 0;
-  }
-  list.addEventListener('click', function (e) {
-    var row = e.target.closest('[data-req]');
-    if (!row) return;
-    if (e.target.matches('[data-accept]')) { tmToast('Accepted - the student can now pay to confirm.'); row.remove(); refresh(); }
-    else if (e.target.matches('[data-decline]')) { tmToast('Request declined.'); row.remove(); refresh(); }
-  });
-})();
-
 (function () {
   var box = document.getElementById('dash-subjects');
   var subs = window.tmSubjects.list();

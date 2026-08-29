@@ -45,25 +45,19 @@
   <div class="page-head">
     <p class="eyebrow">Booking</p>
     <h1>Your bookings</h1>
-    <p class="desc">Open any booking to see its status or pay once a tutor accepts.</p>
+    <p class="desc">Open any class to see details, Zoom links, receipts, or review after completion.</p>
   </div>
 
   <div class="card">
     <div class="tabs">
       <button class="active" data-tab="tp-all">All</button>
       <button data-tab="tp-upcoming">Upcoming (2)</button>
-      <button data-tab="tp-pending">Pending (4)</button>
-      <button data-tab="tp-invites">Invites (1)</button>
+      <button data-tab="tp-drafts">Drafts (1)</button>
       <button data-tab="tp-past">Past</button>
     </div>
 
     <!-- ALL -->
     <div class="tabpanel" id="tp-all">
-      <a class="rowitem" href="booking-detail.html?s=accepted" style="text-decoration:none;color:inherit">
-        <span class="avatar">AN</span>
-        <div class="grow"><div class="title">IELTS Part 2 practice · Anong P.</div><div class="sub">Fri 13 Sep · 2:00–4:00 PM</div></div>
-        <span class="badge warn">Pay ฿960</span>
-      </a>
       <a class="rowitem" href="booking-detail.html?s=upcoming" style="text-decoration:none;color:inherit">
         <span class="avatar">AN</span>
         <div class="grow"><div class="title">IELTS Speaking · Anong P.</div><div class="sub">Tomorrow · 9:00–10:00 AM · ฿480 paid</div></div>
@@ -73,21 +67,6 @@
         <span class="avatar">DK</span>
         <div class="grow"><div class="title">Calculus revision · Daniel K.</div><div class="sub">Sat 14 Sep · 4:00–6:00 PM · ฿960 paid</div></div>
         <span class="badge ok">Confirmed</span>
-      </a>
-      <div class="rowitem">
-        <span class="avatar tutor">TS</span>
-        <div class="grow"><div class="title">Tom invited you · Conversation with Nattaya J.</div><div class="sub">Thu 12 Sep · 6:00–7:00 PM · see the Invites tab</div></div>
-        <span class="badge muted">Invite</span>
-      </div>
-      <a class="rowitem" href="booking-detail.html?s=pending" style="text-decoration:none;color:inherit">
-        <span class="avatar">MT</span>
-        <div class="grow"><div class="title">University Maths · Marcus T.</div><div class="sub">Thu 12 Sep · 5:00–6:00 PM</div></div>
-        <span class="badge muted">Pending tutor</span>
-      </a>
-      <a class="rowitem" href="booking-detail.html?s=invites" style="text-decoration:none;color:inherit">
-        <span class="avatar">SR</span>
-        <div class="grow"><div class="title">Python group lesson · Sirinya R.</div><div class="sub">Sun 15 Sep · 6:00–8:00 PM</div></div>
-        <span class="badge muted">Pending friends</span>
       </a>
       <a class="rowitem" href="booking-detail.html?s=draft" style="text-decoration:none;color:inherit">
         <span class="avatar">PW</span>
@@ -104,10 +83,10 @@
         <div class="grow"><div class="title">Piano · Ploy W.</div><div class="sub">28 Aug · ฿550 · reviewed</div></div>
         <span class="badge muted">Completed</span>
       </a>
-      <a class="rowitem" href="booking-detail.html?s=declined" style="text-decoration:none;color:inherit">
+      <a class="rowitem" href="booking-detail.html?s=cancelled" style="text-decoration:none;color:inherit">
         <span class="avatar">MT</span>
-        <div class="grow"><div class="title">University Maths · Marcus T.</div><div class="sub">20 Aug · not charged</div></div>
-        <span class="badge muted">Declined</span>
+        <div class="grow"><div class="title">University Maths · Marcus T.</div><div class="sub">20 Aug · refunded to wallet</div></div>
+        <span class="badge muted">Cancelled</span>
       </a>
     </div>
 
@@ -125,23 +104,8 @@
       </a>
     </div>
 
-    <!-- PENDING: drafts + pending-tutor + pending-invites-sent -->
-    <div class="tabpanel" id="tp-pending" hidden>
-      <a class="rowitem" href="booking-detail.html?s=accepted" style="text-decoration:none;color:inherit">
-        <span class="avatar">AN</span>
-        <div class="grow"><div class="title">IELTS Part 2 practice · Anong P.</div><div class="sub">Fri 13 Sep · 2:00–4:00 PM · tutor accepted</div></div>
-        <span class="badge warn">Pay ฿960</span>
-      </a>
-      <a class="rowitem" href="booking-detail.html?s=pending" style="text-decoration:none;color:inherit">
-        <span class="avatar">MT</span>
-        <div class="grow"><div class="title">University Maths · Marcus T.</div><div class="sub">Thu 12 Sep · 5:00–6:00 PM · waiting for tutor</div></div>
-        <span class="badge muted">Pending tutor</span>
-      </a>
-      <a class="rowitem" href="booking-detail.html?s=invites" style="text-decoration:none;color:inherit">
-        <span class="avatar">SR</span>
-        <div class="grow"><div class="title">Python group lesson · Sirinya R.</div><div class="sub">Sun 15 Sep · 6:00–8:00 PM · waiting for 1 of 2 friends</div></div>
-        <span class="badge muted">Pending friends</span>
-      </a>
+    <!-- DRAFTS -->
+    <div class="tabpanel" id="tp-drafts" hidden>
       <a class="rowitem" href="booking-detail.html?s=draft" style="text-decoration:none;color:inherit">
         <span class="avatar">PW</span>
         <div class="grow"><div class="title">Piano · Ploy W.</div><div class="sub">Draft · no time picked yet</div></div>
@@ -149,18 +113,7 @@
       </a>
     </div>
 
-    <!-- INVITES received -->
-    <div class="tabpanel" id="tp-invites" hidden>
-      <div class="rowitem" data-invite>
-        <span class="avatar tutor">TS</span>
-        <div class="grow"><div class="title">Tom invited you · Conversation with Nattaya J.</div><div class="sub">Thu 12 Sep · 6:00–7:00 PM · your share: ฿0 (host pays)</div></div>
-        <button class="btn ghost sm" data-decline>Decline</button>
-        <button class="btn sm" data-accept>Accept</button>
-      </div>
-      <div class="empty" id="invites-empty" hidden><div class="ico">📨</div><p>No pending invites.</p></div>
-    </div>
-
-    <!-- PAST: completed + declined -->
+    <!-- PAST: completed + cancelled -->
     <div class="tabpanel" id="tp-past" hidden>
       <a class="rowitem" href="booking-detail.html?s=done" style="text-decoration:none;color:inherit">
         <span class="avatar">AN</span>
@@ -171,10 +124,10 @@
         <span class="avatar">PW</span>
         <div class="grow"><div class="title">Piano · Ploy W.</div><div class="sub">28 Aug · completed · ฿550 · <span class="badge ok">Reviewed</span></div></div>
       </a>
-      <a class="rowitem" href="booking-detail.html?s=declined" style="text-decoration:none;color:inherit">
+      <a class="rowitem" href="booking-detail.html?s=cancelled" style="text-decoration:none;color:inherit">
         <span class="avatar">MT</span>
-        <div class="grow"><div class="title">University Maths · Marcus T.</div><div class="sub">20 Aug · declined by tutor · not charged</div></div>
-        <span class="badge muted">Declined</span>
+        <div class="grow"><div class="title">University Maths · Marcus T.</div><div class="sub">20 Aug · cancelled · refunded</div></div>
+        <span class="badge muted">Cancelled</span>
       </a>
     </div>
   </div>
@@ -183,22 +136,5 @@
 </main>
 
 <script src="_app.js"></script>
-<script>
-(function () {
-  var panel = document.getElementById('tp-invites');
-  panel.addEventListener('click', function (e) {
-    var row = e.target.closest('[data-invite]');
-    if (!row) return;
-    if (e.target.matches('[data-accept]')) tmToast('Accepted — waiting for the other guests and the tutor now.');
-    else if (e.target.matches('[data-decline]')) tmToast('Invite declined.');
-    else return;
-    row.remove();
-    var n = panel.querySelectorAll('[data-invite]').length;
-    document.getElementById('invites-empty').hidden = n !== 0;
-    var tabBtn = document.querySelector('[data-tab="tp-invites"]');
-    tabBtn.textContent = 'Invites' + (n ? ' (' + n + ')' : '');
-  });
-})();
-</script>
 </body>
 </html>

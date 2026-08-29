@@ -50,7 +50,7 @@ epics:
       - user_story_id: US1-4
         user_story: As a logged-in student, I want to apply to become a tutor so that I can teach on the platform.
         acceptance_criteria:
-          - Given a logged-in user opens /enroll-tutor, when they submit required identity, credential, bio, and subject information, then their application is marked pending.
+          - Given a logged-in user opens /enroll-tutor, when they submit required identity, credential, and bio information, then their application is marked pending.
           - Given a user is already an approved tutor, when they open /enroll-tutor, then they are routed to /dashboard/tutor.
       - user_story_id: US1-5
         user_story: As a user, I want route access to match my login and role so that I only see pages I am allowed to use.
@@ -149,28 +149,29 @@ epics:
           - Given the user selects non-adjacent slots, when selection is attempted, then the UI prevents a non-continuous lesson.
           - Given slots are selected, when the summary updates, then duration and price are calculated from the subject rate.
       - user_story_id: US4-3
-        user_story: As a student, I want to add friends to a lesson so that a small group can attend together.
+        user_story: As a student, I want each booking to be 1-1 so that the lesson, price, and schedule are simple.
         acceptance_criteria:
-          - Given friends are added to a draft, when the request is sent, then the booking enters a pending-invites state.
-          - Given all invited friends accept, when invite completion occurs, then the request is sent to the tutor.
+          - Given a student creates a booking, when the form is shown, then there is no add-friend or group invite flow.
+          - Given the booking is confirmed, when participants are listed, then exactly one student and one tutor are attached.
       - user_story_id: US4-4
-        user_story: As an invited student, I want to accept or decline a group lesson invite so that I control whether I join.
+        user_story: As a student, I want to pay immediately after choosing an available slot so that the booking is confirmed in one flow.
         acceptance_criteria:
-          - Given I receive an invite, when I accept, then I am added to the booking participants.
-          - Given I decline, when processed, then the requester sees my declined status.
+          - Given the student selects valid continuous slots, when they continue, then they are taken to /wallet/transactions/:id to pay.
+          - Given payment succeeds, when the transaction completes, then the booking becomes confirmed immediately.
+          - Given payment does not succeed, when the flow exits, then no confirmed booking is created.
       - user_story_id: US4-5
-        user_story: As a tutor, I want to accept or decline booking requests so that I control my schedule.
+        user_story: As a tutor, I want paid bookings to be auto-confirmed from my published availability so that I do not need to manually approve each booking.
         acceptance_criteria:
-          - Given a request is pending, when the tutor accepts, then the booking moves to payment due for the student.
-          - Given the tutor declines, when processed, then no money is charged and the student is notified.
+          - Given a tutor has published an available slot for a subject, when a student books and pays for that slot, then the class is added to the tutor schedule.
+          - Given the slot is already booked, when another student tries to pay for it, then the booking is blocked before payment capture.
       - user_story_id: US4-6
-        user_story: As a tutor, I want booking request details to show participants and lesson description so that I can decide whether to accept.
+        user_story: As a tutor, I want booking details to show the student and lesson description so that I can prepare for a confirmed class.
         acceptance_criteria:
-          - Given a tutor opens /bookings/:id from Booking requests, when the page loads, then student count, student names, subject, time, format, payout, and description are visible.
+          - Given a tutor opens /bookings/:id for an upcoming class, when the page loads, then student name, subject, time, format, payout, Zoom link, and description are visible.
       - user_story_id: US4-7
-        user_story: As a user, I want bookings grouped by status so that I can find upcoming, pending, invite, past, and declined lessons.
+        user_story: As a user, I want bookings grouped by status so that I can find upcoming, draft, past, and cancelled lessons.
         acceptance_criteria:
-          - Given bookings exist in multiple states, when /bookings opens, then tabs filter All, Upcoming, Pending, Invites, and Past.
+          - Given bookings exist in multiple states, when /bookings opens, then tabs filter All, Upcoming, Drafts, and Past.
           - Given a booking row is clicked, when opened, then /bookings/:id shows the correct state.
       - user_story_id: US4-8
         user_story: As a user, I want to cancel or reschedule within policy so that schedule changes are handled fairly.
@@ -192,7 +193,7 @@ epics:
           - Given the user enters a valid amount, when PromptPay payment is confirmed, then wallet balance increases and a transaction is recorded.
           - Given payment is not confirmed, when the flow ends, then no balance is added.
       - user_story_id: US5-3
-        user_story: As a student, I want lesson payments to come from wallet balance so that payment is quick after tutor acceptance.
+        user_story: As a student, I want lesson payments to come from wallet balance so that payment is quick after choosing an available slot.
         acceptance_criteria:
           - Given sufficient available balance, when the user pays for a booking, then the amount is deducted and the booking becomes confirmed.
           - Given insufficient balance, when payment is attempted, then the user is sent to top up the short amount.
@@ -317,10 +318,10 @@ epics:
         acceptance_criteria:
           - Given the student dashboard opens, when content loads, then upcoming lessons/classes, wallet balance, and learning progress are visible without large quick-action blocks.
       - user_story_id: US10-2
-        user_story: As a tutor, I want my dashboard ordered by operational priority so that I can act on classes and requests quickly.
+        user_story: As a tutor, I want my dashboard ordered by operational priority so that I can act on confirmed classes and new paid bookings quickly.
         acceptance_criteria:
-          - Given /dashboard/tutor opens, when content loads, then compact stat cards appear first, followed by upcoming classes, booking requests, earnings preview, and subjects.
-          - Given upcoming classes, booking requests, or subjects are long, when content overflows, then each section scrolls internally.
+          - Given /dashboard/tutor opens, when content loads, then compact stat cards appear first, followed by earnings preview, upcoming classes, new paid bookings, and subjects.
+          - Given upcoming classes, new paid bookings, or subjects are long, when content overflows, then each section scrolls internally.
       - user_story_id: US10-3
         user_story: As a tutor, I want subjects on my dashboard to link to /settings/tutor so that updates happen in the canonical settings page.
         acceptance_criteria:

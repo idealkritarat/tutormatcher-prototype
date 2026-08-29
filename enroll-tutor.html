@@ -68,17 +68,6 @@
       <label for="e-bio">Bio</label>
       <textarea id="e-bio" placeholder="Tell students about your experience and teaching style."></textarea>
     </div>
-    <div class="field">
-      <label>Subjects taught</label>
-      <div class="grid cols-3" style="gap:10px" id="e-subjects">
-        <label class="check"><input type="checkbox"> Maths</label>
-        <label class="check"><input type="checkbox"> English / IELTS</label>
-        <label class="check"><input type="checkbox"> Science</label>
-        <label class="check"><input type="checkbox"> Coding</label>
-        <label class="check"><input type="checkbox"> Music</label>
-        <label class="check"><input type="checkbox"> Business</label>
-      </div>
-    </div>
 
     <div class="hr"></div>
     <div class="cluster" style="justify-content:flex-end">
@@ -97,7 +86,7 @@
     <div class="summary">
       <div class="line"><span>Government ID</span><b>Uploaded ✓</b></div>
       <div class="line"><span>Teaching certification</span><b>Uploaded ✓</b></div>
-      <div class="line"><span>Profile</span><b>Bio &amp; subjects submitted</b></div>
+      <div class="line"><span>Profile</span><b>Bio submitted</b></div>
       <div class="line total"><span>Status</span><span class="badge warn">Awaiting approval</span></div>
     </div>
     <div class="note" style="margin-top:16px">
@@ -149,13 +138,9 @@
 
   var bio = document.getElementById('e-bio');
   bio.addEventListener('input', validate);
-  document.getElementById('e-subjects').addEventListener('change', validate);
 
-  function subjectCount() {
-    return document.querySelectorAll('#e-subjects input:checked').length;
-  }
   function validate() {
-    var ok = uploaded.id && uploaded.cert && bio.value.trim().length > 0 && subjectCount() > 0;
+    var ok = uploaded.id && uploaded.cert && bio.value.trim().length > 0;
     document.getElementById('apply-submit').disabled = !ok;
   }
 
@@ -163,7 +148,6 @@
     e.preventDefault();
     if (!(uploaded.id && uploaded.cert)) { tmToast('Upload both documents first.'); return; }
     if (!bio.value.trim()) { tmToast('Add a short bio.'); return; }
-    if (subjectCount() === 0) { tmToast('Pick at least one subject.'); return; }
     tmTutor.apply();
     tmToast('Application submitted for review.');
     setTimeout(function () { location.href = 'enroll-tutor.html'; }, 600);

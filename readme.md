@@ -2,10 +2,9 @@
 
 A clickable, no-backend prototype of the product. 18 HTML pages, one shared stylesheet,
 one shared script. Open it and use it: log in, browse tutors, open subject-specific tutor
-pages, inspect availability, build a booking slot by slot, add friends to a lesson, watch
-it move through friend-invites → tutor confirmation → payment, pay from a unified wallet,
-top that wallet up with a fake PromptPay QR, and request payouts. Every screen shows, in
-the dark bar up top, what URL it would be on the real site.
+pages, inspect availability, build a 1-1 booking slot by slot, pay immediately from a
+unified wallet, top that wallet up with a fake PromptPay QR, and request payouts. Every
+screen shows, in the dark bar up top, what URL it would be on the real site.
 
 The prototype persists a few client-side values in `localStorage`: login state, tutor role,
 wallet balance, tutor subjects, tutor availability, and tutor listing drafts. Hard-coded
@@ -25,7 +24,7 @@ prototype/
 ├─ dashboard-student.html        → /dashboard           full-width Student ⇄ Tutor switch
 ├─ dashboard-tutor.html          → /dashboard/tutor    TUTORS ONLY · requests, schedule, availability editor
 ├─ booking-detail.html           → /bookings/:id        one booking: draft, status, Zoom link
-├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Pending / Invites / Past
+├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Drafts / Past
 ├─ payments.html                 → /wallet              combined wallet ledger: top-ups, lesson payments, earnings, payouts
 ├─ payment-detail.html           → /wallet/transactions/:id pay a lesson or view one wallet transaction
 ├─ topup.html                    → /wallet/topup        add real money to the wallet (QR)
@@ -59,7 +58,8 @@ site will load without CSS/JS.
   - `tm_auth` — `''` logged out · `'user'` logged in. Everyone logs in as a plain student.
   - `tm_tutor` — `''` not a tutor · `'pending'` applied, awaiting admin · `'approved'` tutor.
 - **Becoming a tutor**: "Become a tutor" → `/(auth)/enroll-tutor` → upload ID +
-  certification, add a bio and subjects → **submit** (`tm_tutor = pending`). While pending
+  certification and add a bio → **submit** (`tm_tutor = pending`). Subjects are managed later
+  in `/settings/tutor`. While pending
   you can re-open that page to **cancel & re-submit**. `/admin/tutor-requests` shows the
   one request with **Approve / Reject**; approving sets `tm_tutor = approved`. After that,
   `/(auth)/enroll-tutor` just redirects to `/dashboard/tutor`.
@@ -89,16 +89,13 @@ From there:
 
 1. **Draft** — a **month calendar** (‹ › to change month, up to 3 months out) shows a dot
    on days the tutor has free for that subject; pick one, then tap **back-to-back** 30-minute slots.
-   Non-adjacent slots are rejected; there's no weekly option — one booking is one
-   continuous block. Add a note, and optionally add friends.
-2. **Friend invites** — if you added friends, the request waits until every friend
-   accepts, then it automatically moves to the tutor.
-3. **Pending tutor** — the tutor accepts or declines.
-4. **Payment due** — once accepted, you pay. `/wallet/transactions/:id` deducts straight from your
-   **wallet balance** — no card, no QR here.
-5. **Confirmed** — paid; the lesson is locked in and `/bookings/:id` shows the Zoom link
+   Non-adjacent slots are rejected; there's no weekly option and no group booking — one
+   booking is one continuous 1-1 block. Add a note, then pay immediately.
+2. **Payment** — `/wallet/transactions/:id` deducts straight from your **wallet balance**.
+   There is no tutor accept step because the tutor already published that slot as available.
+3. **Confirmed** — paid; the lesson is locked in and `/bookings/:id` shows the Zoom link
    for students and tutors.
-6. **Completed** — after the lesson, this is the **only place to write a review** (star
+4. **Completed** — after the lesson, this is the **only place to write a review** (star
    rating + comment, posts to the tutor's profile). `/reviews/:tutorId` is a read-only
    list; `/tutors/:id` shows recent reviews with a link back here to write one.
 
@@ -112,9 +109,8 @@ each row to the right state.
 | -------- | ------------------------------------------------------------------------- |
 | All      | every booking, any status                                                |
 | Upcoming | confirmed, paid lessons                                                   |
-| Pending  | drafts + "pending tutor" + "waiting on friends I invited"                 |
-| Invites  | group-lesson invites other people sent to you — accept / decline         |
-| Past     | completed lessons + declined requests                                    |
+| Drafts   | bookings started but not paid yet                                        |
+| Past     | completed and cancelled lessons                                         |
 
 ## The wallet
 
@@ -130,9 +126,9 @@ wallet settings and payout account details.
 
 `/dashboard` keeps the student view focused on upcoming lessons/classes, wallet balance,
 and learning progress without oversized quick-action blocks. `/dashboard/tutor` puts the
-important operational work first: compact stat cards, upcoming classes, booking requests,
-then wallet/earnings preview and subjects. Long upcoming-class, booking-request, and
-subject sections scroll inside the card instead of pushing the entire page.
+important operational work first: compact stat cards, wallet/earnings preview, upcoming
+classes, new paid bookings, then subjects. Long upcoming-class, new-booking, and subject
+sections scroll inside the card instead of pushing the entire page.
 
 Settings pages keep the top navbar in place and use a sticky left rail for page-specific
 settings navigation. `/settings/tutor` keeps Listing first, Verification second, Subjects
@@ -147,9 +143,9 @@ toggle boxes in an internal scroll area instead of small checkboxes that push th
   `#0B2B22` on cream, Fraunces headings, Inter body) and every component.
 - **Content**: real-looking placeholder data, hard-coded in the HTML.
 - **Interactions**: real but client-side. The subject page shows subject-only availability;
-  the booking calendar/slot picker enforces adjacency and prices the lesson; friend chips
-  add/remove; the booking state machine advances; tutor booking detail shows students and
-  descriptions; confirmed bookings expose a Zoom link; wallet top-up, lesson payment, and
+  the booking calendar/slot picker enforces adjacency and prices the 1-1 lesson; the
+  booking state machine goes from draft to payment to confirmed; tutor booking detail shows
+  the student and description; confirmed bookings expose a Zoom link; wallet top-up, lesson payment, and
   payout move a real `localStorage` number; filters filter; chat appends bubbles; forms
   toast instead of submitting.
 - **Login/role**: a `localStorage` flag, not real auth — no password is checked and the
