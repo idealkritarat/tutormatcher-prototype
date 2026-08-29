@@ -30,7 +30,6 @@ Enum subject_status {
 }
 
 Enum booking_status {
-  draft
   payment_due
   confirmed
   completed
@@ -216,7 +215,7 @@ Table bookings {
   student_user_id integer [not null]
   tutor_user_id integer [not null]
   tutor_subject_id integer [not null]
-  status booking_status [not null, default: 'draft']
+  status booking_status [not null, default: 'payment_due']
   format booking_format [not null, default: 'online']
   starts_at timestamp [not null]
   ends_at timestamp [not null]

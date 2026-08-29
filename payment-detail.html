@@ -46,44 +46,28 @@
 
   <div class="page-head" style="margin-top:10px">
     <p class="eyebrow" id="pm-id">Transaction #PM-7731</p>
-    <h1>Pay for your lesson</h1>
-    <p class="desc">Lesson payments come straight out of your TutorMatcher wallet — no card, no QR.</p>
+    <h1>Transaction details</h1>
+    <p class="desc">Wallet transactions are history records. Lesson payments are completed from the booking page.</p>
   </div>
 
   <!-- FORM -->
   <div class="card" id="pay-form">
-    <h2>Summary</h2>
+    <h2 id="transaction-heading">Summary</h2>
     <div class="summary">
       <div class="line"><span>For</span><b id="pm-for">IELTS Speaking with Anong P.</b></div>
       <div class="line"><span>When</span><b id="pm-when">Fri 13 Sep · 2:00–4:00 PM</b></div>
       <div class="line"><span>Wallet balance</span><span>฿<b data-wallet>0</b></span></div>
-      <div class="line total"><span>Amount due</span><span id="pm-amt">฿960</span></div>
+      <div class="line total"><span id="amount-label">Amount</span><span id="pm-amt">฿960</span></div>
     </div>
 
-    <div id="short" class="note warn" style="margin-top:14px" hidden>
-      Your wallet is short by <b id="short-amt">฿0</b>. Top up first, then come back to pay.
+    <div id="not-paid" class="note warn" style="margin-top:14px" hidden>
+      This lesson payment is not complete yet. Pay from the locked booking page so the class can be confirmed.
     </div>
 
     <div class="cluster" style="justify-content:flex-end;margin-top:16px">
       <a class="btn ghost" id="topup-link" href="topup.html">Top up wallet</a>
-      <button class="btn lg" id="pay-btn" type="button">Pay now</button>
+      <a class="btn lg" id="booking-pay-link" href="booking-detail.html?s=payment&amp;id=BK-2481">Pay in booking</a>
     </div>
-  </div>
-
-  <!-- SUCCESS -->
-  <div class="card center" id="pay-done" hidden>
-    <div class="check-big">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-    </div>
-    <h2 style="margin-bottom:4px">Payment complete</h2>
-    <p class="small muted" id="done-line">Paid ฿960 · new balance ฿0</p>
-    <div class="summary" style="text-align:left;margin:18px 0">
-      <div class="line"><span>Lesson</span><b id="done-for">IELTS Speaking with Anong P.</b></div>
-      <div class="line"><span>When</span><b id="done-when">Fri 13 Sep · 2:00–4:00 PM</b></div>
-      <div class="line"><span>Status</span><span class="badge ok">Confirmed</span></div>
-    </div>
-    <a class="btn block lg" href="booking-detail.html?s=upcoming">View booking</a>
-    <a class="btn ghost block" href="messages.html" style="margin-top:10px">Message tutor</a>
   </div>
 
   <a class="linkback" href="index.html">&larr; back to /</a>
@@ -98,56 +82,31 @@
   var id = tmParam('id', 'PM-7731');
   var type = tmParam('type', 'pay');
   var dir = tmParam('dir', 'out');
+  var bookingId = tmParam('bookingId', 'BK-2481');
 
   document.getElementById('pm-id').textContent = 'Transaction #' + id;
   document.getElementById('pm-for').textContent = forTxt;
   document.getElementById('pm-when').textContent = whenTxt;
-  document.getElementById('pm-amt').textContent = '฿' + amt.toLocaleString('en-US');
-  document.getElementById('done-for').textContent = forTxt;
-  document.getElementById('done-when').textContent = whenTxt;
+  var sign = dir === 'out' ? '-' : '+';
+  document.getElementById('pm-amt').textContent = sign + '฿' + amt.toLocaleString('en-US');
 
   if (type !== 'pay') {
-    var sign = dir === 'out' ? '-' : '+';
-    document.querySelector('.page-head h1').textContent = 'Transaction details';
-    document.querySelector('.page-head .desc').textContent = 'A wallet ledger entry for this account.';
-    document.querySelector('#pay-form .summary .line.total span:first-child').textContent = 'Amount';
-    document.getElementById('pm-amt').textContent = sign + '\u0E3F' + amt.toLocaleString('en-US');
+    document.getElementById('transaction-heading').textContent = 'History record';
     document.querySelector('#pay-form .summary .line:nth-child(3)').hidden = true;
     document.querySelector('#pay-form .cluster').hidden = true;
     return;
   }
 
-  function refresh() {
-    var bal = tmWallet.get();
-    var short = amt - bal;
-    var payBtn = document.getElementById('pay-btn');
-    var shortBox = document.getElementById('short');
-    var topupLink = document.getElementById('topup-link');
-    payBtn.textContent = 'Pay ฿' + amt.toLocaleString('en-US');
-    if (short > 0) {
-      payBtn.disabled = true;
-      shortBox.hidden = false;
-      document.getElementById('short-amt').textContent = '฿' + short.toLocaleString('en-US');
-      topupLink.textContent = 'Top up ฿' + short.toLocaleString('en-US');
-      topupLink.href = 'topup.html?need=' + short;
-    } else {
-      payBtn.disabled = false;
-      shortBox.hidden = true;
-      topupLink.textContent = 'Top up wallet';
-      topupLink.href = 'topup.html';
-    }
-  }
-  refresh();
-
-  document.getElementById('pay-btn').addEventListener('click', function () {
-    if (tmWallet.get() < amt) { tmToast('Not enough balance — top up first.'); return; }
-    tmWallet.sub(amt);
-    document.getElementById('done-line').textContent =
-      'Paid ฿' + amt.toLocaleString('en-US') + ' · new balance ฿' + tmWallet.get().toLocaleString('en-US');
-    document.getElementById('pay-form').hidden = true;
-    document.getElementById('pay-done').hidden = false;
-    tmToast('Payment complete — lesson confirmed!');
-  });
+  document.querySelector('.page-head h1').textContent = 'Payment not completed';
+  document.querySelector('.page-head .desc').textContent = 'This transaction is not a payment screen. Complete payment inside the booking.';
+  document.getElementById('transaction-heading').textContent = 'Pending payment';
+  document.getElementById('amount-label').textContent = 'Amount due';
+  document.getElementById('pm-amt').textContent = '฿' + amt.toLocaleString('en-US');
+  document.getElementById('not-paid').hidden = false;
+  document.getElementById('booking-pay-link').href = 'booking-detail.html?s=payment&id=' + encodeURIComponent(bookingId) +
+    '&amt=' + encodeURIComponent(amt) +
+    '&for=' + encodeURIComponent(forTxt) +
+    '&when=' + encodeURIComponent(whenTxt);
 })();
 </script>
 </body>

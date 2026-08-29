@@ -14,6 +14,7 @@ route_strategy:
   authenticated:
     - /dashboard
     - /bookings
+    - /bookings/s/:subjectId
     - /bookings/:id
     - /messages/:id
     - /wallet
@@ -140,8 +141,9 @@ epics:
       - user_story_id: US4-1
         user_story: As a student, I want booking to start with a selected tutor subject so that I do not need to choose the subject again later.
         acceptance_criteria:
-          - Given a booking starts from /tutors/:id/:subjectId, when /bookings/:id opens, then subject and rate are locked into the booking draft.
-          - Given the user opens the tutor profile from the draft, when they click Profile, then they return to that subject detail page.
+          - Given a booking starts from /tutors/:id/:subjectId, when /bookings/s/:subjectId opens, then subject and rate are locked into the booking flow and no booking_id exists yet.
+          - Given the student chooses a date and time, when they continue, then /bookings/:id opens with the booking ID, date, time, subject, and price locked.
+          - Given the user opens the tutor profile from the subject booking flow, when they click Profile, then they return to that subject detail page.
       - user_story_id: US4-2
         user_story: As a student, I want to choose one continuous block of 30-minute slots so that a lesson has a clear start and end time.
         acceptance_criteria:
@@ -154,9 +156,10 @@ epics:
           - Given a student creates a booking, when the form is shown, then there is no add-friend or group invite flow.
           - Given the booking is confirmed, when participants are listed, then exactly one student and one tutor are attached.
       - user_story_id: US4-4
-        user_story: As a student, I want to pay immediately after choosing an available slot so that the booking is confirmed in one flow.
+        user_story: As a student, I want to pay on /bookings/:id after choosing an available slot so that the booking is confirmed in one flow.
         acceptance_criteria:
-          - Given the student selects valid continuous slots, when they continue, then they are taken to /wallet/transactions/:id to pay.
+          - Given the student selects valid continuous slots, when they continue, then they are taken to /bookings/:id with the selected date and time locked.
+          - Given /bookings/:id is in payment due state, when the student has enough wallet balance, then they can pay on that page.
           - Given payment succeeds, when the transaction completes, then the booking becomes confirmed immediately.
           - Given payment does not succeed, when the flow exits, then no confirmed booking is created.
       - user_story_id: US4-5
@@ -169,9 +172,9 @@ epics:
         acceptance_criteria:
           - Given a tutor opens /bookings/:id for an upcoming class, when the page loads, then student name, subject, time, format, payout, Zoom link, and description are visible.
       - user_story_id: US4-7
-        user_story: As a user, I want bookings grouped by status so that I can find upcoming, draft, past, and cancelled lessons.
+        user_story: As a user, I want bookings grouped by status so that I can find upcoming, payment due, past, and cancelled lessons.
         acceptance_criteria:
-          - Given bookings exist in multiple states, when /bookings opens, then tabs filter All, Upcoming, Drafts, and Past.
+          - Given bookings exist in multiple states, when /bookings opens, then tabs filter All, Upcoming, Payment due, and Past.
           - Given a booking row is clicked, when opened, then /bookings/:id shows the correct state.
       - user_story_id: US4-8
         user_story: As a user, I want to cancel or reschedule within policy so that schedule changes are handled fairly.
@@ -217,7 +220,8 @@ epics:
         user_story: As a user, I want transaction detail pages so that I can inspect receipts and ledger entries.
         acceptance_criteria:
           - Given a transaction is opened, when /wallet/transactions/:id loads, then type, amount, direction, status, date, and related booking are shown.
-          - Given the transaction is a payment due flow, when payment succeeds, then the same page can show completion state.
+          - Given a lesson payment transaction is not completed, when /wallet/transactions/:id loads, then it tells the user to pay from /bookings/:id.
+          - Given the transaction is completed, when /wallet/transactions/:id loads, then it is read-only history and does not allow payment.
       - user_story_id: US5-8
         user_story: As a student, I want refund handling for cancelled or disputed lessons so that wallet balance is corrected fairly.
         acceptance_criteria:
@@ -350,6 +354,7 @@ epics:
         acceptance_criteria:
           - Given the product scope changes, when database entities or relationships change, then tutormatcher.dbml is updated in the same work.
           - Given a developer opens tutormatcher.dbml, when they paste it into dbdiagram.io, then it represents the current real product model.
+          - Given a student is still on /bookings/s/:subjectId, when no time has been chosen, then no bookings row exists yet.
       - user_story_id: US11-2
         user_story: As a developer, I want availability slots and booking slots modeled separately so that instant-paid 1-1 bookings cannot double-book tutor time.
         acceptance_criteria:

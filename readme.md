@@ -23,10 +23,10 @@ prototype/
 ├─ tutor-detail.html             → /tutors/:id and /tutors/:id/:subjectId
 ├─ dashboard-student.html        → /dashboard           full-width Student ⇄ Tutor switch
 ├─ dashboard-tutor.html          → /dashboard/tutor    TUTORS ONLY · requests, schedule, availability editor
-├─ booking-detail.html           → /bookings/:id        one booking: draft, status, Zoom link
-├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Drafts / Past
+├─ booking-detail.html           → /bookings/s/:subjectId and /bookings/:id subject booking, payment, status, Zoom link
+├─ bookings.html                 → /bookings            all your bookings — tabs: All / Upcoming / Payment due / Past
 ├─ payments.html                 → /wallet              combined wallet ledger: top-ups, lesson payments, earnings, payouts
-├─ payment-detail.html           → /wallet/transactions/:id pay a lesson or view one wallet transaction
+├─ payment-detail.html           → /wallet/transactions/:id read-only wallet transaction history
 ├─ topup.html                    → /wallet/topup        add real money to the wallet (QR)
 ├─ messages.html                 → /messages/:id        fills the viewport, no page scroll; Student ⇄ Tutor switch
 ├─ settings-account.html         → /settings/account
@@ -84,23 +84,27 @@ site will load without CSS/JS.
 subject-only availability calendar. On the subject page, selecting a date shows every
 30-minute slot from `00:00` through `23:30` as `Available` or `Not available`; the slots
 are informational, and the booking button below the slot table starts a subject-locked
-draft in `/bookings/:id`.
+flow at `/bookings/s/:subjectId`.
 
 From there:
 
-1. **Draft** — a **month calendar** (‹ › to change month, up to 3 months out) shows a dot
+1. **Subject booking** — `/bookings/s/:subjectId` shows a **month calendar** (‹ › to change month, up to 3 months out) with a dot
    on days the tutor has free for that subject; pick one, then tap **back-to-back** 30-minute slots.
    Non-adjacent slots are rejected; there's no weekly option and no group booking — one
-   booking is one continuous 1-1 block. Add a note, then pay immediately.
-2. **Payment** — `/wallet/transactions/:id` deducts straight from your **wallet balance**.
-   There is no tutor accept step because the tutor already published that slot as available.
+   booking is one continuous 1-1 block. This step has no `booking_id` yet.
+2. **Payment due** — choosing time creates the `booking_id` and opens `/bookings/:id`
+   immediately with the subject, date, time, and price locked. Payment happens on this
+   booking page and deducts straight from your **wallet balance**. There is no tutor accept
+   step because the tutor already published that slot as available.
 3. **Confirmed** — paid; the lesson is locked in and `/bookings/:id` shows the Zoom link
    for students and tutors.
 4. **Completed** — after the lesson, this is the **only place to write a review** (star
    rating + comment, posts to the tutor's profile). `/reviews/:tutorId` is a read-only
    list; `/tutors/:id` shows recent reviews with a link back here to write one.
 
-`booking-detail.html` renders whichever state is in `?s=` (`draft` default); a
+`booking-detail.html` renders whichever state is in `?s=` (`draft` default in the prototype). In the real
+route model, subject booking is `/bookings/s/:subjectId`; payment due and confirmed
+states are `/bookings/:id`. A
 "jump to state" selector on the page lets you preview each one. The `/bookings` list links
 each row to the right state.
 
@@ -110,7 +114,7 @@ each row to the right state.
 | -------- | ------------------------------------------------------------------------- |
 | All      | every booking, any status                                                |
 | Upcoming | confirmed, paid lessons                                                   |
-| Drafts   | bookings started but not paid yet                                        |
+| Payment due | slots already chosen, booking ID created, waiting for payment        |
 | Past     | completed and cancelled lessons                                         |
 
 ## The wallet
@@ -119,9 +123,11 @@ Real money enters at **`/wallet/topup`** and cleared tutor earnings enter the sa
 balance. `/wallet` is the combined ledger for top-ups, lesson payments, class earnings,
 refunds, and payout withdrawals. Payouts are not tutor-only: any user can withdraw
 available wallet balance to a saved payout account, including a student who only topped
-up. Lesson payments at `/wallet/transactions/:id` spend that balance; if it's short, the
-page sends you to `/wallet/topup` for the difference and back. `/settings/wallet` holds
-wallet settings and payout account details.
+up. Lesson payments spend that balance from `/bookings/:id`; if it's short, the booking
+page sends you to `/wallet/topup` for the difference. `/wallet/transactions/:id` is
+read-only history/receipt detail. If a lesson payment is not complete yet, that transaction
+page points back to `/bookings/:id` instead of accepting payment there. `/settings/wallet`
+holds wallet settings and payout account details.
 
 ## Dashboards and settings
 
@@ -145,7 +151,8 @@ toggle boxes in an internal scroll area instead of small checkboxes that push th
 - **Content**: real-looking placeholder data, hard-coded in the HTML.
 - **Interactions**: real but client-side. The subject page shows subject-only availability;
   the booking calendar/slot picker enforces adjacency and prices the 1-1 lesson; the
-  booking state machine goes from draft to payment to confirmed; tutor booking detail shows
+  booking state machine goes from subject booking with no ID to payment due with a
+  booking ID to confirmed; tutor booking detail shows
   the student and description; confirmed bookings expose a Zoom link; wallet top-up, lesson payment, and
   payout move a real `localStorage` number; filters filter; chat appends bubbles; forms
   toast instead of submitting.

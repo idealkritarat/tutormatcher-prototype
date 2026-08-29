@@ -53,7 +53,8 @@
   <div class="devbar">
     <span>Prototype — jump to state:</span>
     <select id="devstate">
-      <option value="draft">Draft (pick a time)</option>
+      <option value="draft">Subject booking (pick a time)</option>
+      <option value="payment">Payment due</option>
       <option value="upcoming">Confirmed / upcoming</option>
       <option value="done">Completed</option>
       <option value="cancelled">Cancelled</option>
@@ -108,8 +109,29 @@
 
     <div class="hr"></div>
     <div class="cluster" style="justify-content:flex-end">
-      <button class="btn ghost" type="button" data-toast-btn="Draft saved. Find it under Bookings.">Save draft</button>
-      <button class="btn" type="button" id="pay-now" disabled>Pay and confirm</button>
+      <button class="btn" type="button" id="pay-now" disabled>Continue to payment</button>
+    </div>
+  </section>
+
+  <!-- ============ PAYMENT ============ -->
+  <section class="card" data-state="payment" hidden>
+    <span class="badge warn">Payment due</span>
+    <h2 style="margin-top:12px">Pay to confirm this class</h2>
+    <p class="small muted">The tutor's available slot is locked to this booking while you pay. Payment happens here, not in wallet history.</p>
+    <div class="hr"></div>
+    <div class="summary">
+      <div class="line"><span>Lesson</span><b id="pay-for">IELTS Speaking with Anong P.</b></div>
+      <div class="line"><span>Locked time</span><b id="pay-when">Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line"><span>Booking ID</span><b id="pay-booking-id">BK-2481</b></div>
+      <div class="line"><span>Wallet balance</span><span>฿<b data-wallet>0</b></span></div>
+      <div class="line total"><span>Amount due</span><span id="pay-amount">฿960</span></div>
+    </div>
+    <div id="pay-short" class="note warn" style="margin-top:14px" hidden>
+      Your wallet is short by <b id="pay-short-amt">฿0</b>. Top up first, then come back to this booking.
+    </div>
+    <div class="cluster" style="justify-content:flex-end;margin-top:16px">
+      <a class="btn ghost" id="pay-topup" href="topup.html">Top up wallet</a>
+      <button class="btn lg" id="booking-pay-btn" type="button">Pay now</button>
     </div>
   </section>
 
@@ -117,11 +139,11 @@
   <section class="card" data-state="upcoming" hidden>
     <span class="badge ok">Confirmed</span>
     <h2 style="margin-top:12px">You're booked in</h2>
-    <p class="small muted">Paid ฿960 from wallet · Ref PM-7731</p>
+    <p class="small muted" id="upcoming-paid">Paid ฿960 from wallet · Ref PM-7731</p>
     <div class="hr"></div>
     <div class="summary">
-      <div class="line"><span>Lesson</span><b>IELTS Speaking with Anong P.</b></div>
-      <div class="line"><span>When</span><b>Fri 13 Sep · 2:00–4:00 PM</b></div>
+      <div class="line"><span>Lesson</span><b id="upcoming-for">IELTS Speaking with Anong P.</b></div>
+      <div class="line"><span>When</span><b id="upcoming-when">Fri 13 Sep · 2:00–4:00 PM</b></div>
       <div class="line"><span>Where</span><span>Online · Zoom</span></div>
       <div class="line"><span>Zoom link</span><a href="https://zoom.us/j/24819607731" target="_blank" rel="noopener">zoom.us/j/24819607731</a></div>
     </div>
@@ -203,30 +225,35 @@
 (function () {
   var STATE = tmParam('s', 'draft');
   var AS_TUTOR = tmParam('as', '') === 'tutor';
-  var BOOKING_ID = tmParam('id', AS_TUTOR ? 'CL-9101' : 'BK-2481');
+  var BOOKING_ID = tmParam('id', '');
   var SUBJECT_ID = tmParam("subjectId", "");
   var SUBJECT = tmParam("subject", "IELTS Speaking");
   var SUBJECT_RATE = parseInt(tmParam("rate", "480"), 10) || 480;
-  var ORDER = ['draft', 'upcoming', 'done', 'cancelled'];
+  var ORDER = ['draft', 'payment', 'upcoming', 'done', 'cancelled'];
   if (ORDER.indexOf(STATE) === -1) STATE = 'draft';
-  if (AS_TUTOR) STATE = 'upcoming';
+  if (AS_TUTOR) { STATE = 'upcoming'; if (!BOOKING_ID) BOOKING_ID = 'CL-9101'; }
+  else if (STATE !== 'draft' && !BOOKING_ID) BOOKING_ID = 'BK-2481';
 
   var TITLES = {
-    draft:    ['New booking', 'Pick a time, add a note, and pay to confirm your 1-1 lesson.'],
+    draft:    ['Choose a time', 'Pick a date and time for this subject before a booking ID is created.'],
+    payment:  ['Payment due', 'This booking has a locked date and time. Pay here to confirm it.'],
     upcoming: ['Confirmed lesson', 'All set. See you in class.'],
     done:     ['Completed lesson', 'This lesson is done.'],
     cancelled: ['Booking cancelled', 'This lesson is no longer on your schedule.']
   };
-  document.querySelector('.eyebrow').textContent = 'Booking #' + BOOKING_ID;
+  document.querySelector('.eyebrow').textContent = STATE === 'draft' ? 'Subject booking' : 'Booking #' + BOOKING_ID;
   document.getElementById('page-title').textContent = AS_TUTOR ? 'Upcoming class' : TITLES[STATE][0];
   document.getElementById('page-sub').textContent = AS_TUTOR ? 'Tutor view for this booking.' : (STATE === 'draft' && SUBJECT ? 'Book ' + SUBJECT + ' with this tutor.' : TITLES[STATE][1]);
   document.getElementById('devstate').value = STATE;
   document.getElementById('devstate').addEventListener('change', function () {
     var next = 'booking-detail.html?s=' + this.value;
     if (AS_TUTOR) next += '&as=tutor&id=' + encodeURIComponent(BOOKING_ID);
+    else {
+      if (this.value !== 'draft') next += '&id=' + encodeURIComponent(BOOKING_ID || 'BK-2481');
+      if (SUBJECT_ID) next += '&subjectId=' + encodeURIComponent(SUBJECT_ID) + '&subject=' + encodeURIComponent(SUBJECT) + '&rate=' + encodeURIComponent(SUBJECT_RATE);
+    }
     location.href = next;
   });
-
   // show the right section
   document.querySelectorAll('[data-state]').forEach(function (el) {
     el.hidden = AS_TUTOR || el.getAttribute('data-state') !== STATE;
@@ -237,7 +264,7 @@
   document.getElementById('tracker').hidden = AS_TUTOR;
 
   // tracker (3 steps: pick time, pay, confirmed)
-  var reached = { draft: 0, upcoming: 2, done: 3, cancelled: 1 };
+  var reached = { draft: 0, payment: 1, upcoming: 2, done: 3, cancelled: 1 };
   var idx = reached[STATE];
   document.querySelectorAll('#tracker .st').forEach(function (st, i) {
     st.classList.toggle('done', i < idx);
@@ -277,6 +304,72 @@
   }
   document.getElementById('booking-subject').textContent = SUBJECT + ' · ฿' + SUBJECT_RATE.toLocaleString('en-US') + ' / hour';
   document.getElementById('profile-link').href = SUBJECT_ID ? 'tutor-detail.html?subject=' + encodeURIComponent(SUBJECT_ID) : 'tutor-detail.html';
+
+  function paymentContext() {
+    var dateTxt = tmParam('date', '');
+    var timeTxt = tmParam('time', '');
+    var duration = parseInt(tmParam('duration', '30'), 10) || 30;
+    var amount = parseInt(tmParam('amount', tmParam('amt', '')), 10) || Math.round(SUBJECT_RATE * duration / 60);
+    var whenTxt = tmParam('when', '');
+    if (!whenTxt && dateTxt && timeTxt) whenTxt = dateTxt + ' · ' + timeTxt;
+    if (!whenTxt) whenTxt = 'Fri 13 Sep · 2:00-4:00 PM';
+    return {
+      amount: amount,
+      when: whenTxt,
+      label: tmParam('for', '') || (SUBJECT + ' with ' + (tutor || 'Anong P.'))
+    };
+  }
+
+  if (STATE === 'payment') {
+    var payment = paymentContext();
+    document.getElementById('pay-for').textContent = payment.label;
+    document.getElementById('pay-when').textContent = payment.when;
+    document.getElementById('pay-booking-id').textContent = BOOKING_ID;
+    document.getElementById('pay-amount').textContent = '฿' + payment.amount.toLocaleString('en-US');
+
+    function refreshPayment() {
+      var bal = tmWallet.get();
+      var short = payment.amount - bal;
+      var payBtn = document.getElementById('booking-pay-btn');
+      var shortBox = document.getElementById('pay-short');
+      var topup = document.getElementById('pay-topup');
+      payBtn.textContent = 'Pay ฿' + payment.amount.toLocaleString('en-US');
+      if (short > 0) {
+        payBtn.disabled = true;
+        shortBox.hidden = false;
+        document.getElementById('pay-short-amt').textContent = '฿' + short.toLocaleString('en-US');
+        topup.textContent = 'Top up ฿' + short.toLocaleString('en-US');
+        topup.href = 'topup.html?need=' + short;
+      } else {
+        payBtn.disabled = false;
+        shortBox.hidden = true;
+        topup.textContent = 'Top up wallet';
+        topup.href = 'topup.html';
+      }
+    }
+    refreshPayment();
+    document.getElementById('booking-pay-btn').addEventListener('click', function () {
+      if (tmWallet.get() < payment.amount) { tmToast('Not enough balance - top up first.'); return; }
+      tmWallet.sub(payment.amount);
+      tmToast('Payment complete - booking confirmed.');
+      var next = 'booking-detail.html?s=upcoming&id=' + encodeURIComponent(BOOKING_ID) +
+        '&subject=' + encodeURIComponent(SUBJECT) +
+        '&rate=' + encodeURIComponent(SUBJECT_RATE) +
+        '&when=' + encodeURIComponent(payment.when) +
+        '&amount=' + encodeURIComponent(payment.amount);
+      if (SUBJECT_ID) next += '&subjectId=' + encodeURIComponent(SUBJECT_ID);
+      location.href = next;
+    });
+    return;
+  }
+
+  if (STATE === 'upcoming') {
+    var confirmed = paymentContext();
+    document.getElementById('upcoming-for').textContent = confirmed.label;
+    document.getElementById('upcoming-when').textContent = confirmed.when;
+    document.getElementById('upcoming-paid').textContent = 'Paid ฿' + confirmed.amount.toLocaleString('en-US') + ' from wallet · Ref PM-7731';
+    return;
+  }
 
   /* ---------------- done: review form (the ONLY place to write a review) ---------------- */
   if (STATE === 'done') {
@@ -446,10 +539,16 @@
     document.getElementById('sel-when').textContent = whenText;
     document.getElementById('sel-hours').textContent = formatDuration(n);
     document.getElementById('sel-price').textContent = '฿' + amount.toLocaleString('en-US');
-    pay.textContent = 'Pay ฿' + amount.toLocaleString('en-US') + ' and confirm';
-    pay.dataset.href = 'payment-detail.html?id=PM-7731&amt=' + encodeURIComponent(amount) +
-      '&for=' + encodeURIComponent(SUBJECT + ' with ' + (tutor || 'Anong P.')) +
+    pay.textContent = 'Continue to payment · ฿' + amount.toLocaleString('en-US');
+    pay.dataset.href = 'booking-detail.html?s=payment&id=' + encodeURIComponent(BOOKING_ID || 'BK-2481') +
+      '&subject=' + encodeURIComponent(SUBJECT) +
+      '&rate=' + encodeURIComponent(RATE) +
+      '&date=' + encodeURIComponent(selDate.getDate() + ' ' + MON[selDate.getMonth()] + ' ' + selDate.getFullYear()) +
+      '&time=' + encodeURIComponent(labelFor(start) + '-' + endOf(last)) +
+      '&duration=' + encodeURIComponent(n * 30) +
+      '&amount=' + encodeURIComponent(amount) +
       '&when=' + encodeURIComponent(whenText);
+    if (SUBJECT_ID) pay.dataset.href += '&subjectId=' + encodeURIComponent(SUBJECT_ID);
     box.hidden = false;
     pay.disabled = false;
   }

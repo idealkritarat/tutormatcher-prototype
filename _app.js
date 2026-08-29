@@ -213,7 +213,8 @@
         { file: 'enroll-tutor.html', path: '/(auth)/enroll-tutor', title: 'Tutor application', access: 'requires login' },
         { file: 'dashboard-student.html', path: '/dashboard', title: 'Student dashboard', access: 'requires login' },
         { file: 'dashboard-tutor.html', path: '/dashboard/tutor', title: 'Tutor dashboard', access: 'role: tutor' },
-        { file: 'booking-detail.html', path: '/bookings/:id', title: 'Booking detail', access: 'requires login' },
+        { file: 'booking-detail.html', href: 'booking-detail.html?s=draft&subjectId=ielts-speaking&subject=IELTS%20Speaking&rate=480', path: '/bookings/s/:subjectId', title: 'Subject booking', access: 'requires login' },
+        { file: 'booking-detail.html', href: 'booking-detail.html?s=payment&id=BK-2481', path: '/bookings/:id', title: 'Booking detail', access: 'requires login' },
         { file: 'bookings.html', path: '/bookings', title: 'Bookings', access: 'requires login' },
         { file: 'messages.html', path: '/messages/:id', title: 'Messages', access: 'requires login' },
         { file: 'payments.html', path: '/wallet', title: 'Wallet', access: 'requires login' },
@@ -231,6 +232,12 @@
       if (file === 'tutor-detail.html' && location.search.indexOf('subject=') !== -1) {
         current = { file: 'tutor-detail.html', path: '/tutors/:id/:subjectId', title: 'Tutor subject', access: 'public' };
       }
+      if (file === 'booking-detail.html') {
+        var search = location.search || '';
+        current = search.indexOf('s=draft') !== -1 && search.indexOf('subjectId=') !== -1
+          ? { file: 'booking-detail.html', path: '/bookings/s/:subjectId', title: 'Subject booking', access: 'requires login' }
+          : { file: 'booking-detail.html', path: '/bookings/:id', title: 'Booking detail', access: 'requires login' };
+      }
       bar.classList.add('routebar');
       bar.innerHTML =
         '<span class="routebar-label">on the real site</span>' +
@@ -240,7 +247,7 @@
           '</button>' +
           '<div class="menu route-menu" id="route-menu" hidden>' +
             routes.map(function (r) {
-              return '<a href="' + esc(r.file) + '" class="' + (r.file === current.file ? 'active' : '') + '">' +
+              return '<a href="' + esc(r.href || r.file) + '" class="' + (r.path === current.path ? 'active' : '') + '">' +
                 '<span><b>' + esc(r.path) + '</b><small>' + esc(r.title) + '</small></span>' +
                 '<em class="tag">' + esc(r.access) + '</em>' +
               '</a>';
